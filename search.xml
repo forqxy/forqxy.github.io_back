@@ -12,6 +12,86 @@
       </categories>
   </entry>
   <entry>
+    <title>JAVA进阶</title>
+    <url>/2017/07/05/JAVA%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6/</url>
+    <content><![CDATA[<h2 id="Java中的反射机制"><a href="#Java中的反射机制" class="headerlink" title="Java中的反射机制"></a>Java中的反射机制</h2><hr>
+<h3 id="1-反射"><a href="#1-反射" class="headerlink" title="1.反射"></a>1.反射</h3><p>反射主要是在spring框架体现的较多,用的较广,</p>
+<p>反射的作用:</p>
+<p>先说下类的概念<br>类对象概念： 所有的类，都存在一个类对象，这个类对象用于提供一类层面的信息，比如有几种构造方法， 有多少属性，有哪些普通方法。</p>
+<p>通过加载类的全限定类名来获取所需类的里面的所有属性和方法.<br>有如下三种方式来获得</p>
+<blockquote>
+<ul>
+<li>ClassName为所需类名</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.  Class c &#x3D; Class.forName(ClassName);</span><br><span class="line">2.  Class c &#x3D; ClassName.class();</span><br><span class="line">3.  Class c &#x3D; new ClassName().getClass();</span><br></pre></td></tr></table></figure>
+<p>在一个JVM中，一种类，只会有一个类对象存在。所以以上三种方式取出来的类对象，都是一样的。</p>
+<p>注： 准确的讲是一个ClassLoader下，一种类，只会有一个类对象存在。通常一个JVM下，只会有一个ClassLoader。<br>无论什么途径获取类对象，都会导致静态属性被初始化，而且只会执行一次。</p>
+<p>传统创建一个对象是new出来.</p>
+<blockquote>
+<ul>
+<li>现在通过反射创建一个对象</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &#x2F;&#x2F;类对象</span><br><span class="line">Class pClass&#x3D;Class.forName(className);</span><br><span class="line">&#x2F;&#x2F;构造器</span><br><span class="line">Constructor c&#x3D; pClass.getConstructor();</span><br><span class="line">&#x2F;&#x2F;通过构造器实例化</span><br><span class="line">Hero h2&#x3D; (Hero) c.newInstance();</span><br><span class="line">h2.name &#x3D; &quot;xxx&quot;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li><strong>访问修改属性</strong></li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;获取类Hero的名字叫做name的字段</span><br><span class="line">               Field f1&#x3D; h.getClass().getDeclaredField(&quot;name&quot;);</span><br><span class="line">               &#x2F;&#x2F;修改这个字段的值</span><br><span class="line">               f1.set(h, &quot;xxx&quot;);</span><br></pre></td></tr></table></figure>
+<p>getField和getDeclaredField的区别<br>这两个方法都是用于获取字段<br>getField 只能获取public的，包括从父类继承来的字段。<br>getDeclaredField 可以获取本类所有的字段，包括private的，但是不能获取继承来的字段。 (注： 这里只能获取到private的字段，但并不能访问该private字段的值)</p>
+<blockquote>
+<ul>
+<li><strong>调用方法</strong></li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取这个类的名字叫做setName，参数类型是String的方法</span></span><br><span class="line"> Method m = h.getClass().getMethod(<span class="string">&quot;setName&quot;</span>, String.class);</span><br><span class="line">            <span class="comment">// 对h对象，调用这个方法</span></span><br><span class="line">            m.invoke(h, <span class="string">&quot;xxx&quot;</span>);</span><br><span class="line">            <span class="comment">// 使用传统的方式，调用getName方法</span></span><br><span class="line">            System.out.println(h.getName());</span><br></pre></td></tr></table></figure>
+<h3 id="2-使用Log4j查看详细日志信息"><a href="#2-使用Log4j查看详细日志信息" class="headerlink" title="2.使用Log4j查看详细日志信息"></a>2.使用Log4j查看详细日志信息</h3><p>1.导jar包<br>2.添加配置文件properties或xml都可</p>
+<h3 id="3-json的使用"><a href="#3-json的使用" class="headerlink" title="3.json的使用"></a>3.json的使用</h3><blockquote>
+<ul>
+<li>JSON JavaScript 对象表示法（JavaScript Object Notation） 是一种存储数据的方式。</li>
+</ul>
+</blockquote>
+<p>1.创建一个JSON对象</p>
+<blockquote>
+<ul>
+<li>var people = {“name”:”tom”,”age”:16};<br>这样就创建了一个JSON 对象<br>JSON对象由 名称/值对组成 名称和值之间用冒号:隔开<br>名称必须用双引号” 包含起来<br>值可以是任意javascript数据类型，字符串，布尔，数字 ，数组甚至是对象<br>不同的名称/值对之间用 逗号 , 隔开</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">var people &#x3D; &#123;&quot;name&quot;:&quot;tom&quot;,&quot;age&quot;:16&#125;;</span><br><span class="line">  </span><br><span class="line">document.write(&quot;这是一个JSON对象: &quot;people);</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>输出的是一个object对象:<strong>这是一个JSON对象: [object Object]</strong></p>
+<p>可以通过点来访问对象的属性</p>
+<p>2.通过方括号[] 创建JSON 数组</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xxx&#x3D; [ &#123;&quot;aaa&quot;:&quot;1&quot;&#125;,&#123;&quot;bbb&quot;:&quot;2&quot;&#125;,&#123;&quot;ccc&quot;:&quot;3&quot;&#125;] </span><br></pre></td></tr></table></figure>
+<p>访问时和普通数组一样.通过下标访问</p>
+<blockquote>
+<ul>
+<li>字符串转换为json对象 要用eval()实现.<br>即 : var gareen = eval(“(“+s3+”)”);</li>
+<li>*<em>注意里面的括号()**</em></li>
+</ul>
+</blockquote>
+<h3 id="4-Ajax"><a href="#4-Ajax" class="headerlink" title="4.Ajax"></a>4.Ajax</h3><p><em>AJAX 是一种用于创建快速动态网页的技术。通过AJAX (Asynchronous JAvaScript and XML) 实现异步刷新</em><br><a href="http://www.runoob.com/ajax/ajax-tutorial.html">Ajax详细教程</a><br>1.引入js文件写的Ajax引擎<br>即创建XHR</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xmlhttp;</span><br><span class="line">	if (window.XMLHttpRequest)</span><br><span class="line">	&#123;</span><br><span class="line">		&#x2F;&#x2F;  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码</span><br><span class="line">		xmlhttp&#x3D;new XMLHttpRequest();</span><br><span class="line">	&#125;</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		&#x2F;&#x2F; IE6, IE5 浏览器执行代码</span><br><span class="line">		xmlhttp&#x3D;new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>4.处理响应结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xmlhttp.onreadystatechange&#x3D;function()&#123;</span><br><span class="line">if(xmlhttp.readyState&#x3D;&#x3D;4)&#123;</span><br><span class="line">	if(xmlhttp.status&#x3D;&#x3D;200)&#123;</span><br><span class="line">	&#x2F;&#x2F;处理结果</span><br><span class="line">	&#x2F;&#x2F;document.getElementById(&#39;checkResult&#39;).innerHTML&#x3D;xmlhttp.responseText;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.建立一个连接</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xmlhttp.open(&quot;get&quot;,&quot;url&quot;,true);</span><br></pre></td></tr></table></figure>
+<p>3.发送请求<br>xmlhttp.send(null);</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;处理业务内的代码</span><br><span class="line">&#x2F;&#x2F;从jsp获得</span><br><span class="line"> String name &#x3D; request.getParameter(&quot;name&quot;);</span><br><span class="line">     </span><br><span class="line">    if(&quot;abc&quot;.equals(name))</span><br><span class="line">        out.print(&quot;&lt;font color&#x3D;&#39;red&#39;&gt;已经存在&lt;&#x2F;font&gt;&quot;);</span><br><span class="line">    else </span><br><span class="line">        out.print(&quot;&lt;font color&#x3D;&#39;green&#39;&gt;可以使用&lt;&#x2F;font&gt;&quot;);</span><br></pre></td></tr></table></figure>
+<p>后续……</p>
+]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>technology</tag>
+        <tag>json</tag>
+        <tag>前端</tag>
+        <tag>Ajax</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Lucene全文检索</title>
     <url>/2018/06/27/Lucene%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2/</url>
     <content><![CDATA[<h1 id="Lucene简介"><a href="#Lucene简介" class="headerlink" title="Lucene简介"></a>Lucene简介</h1><blockquote>
@@ -148,83 +228,66 @@
       </tags>
   </entry>
   <entry>
-    <title>JAVA进阶</title>
-    <url>/2017/07/05/JAVA%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6/</url>
-    <content><![CDATA[<h2 id="Java中的反射机制"><a href="#Java中的反射机制" class="headerlink" title="Java中的反射机制"></a>Java中的反射机制</h2><hr>
-<h3 id="1-反射"><a href="#1-反射" class="headerlink" title="1.反射"></a>1.反射</h3><p>反射主要是在spring框架体现的较多,用的较广,</p>
-<p>反射的作用:</p>
-<p>先说下类的概念<br>类对象概念： 所有的类，都存在一个类对象，这个类对象用于提供一类层面的信息，比如有几种构造方法， 有多少属性，有哪些普通方法。</p>
-<p>通过加载类的全限定类名来获取所需类的里面的所有属性和方法.<br>有如下三种方式来获得</p>
+    <title>Shiro角色权限管理</title>
+    <url>/2017/10/16/Shiro%E8%A7%92%E8%89%B2%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h1 id="Shiro简介"><a href="#Shiro简介" class="headerlink" title="Shiro简介"></a>Shiro简介</h1><blockquote>
+<p>Apache Shiro是一个强大且易用的Java安全框架,执行身份验证、授权、密码学和会话管理。<br> 使用Shiro的易于理解的API,您可以快速、轻松地获得任何应用程序,<br> 从最小的移动应用程序到最大的网络和企业应用程序。<br>参看链接<br><a href="http://www.jianshu.com/p/7a64c3f3b47d">原文出处http://www.jianshu.com/p/7a64c3f3b47d</a><br>基本功能如下：<br><img src="https://i.loli.net/2019/06/11/5cffc9d8927c257783.jpg" alt="Shiro角色权限管理.md---005WV0MDgy1fkjt8ib3d0j30es083gm9.jpg"></p>
+</blockquote>
+<p>Authentication：身份认证/登录，验证用户是不是拥有相应的身份；</p>
+<p>Authorization：授权，即权限验证，验证某个已认证的用户是否拥有某个权限；<br>即判断用户是否能做事情，常见的如：验证某个用户是否拥有某个角色。或者细粒度的验证某个用户对某个资源是否具有某个权限；</p>
+<p>Session Manager：会话管理，即用户登录后就是一次会话，在没有退出之前，<br>它的所有信息都在会话中；会话可以是普通JavaSE环境的，也可以是如Web环境的；</p>
+<p>Cryptography：加密，保护数据的安全性，如密码加密存储到数据库，而不是明文存储；</p>
+<p>Web Support：Web支持，可以非常容易的集成到Web环境；</p>
+<p>Caching：缓存，比如用户登录后，其用户信息、拥有的角色/权限不必每次去查，这样可以提高效率；</p>
+<p>Concurrency：shiro支持多线程应用的并发验证，即如在一个线程中开启另一个线程，能把权限自动传播过去；</p>
+<p>Testing：提供测试支持；</p>
+<p>Run As：允许一个用户假装为另一个用户（如果他们允许）的身份进行访问；</p>
+<p>Remember Me：记住我，这个是非常常见的功能，即一次登录后，下次再来的话不用登录了。</p>
+<h1 id="Shiro工作流程"><a href="#Shiro工作流程" class="headerlink" title="Shiro工作流程"></a>Shiro工作流程</h1><p><img src="https://i.loli.net/2019/06/11/5cffc9e14562b99605.jpg" alt="Shiro角色权限管理.md---005WV0MDgy1fkjtby2is5j30cx07nmxr.jpg"></p>
+<h2 id="Shiro架构"><a href="#Shiro架构" class="headerlink" title="Shiro架构"></a>Shiro架构</h2><p><img src="https://i.loli.net/2019/06/11/5cffc9e74fa1938173.jpg" alt="Shiro角色权限管理.md---005WV0MDgy1fkjtdat1ilj30e50ao0w8.jpg"></p>
+<h1 id="开始Shiro环境搭建"><a href="#开始Shiro环境搭建" class="headerlink" title="开始Shiro环境搭建"></a>开始Shiro环境搭建</h1><h2 id="基本环境"><a href="#基本环境" class="headerlink" title="基本环境"></a>基本环境</h2><blockquote>
+<p>IDEA2017.2+Maven3.5+Spring MVC+MyBatis+Shiro</p>
+</blockquote>
 <blockquote>
-<ul>
-<li>ClassName为所需类名</li>
-</ul>
+<p>基于Maven工程，导入相应jar包同样可以，不过相对来说麻烦啦，有简单的方法干嘛不用呢</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.  Class c &#x3D; Class.forName(ClassName);</span><br><span class="line">2.  Class c &#x3D; ClassName.class();</span><br><span class="line">3.  Class c &#x3D; new ClassName().getClass();</span><br></pre></td></tr></table></figure>
-<p>在一个JVM中，一种类，只会有一个类对象存在。所以以上三种方式取出来的类对象，都是一样的。</p>
-<p>注： 准确的讲是一个ClassLoader下，一种类，只会有一个类对象存在。通常一个JVM下，只会有一个ClassLoader。<br>无论什么途径获取类对象，都会导致静态属性被初始化，而且只会执行一次。</p>
-<p>传统创建一个对象是new出来.</p>
+<h3 id="创建好Maven项目后，pom-xml中添加依赖"><a href="#创建好Maven项目后，pom-xml中添加依赖" class="headerlink" title="创建好Maven项目后，pom.xml中添加依赖"></a>创建好Maven项目后，pom.xml中添加依赖</h3><p><img src="https://i.loli.net/2019/06/11/5cffc9ede1e7291243.jpg" alt="Shiro角色权限管理.md---005WV0MDgy1fkjtvsbaf3j30wg0h0q52.jpg"></p>
 <blockquote>
-<ul>
-<li>现在通过反射创建一个对象</li>
-</ul>
+<p>spring mvc和其他的依赖自行添加，此处略</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &#x2F;&#x2F;类对象</span><br><span class="line">Class pClass&#x3D;Class.forName(className);</span><br><span class="line">&#x2F;&#x2F;构造器</span><br><span class="line">Constructor c&#x3D; pClass.getConstructor();</span><br><span class="line">&#x2F;&#x2F;通过构造器实例化</span><br><span class="line">Hero h2&#x3D; (Hero) c.newInstance();</span><br><span class="line">h2.name &#x3D; &quot;xxx&quot;;</span><br></pre></td></tr></table></figure>
+<h4 id="Shiro依赖"><a href="#Shiro依赖" class="headerlink" title="Shiro依赖"></a>Shiro依赖</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!--shiro依赖--&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;shiro-core&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.2.0&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;shiro-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.2.0&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;shiro-ehcache&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.2.0&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;shiro-spring&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.2.0&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;net.sf.ehcache&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;ehcache-core&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;2.5.3&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;slf4j-jdk14&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.6.4&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line"> &lt;!--shiro结束--&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="配置shiro核心过滤器"><a href="#配置shiro核心过滤器" class="headerlink" title="配置shiro核心过滤器"></a>配置shiro核心过滤器</h3><blockquote>
+<p>和spring mvc的配置方式基本相同<br> 在web.xml文件中配置Filter(spring mvc 和spring的配置略)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!-- shiro过滤器定义 --&gt;</span><br><span class="line">    &lt;filter&gt;</span><br><span class="line">        &lt;filter-name&gt;shiroFilter&lt;&#x2F;filter-name&gt;</span><br><span class="line">        &lt;filter-class&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;&#x2F;filter-class&gt;</span><br><span class="line">        &lt;init-param&gt;</span><br><span class="line">            &lt;!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 --&gt;</span><br><span class="line">            &lt;param-name&gt;targetFilterLifecycle&lt;&#x2F;param-name&gt;</span><br><span class="line">            &lt;param-value&gt;true&lt;&#x2F;param-value&gt;</span><br><span class="line">        &lt;&#x2F;init-param&gt;</span><br><span class="line">    &lt;&#x2F;filter&gt;</span><br><span class="line">    &lt;filter-mapping&gt;</span><br><span class="line">        &lt;filter-name&gt;shiroFilter&lt;&#x2F;filter-name&gt;</span><br><span class="line">        &lt;url-pattern&gt;&#x2F;*&lt;&#x2F;url-pattern&gt;</span><br><span class="line">    &lt;&#x2F;filter-mapping&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <blockquote>
-<ul>
-<li><strong>访问修改属性</strong></li>
-</ul>
+<p>这里注意，filter-name的名字必须和后面的对应，到后面会再说</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;获取类Hero的名字叫做name的字段</span><br><span class="line">               Field f1&#x3D; h.getClass().getDeclaredField(&quot;name&quot;);</span><br><span class="line">               &#x2F;&#x2F;修改这个字段的值</span><br><span class="line">               f1.set(h, &quot;xxx&quot;);</span><br></pre></td></tr></table></figure>
-<p>getField和getDeclaredField的区别<br>这两个方法都是用于获取字段<br>getField 只能获取public的，包括从父类继承来的字段。<br>getDeclaredField 可以获取本类所有的字段，包括private的，但是不能获取继承来的字段。 (注： 这里只能获取到private的字段，但并不能访问该private字段的值)</p>
+<h3 id="在spring的配置文件applicationContext-xml中添加Shiro配置"><a href="#在spring的配置文件applicationContext-xml中添加Shiro配置" class="headerlink" title="在spring的配置文件applicationContext.xml中添加Shiro配置"></a>在spring的配置文件applicationContext.xml中添加Shiro配置</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  &lt;!--shiro 配置--&gt;</span><br><span class="line">&lt;!--数据源配置  在上面--&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!--安全管理器</span><br><span class="line">    1.使用的缓存技术。缓存管理EhCacheManager</span><br><span class="line">    2.realm：负责获取处理数据的</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;securityManager&quot; class&#x3D;&quot;org.apache.shiro.web.mgt.DefaultWebSecurityManager&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;cacheManager&quot; ref&#x3D;&quot;cacheManager&quot;&#x2F;&gt;</span><br><span class="line">        &lt;!--&lt;property name&#x3D;&quot;sessionMode&quot; value&#x3D;&quot;native&quot;&#x2F;&gt;--&gt;</span><br><span class="line">        &lt;!--&lt;property name&#x3D;&quot;realm&quot; ref&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;--&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--第一种多realm配置</span><br><span class="line">        &lt;property name&#x3D;&quot;realms&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;SecondRealm&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;list&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;authenticator&quot; ref&#x3D;&quot;authenticator&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;authorizer&quot; ref&#x3D;&quot;authorizer&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line">    &lt;!--第二种多realm配置方式    认证管理器   推荐使用--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;authenticator&quot; class&#x3D;&quot;org.apache.shiro.authc.pam.ModularRealmAuthenticator&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;realms&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;SecondRealm&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;list&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">        &lt;!--认证策略   全部通过才行  huo只要有一个就行--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;authenticationStrategy&quot;&gt;</span><br><span class="line">            &lt;!--&lt;bean class&#x3D;&quot;org.apache.shiro.authc.pam.AllSuccessfulStrategy&quot;&#x2F;&gt;--&gt;</span><br><span class="line">            &lt;bean class&#x3D;&quot;org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy&quot;&#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--授权管理器--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;authorizer&quot; class&#x3D;&quot;org.apache.shiro.authz.ModularRealmAuthorizer&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;realms&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;SecondRealm&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;list&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id&#x3D;&quot;cacheManager&quot; class&#x3D;&quot;org.apache.shiro.cache.ehcache.EhCacheManager&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;cacheManagerConfigFile&quot; value&#x3D;&quot;classpath:ehcache.xml&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!--自定义realm--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;jdbcRealm&quot; class&#x3D;&quot;cn.hsl.realm.ShiroRealm&quot;&gt;</span><br><span class="line">        &lt;!--md5加密--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">            &lt;bean class&#x3D;&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashAlgorithmName&quot; value&#x3D;&quot;MD5&quot;&#x2F;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashIterations&quot; value&#x3D;&quot;1024&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;bean&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;SecondRealm&quot; class&#x3D;&quot;cn.hsl.realm.SecondShiroRealm&quot;&gt;</span><br><span class="line">        &lt;!--SHA1加密--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">            &lt;bean class&#x3D;&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashAlgorithmName&quot; value&#x3D;&quot;SHA1&quot;&#x2F;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashIterations&quot; value&#x3D;&quot;1024&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;bean&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!-- &lt;bean id&#x3D;&quot;jdbcRealm&quot; class&#x3D;&quot;org.apache.shiro.samples.spring.realm.SaltAwareJdbcRealm&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;name&quot; value&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;dataSource&quot; ref&#x3D;&quot;dataSource&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">            &lt;!&amp;ndash; The &#39;bootstrapDataPopulator&#39; Sha256 hashes the password</span><br><span class="line">                 (using the username as the salt) then base64 encodes it: &amp;ndash;&gt;</span><br><span class="line">            &lt;bean class&#x3D;&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashAlgorithmName&quot; value&#x3D;&quot;SHA-256&quot;&#x2F;&gt;</span><br><span class="line">                &lt;!&amp;ndash; true means hex encoded, false means base64 encoded &amp;ndash;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;storedCredentialsHexEncoded&quot; value&#x3D;&quot;false&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;bean&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;--&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!--必须要有这样的实例。用来管理在spring容器当中shiro常见的对象--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;lifecycleBeanPostProcessor&quot; class&#x3D;&quot;org.apache.shiro.spring.LifecycleBeanPostProcessor&quot;&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--启用shiro注解--&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator&quot;</span><br><span class="line">          depends-on&#x3D;&quot;lifecycleBeanPostProcessor&quot;&#x2F;&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;securityManager&quot; ref&#x3D;&quot;securityManager&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--网络方面的  远程调用--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;secureRemoteInvocationExecutor&quot; class&#x3D;&quot;org.apache.shiro.spring.remoting.SecureRemoteInvocationExecutor&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;securityManager&quot; ref&#x3D;&quot;securityManager&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--配置shiroFilter--&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id&#x3D;&quot;shiroFilter&quot; class&#x3D;&quot;org.apache.shiro.spring.web.ShiroFilterFactoryBean&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;securityManager&quot; ref&#x3D;&quot;securityManager&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;loginUrl&quot; value&#x3D;&quot;&#x2F;login.jsp&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;successUrl&quot; value&#x3D;&quot;&#x2F;success.jsp&quot;&#x2F;&gt;</span><br><span class="line">        &lt;!--未授权的jsp页面--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;unauthorizedUrl&quot; value&#x3D;&quot;&#x2F;abc.jsp&quot;&#x2F;&gt;</span><br><span class="line">&lt;!--代表要完成的具体的过滤器的配置 配置哪些页面需要被保护以及访问权限--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;filterChainDefinitions&quot;&gt;</span><br><span class="line"></span><br><span class="line">            &lt;value&gt;</span><br><span class="line">                &#x2F;login.jsp &#x3D; anon</span><br><span class="line">                &#x2F;success.jsp &#x3D; anon</span><br><span class="line">                &#x2F;helloshiro &#x3D; anon</span><br><span class="line">                &#x2F;logout &#x3D; logout</span><br><span class="line">                &#x2F;admin.jsp &#x3D; roles[admin]</span><br><span class="line">                &#x2F;user.jsp &#x3D; roles[user]</span><br><span class="line">                &#x2F;** &#x3D; authc</span><br><span class="line">            &lt;&#x2F;value&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="spring-mvc的配置文件spring-mvc-xml"><a href="#spring-mvc的配置文件spring-mvc-xml" class="headerlink" title="spring mvc的配置文件spring-mvc.xml"></a>spring mvc的配置文件spring-mvc.xml</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &lt;!--启用shiro注解--&gt;</span><br><span class="line">    &lt;!--必须放在这个配置文件下！！！--&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator&quot;</span><br><span class="line">          depends-on&#x3D;&quot;lifecycleBeanPostProcessor&quot;&#x2F;&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;securityManager&quot; ref&#x3D;&quot;securityManager&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--自定义异常信息界面--&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.springframework.web.servlet.handler.SimpleMappingExceptionResolver&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;exceptionMappings&quot;&gt;</span><br><span class="line">            &lt;props&gt;</span><br><span class="line">                &lt;prop key&#x3D;&quot;org.apache.shiro.authz.UnauthorizedException&quot;&gt;</span><br><span class="line">                    &#x2F;false</span><br><span class="line">                &lt;&#x2F;prop&gt;</span><br><span class="line">                &lt;prop key&#x3D;&quot;org.apache.shiro.authz.UnauthenticatedException&quot;&gt;</span><br><span class="line">                    &#x2F;false</span><br><span class="line">                &lt;&#x2F;prop&gt;</span><br><span class="line">            &lt;&#x2F;props&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<ul>
-<li><strong>调用方法</strong></li>
-</ul>
+<p>注意！！！！！注意！！！！！<br><em>shiro注解配置必须放在springmvc配置文件下！！！！！！，在这里找了好久错最后才知道</em></p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取这个类的名字叫做setName，参数类型是String的方法</span></span><br><span class="line"> Method m = h.getClass().getMethod(<span class="string">&quot;setName&quot;</span>, String.class);</span><br><span class="line">            <span class="comment">// 对h对象，调用这个方法</span></span><br><span class="line">            m.invoke(h, <span class="string">&quot;xxx&quot;</span>);</span><br><span class="line">            <span class="comment">// 使用传统的方式，调用getName方法</span></span><br><span class="line">            System.out.println(h.getName());</span><br></pre></td></tr></table></figure>
-<h3 id="2-使用Log4j查看详细日志信息"><a href="#2-使用Log4j查看详细日志信息" class="headerlink" title="2.使用Log4j查看详细日志信息"></a>2.使用Log4j查看详细日志信息</h3><p>1.导jar包<br>2.添加配置文件properties或xml都可</p>
-<h3 id="3-json的使用"><a href="#3-json的使用" class="headerlink" title="3.json的使用"></a>3.json的使用</h3><blockquote>
-<ul>
-<li>JSON JavaScript 对象表示法（JavaScript Object Notation） 是一种存储数据的方式。</li>
-</ul>
-</blockquote>
-<p>1.创建一个JSON对象</p>
+<h3 id="编写Controller"><a href="#编写Controller" class="headerlink" title="编写Controller"></a>编写Controller</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Controller</span><br><span class="line">public class MyController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private ShiroService shiroService;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(&quot;&#x2F;hello&quot;)</span><br><span class="line">    public String fun01()&#123;</span><br><span class="line">        return &quot;success&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    @RequestMapping(&quot;&#x2F;helloshiro&quot;)</span><br><span class="line">    public String fun02(String username,String password)&#123;</span><br><span class="line">&#x2F;&#x2F;        if(username.equals(&quot;tom&quot;)&amp;&amp;password.equals(&quot;123456&quot;))&#123;</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F;            return &quot;success&quot;;</span><br><span class="line">&#x2F;&#x2F;        &#125;</span><br><span class="line">&#x2F;&#x2F;        return &quot;false&quot;;</span><br><span class="line">&#x2F;&#x2F;    &#125;</span><br><span class="line">        &#x2F;&#x2F;1.创建subject实例</span><br><span class="line">        Subject subject &#x3D; SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;2.判断当前用户是否登录</span><br><span class="line">        if(subject.isAuthenticated()&#x3D;&#x3D;false)&#123;</span><br><span class="line">            &#x2F;&#x2F;如未登录，将用户名及密码封装到UserPasswordToken中</span><br><span class="line">            UsernamePasswordToken token &#x3D; new UsernamePasswordToken(username,password);</span><br><span class="line"></span><br><span class="line">            try &#123;</span><br><span class="line">                subject.login(token);</span><br><span class="line">            &#125;catch (AuthenticationException e)&#123;</span><br><span class="line">                System.out.println(&quot;登录失败！！！&quot;);</span><br><span class="line">                return &quot;false&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return &quot;success&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @RequestMapping(&quot;&#x2F;testanno&quot;)</span><br><span class="line">    public String testanno()&#123;</span><br><span class="line">        shiroService.testanno();</span><br><span class="line">        return &quot;index&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="自定义Realm"><a href="#自定义Realm" class="headerlink" title="自定义Realm"></a>自定义Realm</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package cn.hsl.realm;</span><br><span class="line"></span><br><span class="line">&#x2F;**一开始是实现Realm接口</span><br><span class="line"> * 可以继承认证AuthenticatingRealm实现类</span><br><span class="line"> * 也可以继承认证和授权的实现类AuthorizingRealm</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class ShiroRealm extends AuthorizingRealm&#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private UserDao userDao;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取认证消息的。如果数据库中没有，返回null</span><br><span class="line">     *</span><br><span class="line">     * @param authenticationToken</span><br><span class="line">     * @return</span><br><span class="line">     * @throws AuthenticationException</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)</span><br><span class="line">            throws AuthenticationException &#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;The First Realm Is Working&quot;);</span><br><span class="line">        SimpleAuthenticationInfo info &#x3D; null;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;1.将token转换为UsernamepasswordToken</span><br><span class="line">        UsernamePasswordToken token &#x3D; (UsernamePasswordToken)authenticationToken;</span><br><span class="line">        &#x2F;&#x2F;2.获取用户名即可</span><br><span class="line">        String username &#x3D; token.getUsername();</span><br><span class="line">        &#x2F;&#x2F;3.查询数据库</span><br><span class="line">        User userByName &#x3D; userDao.findUserByName(username);</span><br><span class="line">        String pwd &#x3D; userByName.getPassword();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;加密。实际开发中不需要。数据库直接是加密后数据</span><br><span class="line">        SimpleHash sh &#x3D; new SimpleHash(&quot;MD5&quot;,pwd,null,1024);</span><br><span class="line">        if(userByName!&#x3D;null)&#123;</span><br><span class="line">            info &#x3D; new SimpleAuthenticationInfo(username,sh,this.getName());</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        return info;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">         *  1.返回值为AuthorizationInfo接口的实例SimpleAuthorizationInfo</span><br><span class="line">         *  封装获取用户对应的所有角色</span><br><span class="line">         *  2.参数   登录的身份。登录的用户名</span><br><span class="line">         *&#x2F;</span><br><span class="line"></span><br><span class="line">        SimpleAuthorizationInfo info &#x3D; null;</span><br><span class="line">        &#x2F;&#x2F;Object primaryPrincipal &#x3D; principalCollection.getPrimaryPrincipal();</span><br><span class="line"></span><br><span class="line">        String username &#x3D; principalCollection.toString();</span><br><span class="line">        User userByName &#x3D; userDao.findUserByName(username);</span><br><span class="line">        if(userByName!&#x3D;null)&#123;</span><br><span class="line">            Set&lt;String&gt; roles &#x3D; new HashSet&lt;String&gt;();</span><br><span class="line">            roles.add(userByName.getRoles());</span><br><span class="line">            info &#x3D; new SimpleAuthorizationInfo(roles);</span><br><span class="line">        &#125;</span><br><span class="line">        return info;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>ShiroService中的注解开发，即只有admin的角色才能访问这个方法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class ShiroService &#123;</span><br><span class="line"></span><br><span class="line">    @RequiresRoles(&#123;&quot;admin&quot;&#125;)</span><br><span class="line">    public void testanno()&#123;</span><br><span class="line">        System.out.println(&quot;AAAAAA&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<ul>
-<li>var people = {“name”:”tom”,”age”:16};<br>这样就创建了一个JSON 对象<br>JSON对象由 名称/值对组成 名称和值之间用冒号:隔开<br>名称必须用双引号” 包含起来<br>值可以是任意javascript数据类型，字符串，布尔，数字 ，数组甚至是对象<br>不同的名称/值对之间用 逗号 , 隔开</li>
-</ul>
+<p>这样Shiro的基本框架就算搭建完成了，可以正常运行项目了</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">var people &#x3D; &#123;&quot;name&quot;:&quot;tom&quot;,&quot;age&quot;:16&#125;;</span><br><span class="line">  </span><br><span class="line">document.write(&quot;这是一个JSON对象: &quot;people);</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-<p>输出的是一个object对象:<strong>这是一个JSON对象: [object Object]</strong></p>
-<p>可以通过点来访问对象的属性</p>
-<p>2.通过方括号[] 创建JSON 数组</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xxx&#x3D; [ &#123;&quot;aaa&quot;:&quot;1&quot;&#125;,&#123;&quot;bbb&quot;:&quot;2&quot;&#125;,&#123;&quot;ccc&quot;:&quot;3&quot;&#125;] </span><br></pre></td></tr></table></figure>
-<p>访问时和普通数组一样.通过下标访问</p>
-<blockquote>
-<ul>
-<li>字符串转换为json对象 要用eval()实现.<br>即 : var gareen = eval(“(“+s3+”)”);</li>
-<li>*<em>注意里面的括号()**</em></li>
-</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>web.xml中filter-name的name属性必须和后面bean<br> <code>&lt;bean id=&quot;shiroFilter&quot; class=&quot;org.apache.shiro.spring.web.ShiroFilterFactoryBean&quot;&gt;</code><br> 的id相同。<br> 具体的过滤器配置中。url是按顺序匹配规则，所以<code>/**</code>必须在最后，笔者在这里也走了点弯路。</p>
 </blockquote>
-<h3 id="4-Ajax"><a href="#4-Ajax" class="headerlink" title="4.Ajax"></a>4.Ajax</h3><p><em>AJAX 是一种用于创建快速动态网页的技术。通过AJAX (Asynchronous JAvaScript and XML) 实现异步刷新</em><br><a href="http://www.runoob.com/ajax/ajax-tutorial.html">Ajax详细教程</a><br>1.引入js文件写的Ajax引擎<br>即创建XHR</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xmlhttp;</span><br><span class="line">	if (window.XMLHttpRequest)</span><br><span class="line">	&#123;</span><br><span class="line">		&#x2F;&#x2F;  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码</span><br><span class="line">		xmlhttp&#x3D;new XMLHttpRequest();</span><br><span class="line">	&#125;</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		&#x2F;&#x2F; IE6, IE5 浏览器执行代码</span><br><span class="line">		xmlhttp&#x3D;new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>4.处理响应结果</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xmlhttp.onreadystatechange&#x3D;function()&#123;</span><br><span class="line">if(xmlhttp.readyState&#x3D;&#x3D;4)&#123;</span><br><span class="line">	if(xmlhttp.status&#x3D;&#x3D;200)&#123;</span><br><span class="line">	&#x2F;&#x2F;处理结果</span><br><span class="line">	&#x2F;&#x2F;document.getElementById(&#39;checkResult&#39;).innerHTML&#x3D;xmlhttp.responseText;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.建立一个连接</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xmlhttp.open(&quot;get&quot;,&quot;url&quot;,true);</span><br></pre></td></tr></table></figure>
-<p>3.发送请求<br>xmlhttp.send(null);</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;处理业务内的代码</span><br><span class="line">&#x2F;&#x2F;从jsp获得</span><br><span class="line"> String name &#x3D; request.getParameter(&quot;name&quot;);</span><br><span class="line">     </span><br><span class="line">    if(&quot;abc&quot;.equals(name))</span><br><span class="line">        out.print(&quot;&lt;font color&#x3D;&#39;red&#39;&gt;已经存在&lt;&#x2F;font&gt;&quot;);</span><br><span class="line">    else </span><br><span class="line">        out.print(&quot;&lt;font color&#x3D;&#39;green&#39;&gt;可以使用&lt;&#x2F;font&gt;&quot;);</span><br></pre></td></tr></table></figure>
-<p>后续……</p>
 ]]></content>
       <categories>
         <category>technology</category>
       </categories>
       <tags>
-        <tag>technology</tag>
-        <tag>json</tag>
-        <tag>前端</tag>
-        <tag>Ajax</tag>
+        <tag>Shiro</tag>
+        <tag>spring mvc</tag>
+        <tag>mybatis</tag>
+        <tag>maven</tag>
       </tags>
   </entry>
   <entry>
@@ -296,138 +359,6 @@
       </categories>
       <tags>
         <tag>MyBatis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Shiro角色权限管理</title>
-    <url>/2017/10/16/Shiro%E8%A7%92%E8%89%B2%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<h1 id="Shiro简介"><a href="#Shiro简介" class="headerlink" title="Shiro简介"></a>Shiro简介</h1><blockquote>
-<p>Apache Shiro是一个强大且易用的Java安全框架,执行身份验证、授权、密码学和会话管理。<br> 使用Shiro的易于理解的API,您可以快速、轻松地获得任何应用程序,<br> 从最小的移动应用程序到最大的网络和企业应用程序。<br>参看链接<br><a href="http://www.jianshu.com/p/7a64c3f3b47d">原文出处http://www.jianshu.com/p/7a64c3f3b47d</a><br>基本功能如下：<br><img src="https://i.loli.net/2019/06/11/5cffc9d8927c257783.jpg" alt="Shiro角色权限管理.md---005WV0MDgy1fkjt8ib3d0j30es083gm9.jpg"></p>
-</blockquote>
-<p>Authentication：身份认证/登录，验证用户是不是拥有相应的身份；</p>
-<p>Authorization：授权，即权限验证，验证某个已认证的用户是否拥有某个权限；<br>即判断用户是否能做事情，常见的如：验证某个用户是否拥有某个角色。或者细粒度的验证某个用户对某个资源是否具有某个权限；</p>
-<p>Session Manager：会话管理，即用户登录后就是一次会话，在没有退出之前，<br>它的所有信息都在会话中；会话可以是普通JavaSE环境的，也可以是如Web环境的；</p>
-<p>Cryptography：加密，保护数据的安全性，如密码加密存储到数据库，而不是明文存储；</p>
-<p>Web Support：Web支持，可以非常容易的集成到Web环境；</p>
-<p>Caching：缓存，比如用户登录后，其用户信息、拥有的角色/权限不必每次去查，这样可以提高效率；</p>
-<p>Concurrency：shiro支持多线程应用的并发验证，即如在一个线程中开启另一个线程，能把权限自动传播过去；</p>
-<p>Testing：提供测试支持；</p>
-<p>Run As：允许一个用户假装为另一个用户（如果他们允许）的身份进行访问；</p>
-<p>Remember Me：记住我，这个是非常常见的功能，即一次登录后，下次再来的话不用登录了。</p>
-<h1 id="Shiro工作流程"><a href="#Shiro工作流程" class="headerlink" title="Shiro工作流程"></a>Shiro工作流程</h1><p><img src="https://i.loli.net/2019/06/11/5cffc9e14562b99605.jpg" alt="Shiro角色权限管理.md---005WV0MDgy1fkjtby2is5j30cx07nmxr.jpg"></p>
-<h2 id="Shiro架构"><a href="#Shiro架构" class="headerlink" title="Shiro架构"></a>Shiro架构</h2><p><img src="https://i.loli.net/2019/06/11/5cffc9e74fa1938173.jpg" alt="Shiro角色权限管理.md---005WV0MDgy1fkjtdat1ilj30e50ao0w8.jpg"></p>
-<h1 id="开始Shiro环境搭建"><a href="#开始Shiro环境搭建" class="headerlink" title="开始Shiro环境搭建"></a>开始Shiro环境搭建</h1><h2 id="基本环境"><a href="#基本环境" class="headerlink" title="基本环境"></a>基本环境</h2><blockquote>
-<p>IDEA2017.2+Maven3.5+Spring MVC+MyBatis+Shiro</p>
-</blockquote>
-<blockquote>
-<p>基于Maven工程，导入相应jar包同样可以，不过相对来说麻烦啦，有简单的方法干嘛不用呢</p>
-</blockquote>
-<h3 id="创建好Maven项目后，pom-xml中添加依赖"><a href="#创建好Maven项目后，pom-xml中添加依赖" class="headerlink" title="创建好Maven项目后，pom.xml中添加依赖"></a>创建好Maven项目后，pom.xml中添加依赖</h3><p><img src="https://i.loli.net/2019/06/11/5cffc9ede1e7291243.jpg" alt="Shiro角色权限管理.md---005WV0MDgy1fkjtvsbaf3j30wg0h0q52.jpg"></p>
-<blockquote>
-<p>spring mvc和其他的依赖自行添加，此处略</p>
-</blockquote>
-<h4 id="Shiro依赖"><a href="#Shiro依赖" class="headerlink" title="Shiro依赖"></a>Shiro依赖</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!--shiro依赖--&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;shiro-core&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.2.0&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;shiro-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.2.0&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;shiro-ehcache&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.2.0&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.apache.shiro&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;shiro-spring&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.2.0&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;net.sf.ehcache&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;ehcache-core&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;2.5.3&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;slf4j-jdk14&lt;&#x2F;artifactId&gt;</span><br><span class="line">   &lt;version&gt;1.6.4&lt;&#x2F;version&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line"> &lt;!--shiro结束--&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="配置shiro核心过滤器"><a href="#配置shiro核心过滤器" class="headerlink" title="配置shiro核心过滤器"></a>配置shiro核心过滤器</h3><blockquote>
-<p>和spring mvc的配置方式基本相同<br> 在web.xml文件中配置Filter(spring mvc 和spring的配置略)</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!-- shiro过滤器定义 --&gt;</span><br><span class="line">    &lt;filter&gt;</span><br><span class="line">        &lt;filter-name&gt;shiroFilter&lt;&#x2F;filter-name&gt;</span><br><span class="line">        &lt;filter-class&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;&#x2F;filter-class&gt;</span><br><span class="line">        &lt;init-param&gt;</span><br><span class="line">            &lt;!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 --&gt;</span><br><span class="line">            &lt;param-name&gt;targetFilterLifecycle&lt;&#x2F;param-name&gt;</span><br><span class="line">            &lt;param-value&gt;true&lt;&#x2F;param-value&gt;</span><br><span class="line">        &lt;&#x2F;init-param&gt;</span><br><span class="line">    &lt;&#x2F;filter&gt;</span><br><span class="line">    &lt;filter-mapping&gt;</span><br><span class="line">        &lt;filter-name&gt;shiroFilter&lt;&#x2F;filter-name&gt;</span><br><span class="line">        &lt;url-pattern&gt;&#x2F;*&lt;&#x2F;url-pattern&gt;</span><br><span class="line">    &lt;&#x2F;filter-mapping&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这里注意，filter-name的名字必须和后面的对应，到后面会再说</p>
-</blockquote>
-<h3 id="在spring的配置文件applicationContext-xml中添加Shiro配置"><a href="#在spring的配置文件applicationContext-xml中添加Shiro配置" class="headerlink" title="在spring的配置文件applicationContext.xml中添加Shiro配置"></a>在spring的配置文件applicationContext.xml中添加Shiro配置</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  &lt;!--shiro 配置--&gt;</span><br><span class="line">&lt;!--数据源配置  在上面--&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!--安全管理器</span><br><span class="line">    1.使用的缓存技术。缓存管理EhCacheManager</span><br><span class="line">    2.realm：负责获取处理数据的</span><br><span class="line">    --&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;securityManager&quot; class&#x3D;&quot;org.apache.shiro.web.mgt.DefaultWebSecurityManager&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;cacheManager&quot; ref&#x3D;&quot;cacheManager&quot;&#x2F;&gt;</span><br><span class="line">        &lt;!--&lt;property name&#x3D;&quot;sessionMode&quot; value&#x3D;&quot;native&quot;&#x2F;&gt;--&gt;</span><br><span class="line">        &lt;!--&lt;property name&#x3D;&quot;realm&quot; ref&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;--&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--第一种多realm配置</span><br><span class="line">        &lt;property name&#x3D;&quot;realms&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;SecondRealm&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;list&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;authenticator&quot; ref&#x3D;&quot;authenticator&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;authorizer&quot; ref&#x3D;&quot;authorizer&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line">    &lt;!--第二种多realm配置方式    认证管理器   推荐使用--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;authenticator&quot; class&#x3D;&quot;org.apache.shiro.authc.pam.ModularRealmAuthenticator&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;realms&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;SecondRealm&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;list&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">        &lt;!--认证策略   全部通过才行  huo只要有一个就行--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;authenticationStrategy&quot;&gt;</span><br><span class="line">            &lt;!--&lt;bean class&#x3D;&quot;org.apache.shiro.authc.pam.AllSuccessfulStrategy&quot;&#x2F;&gt;--&gt;</span><br><span class="line">            &lt;bean class&#x3D;&quot;org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy&quot;&#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--授权管理器--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;authorizer&quot; class&#x3D;&quot;org.apache.shiro.authz.ModularRealmAuthorizer&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;realms&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;</span><br><span class="line">                &lt;ref bean&#x3D;&quot;SecondRealm&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;list&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id&#x3D;&quot;cacheManager&quot; class&#x3D;&quot;org.apache.shiro.cache.ehcache.EhCacheManager&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;cacheManagerConfigFile&quot; value&#x3D;&quot;classpath:ehcache.xml&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!--自定义realm--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;jdbcRealm&quot; class&#x3D;&quot;cn.hsl.realm.ShiroRealm&quot;&gt;</span><br><span class="line">        &lt;!--md5加密--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">            &lt;bean class&#x3D;&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashAlgorithmName&quot; value&#x3D;&quot;MD5&quot;&#x2F;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashIterations&quot; value&#x3D;&quot;1024&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;bean&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;SecondRealm&quot; class&#x3D;&quot;cn.hsl.realm.SecondShiroRealm&quot;&gt;</span><br><span class="line">        &lt;!--SHA1加密--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">            &lt;bean class&#x3D;&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashAlgorithmName&quot; value&#x3D;&quot;SHA1&quot;&#x2F;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashIterations&quot; value&#x3D;&quot;1024&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;bean&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!-- &lt;bean id&#x3D;&quot;jdbcRealm&quot; class&#x3D;&quot;org.apache.shiro.samples.spring.realm.SaltAwareJdbcRealm&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;name&quot; value&#x3D;&quot;jdbcRealm&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;dataSource&quot; ref&#x3D;&quot;dataSource&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;credentialsMatcher&quot;&gt;</span><br><span class="line">            &lt;!&amp;ndash; The &#39;bootstrapDataPopulator&#39; Sha256 hashes the password</span><br><span class="line">                 (using the username as the salt) then base64 encodes it: &amp;ndash;&gt;</span><br><span class="line">            &lt;bean class&#x3D;&quot;org.apache.shiro.authc.credential.HashedCredentialsMatcher&quot;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;hashAlgorithmName&quot; value&#x3D;&quot;SHA-256&quot;&#x2F;&gt;</span><br><span class="line">                &lt;!&amp;ndash; true means hex encoded, false means base64 encoded &amp;ndash;&gt;</span><br><span class="line">                &lt;property name&#x3D;&quot;storedCredentialsHexEncoded&quot; value&#x3D;&quot;false&quot;&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;bean&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;--&gt;</span><br><span class="line"></span><br><span class="line">   &lt;!--必须要有这样的实例。用来管理在spring容器当中shiro常见的对象--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;lifecycleBeanPostProcessor&quot; class&#x3D;&quot;org.apache.shiro.spring.LifecycleBeanPostProcessor&quot;&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--启用shiro注解--&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator&quot;</span><br><span class="line">          depends-on&#x3D;&quot;lifecycleBeanPostProcessor&quot;&#x2F;&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;securityManager&quot; ref&#x3D;&quot;securityManager&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--网络方面的  远程调用--&gt;</span><br><span class="line">    &lt;bean id&#x3D;&quot;secureRemoteInvocationExecutor&quot; class&#x3D;&quot;org.apache.shiro.spring.remoting.SecureRemoteInvocationExecutor&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;securityManager&quot; ref&#x3D;&quot;securityManager&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--配置shiroFilter--&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id&#x3D;&quot;shiroFilter&quot; class&#x3D;&quot;org.apache.shiro.spring.web.ShiroFilterFactoryBean&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;securityManager&quot; ref&#x3D;&quot;securityManager&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;loginUrl&quot; value&#x3D;&quot;&#x2F;login.jsp&quot;&#x2F;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;successUrl&quot; value&#x3D;&quot;&#x2F;success.jsp&quot;&#x2F;&gt;</span><br><span class="line">        &lt;!--未授权的jsp页面--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;unauthorizedUrl&quot; value&#x3D;&quot;&#x2F;abc.jsp&quot;&#x2F;&gt;</span><br><span class="line">&lt;!--代表要完成的具体的过滤器的配置 配置哪些页面需要被保护以及访问权限--&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;filterChainDefinitions&quot;&gt;</span><br><span class="line"></span><br><span class="line">            &lt;value&gt;</span><br><span class="line">                &#x2F;login.jsp &#x3D; anon</span><br><span class="line">                &#x2F;success.jsp &#x3D; anon</span><br><span class="line">                &#x2F;helloshiro &#x3D; anon</span><br><span class="line">                &#x2F;logout &#x3D; logout</span><br><span class="line">                &#x2F;admin.jsp &#x3D; roles[admin]</span><br><span class="line">                &#x2F;user.jsp &#x3D; roles[user]</span><br><span class="line">                &#x2F;** &#x3D; authc</span><br><span class="line">            &lt;&#x2F;value&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="spring-mvc的配置文件spring-mvc-xml"><a href="#spring-mvc的配置文件spring-mvc-xml" class="headerlink" title="spring mvc的配置文件spring-mvc.xml"></a>spring mvc的配置文件spring-mvc.xml</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &lt;!--启用shiro注解--&gt;</span><br><span class="line">    &lt;!--必须放在这个配置文件下！！！--&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator&quot;</span><br><span class="line">          depends-on&#x3D;&quot;lifecycleBeanPostProcessor&quot;&#x2F;&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;securityManager&quot; ref&#x3D;&quot;securityManager&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--自定义异常信息界面--&gt;</span><br><span class="line">    &lt;bean class&#x3D;&quot;org.springframework.web.servlet.handler.SimpleMappingExceptionResolver&quot;&gt;</span><br><span class="line">        &lt;property name&#x3D;&quot;exceptionMappings&quot;&gt;</span><br><span class="line">            &lt;props&gt;</span><br><span class="line">                &lt;prop key&#x3D;&quot;org.apache.shiro.authz.UnauthorizedException&quot;&gt;</span><br><span class="line">                    &#x2F;false</span><br><span class="line">                &lt;&#x2F;prop&gt;</span><br><span class="line">                &lt;prop key&#x3D;&quot;org.apache.shiro.authz.UnauthenticatedException&quot;&gt;</span><br><span class="line">                    &#x2F;false</span><br><span class="line">                &lt;&#x2F;prop&gt;</span><br><span class="line">            &lt;&#x2F;props&gt;</span><br><span class="line">        &lt;&#x2F;property&gt;</span><br><span class="line">    &lt;&#x2F;bean&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意！！！！！注意！！！！！<br><em>shiro注解配置必须放在springmvc配置文件下！！！！！！，在这里找了好久错最后才知道</em></p>
-</blockquote>
-<h3 id="编写Controller"><a href="#编写Controller" class="headerlink" title="编写Controller"></a>编写Controller</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Controller</span><br><span class="line">public class MyController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private ShiroService shiroService;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(&quot;&#x2F;hello&quot;)</span><br><span class="line">    public String fun01()&#123;</span><br><span class="line">        return &quot;success&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    @RequestMapping(&quot;&#x2F;helloshiro&quot;)</span><br><span class="line">    public String fun02(String username,String password)&#123;</span><br><span class="line">&#x2F;&#x2F;        if(username.equals(&quot;tom&quot;)&amp;&amp;password.equals(&quot;123456&quot;))&#123;</span><br><span class="line">&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F;            return &quot;success&quot;;</span><br><span class="line">&#x2F;&#x2F;        &#125;</span><br><span class="line">&#x2F;&#x2F;        return &quot;false&quot;;</span><br><span class="line">&#x2F;&#x2F;    &#125;</span><br><span class="line">        &#x2F;&#x2F;1.创建subject实例</span><br><span class="line">        Subject subject &#x3D; SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;2.判断当前用户是否登录</span><br><span class="line">        if(subject.isAuthenticated()&#x3D;&#x3D;false)&#123;</span><br><span class="line">            &#x2F;&#x2F;如未登录，将用户名及密码封装到UserPasswordToken中</span><br><span class="line">            UsernamePasswordToken token &#x3D; new UsernamePasswordToken(username,password);</span><br><span class="line"></span><br><span class="line">            try &#123;</span><br><span class="line">                subject.login(token);</span><br><span class="line">            &#125;catch (AuthenticationException e)&#123;</span><br><span class="line">                System.out.println(&quot;登录失败！！！&quot;);</span><br><span class="line">                return &quot;false&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return &quot;success&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @RequestMapping(&quot;&#x2F;testanno&quot;)</span><br><span class="line">    public String testanno()&#123;</span><br><span class="line">        shiroService.testanno();</span><br><span class="line">        return &quot;index&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="自定义Realm"><a href="#自定义Realm" class="headerlink" title="自定义Realm"></a>自定义Realm</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package cn.hsl.realm;</span><br><span class="line"></span><br><span class="line">&#x2F;**一开始是实现Realm接口</span><br><span class="line"> * 可以继承认证AuthenticatingRealm实现类</span><br><span class="line"> * 也可以继承认证和授权的实现类AuthorizingRealm</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class ShiroRealm extends AuthorizingRealm&#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private UserDao userDao;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取认证消息的。如果数据库中没有，返回null</span><br><span class="line">     *</span><br><span class="line">     * @param authenticationToken</span><br><span class="line">     * @return</span><br><span class="line">     * @throws AuthenticationException</span><br><span class="line">     *&#x2F;</span><br><span class="line">    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)</span><br><span class="line">            throws AuthenticationException &#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;The First Realm Is Working&quot;);</span><br><span class="line">        SimpleAuthenticationInfo info &#x3D; null;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;1.将token转换为UsernamepasswordToken</span><br><span class="line">        UsernamePasswordToken token &#x3D; (UsernamePasswordToken)authenticationToken;</span><br><span class="line">        &#x2F;&#x2F;2.获取用户名即可</span><br><span class="line">        String username &#x3D; token.getUsername();</span><br><span class="line">        &#x2F;&#x2F;3.查询数据库</span><br><span class="line">        User userByName &#x3D; userDao.findUserByName(username);</span><br><span class="line">        String pwd &#x3D; userByName.getPassword();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;加密。实际开发中不需要。数据库直接是加密后数据</span><br><span class="line">        SimpleHash sh &#x3D; new SimpleHash(&quot;MD5&quot;,pwd,null,1024);</span><br><span class="line">        if(userByName!&#x3D;null)&#123;</span><br><span class="line">            info &#x3D; new SimpleAuthenticationInfo(username,sh,this.getName());</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        return info;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">         *  1.返回值为AuthorizationInfo接口的实例SimpleAuthorizationInfo</span><br><span class="line">         *  封装获取用户对应的所有角色</span><br><span class="line">         *  2.参数   登录的身份。登录的用户名</span><br><span class="line">         *&#x2F;</span><br><span class="line"></span><br><span class="line">        SimpleAuthorizationInfo info &#x3D; null;</span><br><span class="line">        &#x2F;&#x2F;Object primaryPrincipal &#x3D; principalCollection.getPrimaryPrincipal();</span><br><span class="line"></span><br><span class="line">        String username &#x3D; principalCollection.toString();</span><br><span class="line">        User userByName &#x3D; userDao.findUserByName(username);</span><br><span class="line">        if(userByName!&#x3D;null)&#123;</span><br><span class="line">            Set&lt;String&gt; roles &#x3D; new HashSet&lt;String&gt;();</span><br><span class="line">            roles.add(userByName.getRoles());</span><br><span class="line">            info &#x3D; new SimpleAuthorizationInfo(roles);</span><br><span class="line">        &#125;</span><br><span class="line">        return info;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>ShiroService中的注解开发，即只有admin的角色才能访问这个方法</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class ShiroService &#123;</span><br><span class="line"></span><br><span class="line">    @RequiresRoles(&#123;&quot;admin&quot;&#125;)</span><br><span class="line">    public void testanno()&#123;</span><br><span class="line">        System.out.println(&quot;AAAAAA&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这样Shiro的基本框架就算搭建完成了，可以正常运行项目了</p>
-</blockquote>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>web.xml中filter-name的name属性必须和后面bean<br> <code>&lt;bean id=&quot;shiroFilter&quot; class=&quot;org.apache.shiro.spring.web.ShiroFilterFactoryBean&quot;&gt;</code><br> 的id相同。<br> 具体的过滤器配置中。url是按顺序匹配规则，所以<code>/**</code>必须在最后，笔者在这里也走了点弯路。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>Shiro</tag>
-        <tag>spring mvc</tag>
-        <tag>mybatis</tag>
-        <tag>maven</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SpringBoot学习</title>
-    <url>/2018/07/04/SpringBoot%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2019/06/11/5cffca977300627834.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy6538m1gj30ia0c6wf3.jpg"></p>
-<h1 id="SpringBoot介绍"><a href="#SpringBoot介绍" class="headerlink" title="SpringBoot介绍"></a>SpringBoot介绍</h1><blockquote>
-<p>17年10月还在公司实习的时候,公司有一个项目要做技术选型.当时考虑到各种问题还是选择了<code>ssm</code>,<br> 中间也犹豫过是不是用新技术<code>SpringBoot</code>,所以当时也去大概的了解了一下这个技术.后来也没怎么<br> 去用过尝试过,忘记的差不多了.过了一年,由于微服务的发展,好像这个技术框架越来越受众多公司的欢迎.<br> 今天,就去重新的学习下.</p>
-</blockquote>
-<blockquote>
-<p>其它的介绍不多说可以直接百度百科,直接开始快速入门吧.</p>
-</blockquote>
-<h1 id="SpringBoot应用"><a href="#SpringBoot应用" class="headerlink" title="SpringBoot应用"></a>SpringBoot应用</h1><blockquote>
-<ul>
-<li>有两种方法创建<code>springboot</code>项目,第一种可以进入官网配置下载初始项目.<a href="http://start.spring.io/">传送门</a></li>
-<li>再者就是用<code>IDE</code>直接创建,我选用<code>IDEA</code>作为开发工具.怎么创建步骤就不上图了,网上都有,<br>可以参考<a href="http://blog.didispace.com/spring-initializr-in-intellij/">程序员DD</a></li>
-</ul>
-</blockquote>
-<p>创建完成后,项目结构如下<br><img src="https://i.loli.net/2019/06/11/5cffcc177d64159064.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy732mtvfj311y0kq4l3.jpg"><br>自己根据需求添加相应的包<br>核心启动程序就是<code>DemoApplication.class</code>,核心配置文件为<code>application.yml</code>.</p>
-<h2 id="Controller的使用"><a href="#Controller的使用" class="headerlink" title="Controller的使用"></a>Controller的使用</h2><p><code>@RestController</code>和<code>@RequestMapping</code>注解是来自<code>SpringMVC</code>的注解，它们不是<code>SpringBoot</code>的特定部分。<br>它提供实现了<code>REST API</code>，可以服务<code>JSON</code>,<code>XML</code>或者其他。这里是以<code>String</code>的形式渲染出结果。<br><img src="https://i.loli.net/2019/06/11/5cffcb7061a1b49159.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy7f54ratj30hy0actep.jpg"></p>
-<h2 id="数据库的操作"><a href="#数据库的操作" class="headerlink" title="数据库的操作"></a>数据库的操作</h2><p>操作数据库需要配置信息,如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8080</span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql:&#x2F;&#x2F;127.0.0.1:3306&#x2F;dbSpringboot</span><br><span class="line">    username: root</span><br><span class="line">    password: root</span><br><span class="line">  jpa:</span><br><span class="line">    hibernate:</span><br><span class="line">      ddl-auto: update</span><br><span class="line">    show-sql: true</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>相应的<code>pom</code>文件也要添加依赖</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;mysql&lt;&#x2F;groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mysql-connector-java&lt;&#x2F;artifactId&gt;</span><br><span class="line">	&lt;scope&gt;runtime&lt;&#x2F;scope&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-<p>操作数据库使用的是<code>spring-data-jpa</code></p>
-<blockquote>
-<p>首先定义一个接口,去继承<code>JpaRepository</code>,里面自定义的方法名也有讲究的.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:15:27</span><br><span class="line"> *&#x2F;</span><br><span class="line">public interface GirlJpa extends JpaRepository&lt;Girl,Integer&gt;&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    List&lt;Girl&gt; getAllByAge(Integer age);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由于项目简单,直接省去了<code>service</code>层.控制层如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:15:24</span><br><span class="line"> *&#x2F;</span><br><span class="line">@RestController</span><br><span class="line">public class GirlController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private GirlJpa girlJpa;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取列表</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @GetMapping(value &#x3D; &quot;&#x2F;girls&quot;)</span><br><span class="line">    public List&lt;Girl&gt; girlList()&#123;</span><br><span class="line">        System.out.println(&quot;执行girllist方法&quot;);</span><br><span class="line">        return girlJpa.findAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 添加一个女生</span><br><span class="line">     * @param</span><br><span class="line">     * @param</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @PostMapping(value &#x3D; &quot;&#x2F;girls&quot;)</span><br><span class="line">    public Result&lt;Girl&gt; girlAdd(@Valid Girl girl, BindingResult bindingResult)&#123;</span><br><span class="line">        if(bindingResult.hasErrors())&#123;</span><br><span class="line">            System.out.println(bindingResult.getFieldError().getDefaultMessage());</span><br><span class="line">            return ResultUtil.error(1,bindingResult.getFieldError().getDefaultMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        girl.setAge(girl.getAge());</span><br><span class="line">        girl.setCupSize(girl.getCupSize());</span><br><span class="line"></span><br><span class="line">        return ResultUtil.success(girlJpa.save(girl));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>用<code>postman</code>测试接口用例<br><img src="https://i.loli.net/2019/06/11/5cffcb9eab79360444.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy8gob6vdj30w80hvdhk.jpg"><br>测试成功,返回所有列表信息</p>
-<blockquote>
-<p>忘记说了,数据库可以不用自己建表,可以通过对应实体类里面写注解来完成</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:15:11</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Entity</span><br><span class="line">public class Girl &#123;</span><br><span class="line"></span><br><span class="line">    @Id</span><br><span class="line">    @GeneratedValue</span><br><span class="line">    private Integer id;</span><br><span class="line"></span><br><span class="line">    @Min(value &#x3D; 18,message &#x3D; &quot;你的年龄还不达标哦&quot;)&#x2F;&#x2F;设置字段最小值,字段验证</span><br><span class="line">    private Integer age;</span><br><span class="line"></span><br><span class="line">    private String cupSize;</span><br><span class="line"></span><br><span class="line">    public Girl() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#x2F;&#x2F;这里省略get set方法</span><br></pre></td></tr></table></figure>
-<h2 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h2><p>在实体的字段属性上添加注解,如上面的代码.当插入值不满足时,就会出现提示信息.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Min(value &#x3D; 18,message &#x3D; &quot;你的年龄还不达标哦&quot;)&#x2F;&#x2F;设置字段最小值,字段验证</span><br><span class="line">   private Integer age;</span><br></pre></td></tr></table></figure>
-<p>当新增数据年龄小于18时,就会提示信息,不能成功插入数据库.<br><img src="https://i.loli.net/2019/06/11/5cffcbd83718661696.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy95ck12uj30nh0csjs0.jpg"><br>上面返回的<code>json</code>信息是经过处理的,后面会讲到</p>
-<h1 id="web进阶"><a href="#web进阶" class="headerlink" title="web进阶"></a>web进阶</h1><p>springboot用在web方面结合时,主要用到的的AOP日志消息机制和统一异常处理</p>
-<h2 id="使用AOP处理请求"><a href="#使用AOP处理请求" class="headerlink" title="使用AOP处理请求"></a>使用AOP处理请求</h2><blockquote>
-<p>自己建一个Aspect类</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:17:52</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Aspect</span><br><span class="line">@Component</span><br><span class="line">public class HttpAspect &#123;</span><br><span class="line"></span><br><span class="line">    @Before(&quot;execution(public * com.hsl.springboot.demo.web.GirlController.girlList(..))&quot;)</span><br><span class="line">    public void log()&#123;</span><br><span class="line">        System.out.println(&quot;前置通知消息&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>类头上面注意所加的注解<br>运行girlList()方法,结果如下.<br><img src="https://i.loli.net/2019/06/11/5cffcbf3613e314449.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy9cyi3q3j30is063410.jpg"></p>
-<h2 id="统一异常处理"><a href="#统一异常处理" class="headerlink" title="统一异常处理"></a>统一异常处理</h2><blockquote>
-<p>抛出Exception时,因为错误种类条件很多,不能自己定义状态码,所以建议自定义异常类</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-04</span><br><span class="line"> * Time:14:24</span><br><span class="line"> *&#x2F;</span><br><span class="line">@ControllerAdvice</span><br><span class="line">public class ExceptionHandle &#123;</span><br><span class="line"></span><br><span class="line">    @ExceptionHandler(value &#x3D; Exception.class)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    public Result handle(Exception e)&#123;</span><br><span class="line">        if(e instanceof MyException)&#123;</span><br><span class="line">            MyException myException &#x3D; (MyException) e;</span><br><span class="line">            return ResultUtil.error(myException.getCode(),myException.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        return ResultUtil.error(CodeMsg.UNKNOW_ERROR.getCode(),CodeMsg.UNKNOW_ERROR.getMsg());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>自定义异常类</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-04</span><br><span class="line"> * Time:14:30</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class MyException extends RuntimeException &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;错误状态码</span><br><span class="line">    private Integer code;</span><br><span class="line"></span><br><span class="line">    public MyException(CodeMsg codeMsg)&#123;</span><br><span class="line">        super(codeMsg.getMsg());</span><br><span class="line">        this.code &#x3D; codeMsg.getCode();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getCode() &#123;</span><br><span class="line">        return code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCode(Integer code) &#123;</span><br><span class="line">        this.code &#x3D; code;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>其中自己封装了下返回所需的结果.全部如下<br>状态码和信息<code>CodeMsg</code>枚举类</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-04</span><br><span class="line"> * Time:14:42</span><br><span class="line"> *&#x2F;</span><br><span class="line">public enum CodeMsg &#123;</span><br><span class="line">    UNKNOW_ERROR(-10,&quot;系统未知错误&quot;),</span><br><span class="line">    SUCCESS(0,&quot;成功&quot;),</span><br><span class="line">    Sixth(100,&quot;不到16岁&quot;),</span><br><span class="line">    eighth(101,&quot;不到18周岁&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private Integer code;</span><br><span class="line">    private String msg;</span><br><span class="line"></span><br><span class="line">    CodeMsg(Integer code, String msg) &#123;</span><br><span class="line">        this.code &#x3D; code;</span><br><span class="line">        this.msg &#x3D; msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getCode() &#123;</span><br><span class="line">        return code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMsg() &#123;</span><br><span class="line">        return msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>统一返回结果<code>Result</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:22:47</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class Result&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    private int code;</span><br><span class="line">    private String msg;</span><br><span class="line">    private T data;</span><br><span class="line">    &#x2F;&#x2F;省略set get方法</span><br></pre></td></tr></table></figure>
-<p><code>ResultUtil</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class ResultUtil &#123;</span><br><span class="line"></span><br><span class="line">    public static Result&lt;Girl&gt; success(Girl girl)&#123;</span><br><span class="line">        Result result &#x3D; new Result();</span><br><span class="line">        result.setCode(0);</span><br><span class="line">        result.setMsg(&quot;新增成功&quot;);</span><br><span class="line">        result.setData(girl);</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static Result error(Integer code,String msg)&#123;</span><br><span class="line">        Result result &#x3D; new Result();</span><br><span class="line">        result.setCode(code);</span><br><span class="line">        result.setMsg(msg);</span><br><span class="line">        return result;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><blockquote>
-<p>算是稍微入门了SpringBoot,后续用到的会有补充</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>SpringBoot</tag>
-        <tag>spring</tag>
-        <tag>jpa</tag>
-        <tag>web</tag>
       </tags>
   </entry>
   <entry>
@@ -613,6 +544,75 @@
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot学习</title>
+    <url>/2018/07/04/SpringBoot%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2019/06/11/5cffca977300627834.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy6538m1gj30ia0c6wf3.jpg"></p>
+<h1 id="SpringBoot介绍"><a href="#SpringBoot介绍" class="headerlink" title="SpringBoot介绍"></a>SpringBoot介绍</h1><blockquote>
+<p>17年10月还在公司实习的时候,公司有一个项目要做技术选型.当时考虑到各种问题还是选择了<code>ssm</code>,<br> 中间也犹豫过是不是用新技术<code>SpringBoot</code>,所以当时也去大概的了解了一下这个技术.后来也没怎么<br> 去用过尝试过,忘记的差不多了.过了一年,由于微服务的发展,好像这个技术框架越来越受众多公司的欢迎.<br> 今天,就去重新的学习下.</p>
+</blockquote>
+<blockquote>
+<p>其它的介绍不多说可以直接百度百科,直接开始快速入门吧.</p>
+</blockquote>
+<h1 id="SpringBoot应用"><a href="#SpringBoot应用" class="headerlink" title="SpringBoot应用"></a>SpringBoot应用</h1><blockquote>
+<ul>
+<li>有两种方法创建<code>springboot</code>项目,第一种可以进入官网配置下载初始项目.<a href="http://start.spring.io/">传送门</a></li>
+<li>再者就是用<code>IDE</code>直接创建,我选用<code>IDEA</code>作为开发工具.怎么创建步骤就不上图了,网上都有,<br>可以参考<a href="http://blog.didispace.com/spring-initializr-in-intellij/">程序员DD</a></li>
+</ul>
+</blockquote>
+<p>创建完成后,项目结构如下<br><img src="https://i.loli.net/2019/06/11/5cffcc177d64159064.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy732mtvfj311y0kq4l3.jpg"><br>自己根据需求添加相应的包<br>核心启动程序就是<code>DemoApplication.class</code>,核心配置文件为<code>application.yml</code>.</p>
+<h2 id="Controller的使用"><a href="#Controller的使用" class="headerlink" title="Controller的使用"></a>Controller的使用</h2><p><code>@RestController</code>和<code>@RequestMapping</code>注解是来自<code>SpringMVC</code>的注解，它们不是<code>SpringBoot</code>的特定部分。<br>它提供实现了<code>REST API</code>，可以服务<code>JSON</code>,<code>XML</code>或者其他。这里是以<code>String</code>的形式渲染出结果。<br><img src="https://i.loli.net/2019/06/11/5cffcb7061a1b49159.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy7f54ratj30hy0actep.jpg"></p>
+<h2 id="数据库的操作"><a href="#数据库的操作" class="headerlink" title="数据库的操作"></a>数据库的操作</h2><p>操作数据库需要配置信息,如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8080</span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql:&#x2F;&#x2F;127.0.0.1:3306&#x2F;dbSpringboot</span><br><span class="line">    username: root</span><br><span class="line">    password: root</span><br><span class="line">  jpa:</span><br><span class="line">    hibernate:</span><br><span class="line">      ddl-auto: update</span><br><span class="line">    show-sql: true</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>相应的<code>pom</code>文件也要添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;mysql&lt;&#x2F;groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;mysql-connector-java&lt;&#x2F;artifactId&gt;</span><br><span class="line">	&lt;scope&gt;runtime&lt;&#x2F;scope&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>操作数据库使用的是<code>spring-data-jpa</code></p>
+<blockquote>
+<p>首先定义一个接口,去继承<code>JpaRepository</code>,里面自定义的方法名也有讲究的.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:15:27</span><br><span class="line"> *&#x2F;</span><br><span class="line">public interface GirlJpa extends JpaRepository&lt;Girl,Integer&gt;&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    List&lt;Girl&gt; getAllByAge(Integer age);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于项目简单,直接省去了<code>service</code>层.控制层如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:15:24</span><br><span class="line"> *&#x2F;</span><br><span class="line">@RestController</span><br><span class="line">public class GirlController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private GirlJpa girlJpa;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取列表</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @GetMapping(value &#x3D; &quot;&#x2F;girls&quot;)</span><br><span class="line">    public List&lt;Girl&gt; girlList()&#123;</span><br><span class="line">        System.out.println(&quot;执行girllist方法&quot;);</span><br><span class="line">        return girlJpa.findAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 添加一个女生</span><br><span class="line">     * @param</span><br><span class="line">     * @param</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @PostMapping(value &#x3D; &quot;&#x2F;girls&quot;)</span><br><span class="line">    public Result&lt;Girl&gt; girlAdd(@Valid Girl girl, BindingResult bindingResult)&#123;</span><br><span class="line">        if(bindingResult.hasErrors())&#123;</span><br><span class="line">            System.out.println(bindingResult.getFieldError().getDefaultMessage());</span><br><span class="line">            return ResultUtil.error(1,bindingResult.getFieldError().getDefaultMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        girl.setAge(girl.getAge());</span><br><span class="line">        girl.setCupSize(girl.getCupSize());</span><br><span class="line"></span><br><span class="line">        return ResultUtil.success(girlJpa.save(girl));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>用<code>postman</code>测试接口用例<br><img src="https://i.loli.net/2019/06/11/5cffcb9eab79360444.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy8gob6vdj30w80hvdhk.jpg"><br>测试成功,返回所有列表信息</p>
+<blockquote>
+<p>忘记说了,数据库可以不用自己建表,可以通过对应实体类里面写注解来完成</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:15:11</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Entity</span><br><span class="line">public class Girl &#123;</span><br><span class="line"></span><br><span class="line">    @Id</span><br><span class="line">    @GeneratedValue</span><br><span class="line">    private Integer id;</span><br><span class="line"></span><br><span class="line">    @Min(value &#x3D; 18,message &#x3D; &quot;你的年龄还不达标哦&quot;)&#x2F;&#x2F;设置字段最小值,字段验证</span><br><span class="line">    private Integer age;</span><br><span class="line"></span><br><span class="line">    private String cupSize;</span><br><span class="line"></span><br><span class="line">    public Girl() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#x2F;&#x2F;这里省略get set方法</span><br></pre></td></tr></table></figure>
+<h2 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h2><p>在实体的字段属性上添加注解,如上面的代码.当插入值不满足时,就会出现提示信息.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Min(value &#x3D; 18,message &#x3D; &quot;你的年龄还不达标哦&quot;)&#x2F;&#x2F;设置字段最小值,字段验证</span><br><span class="line">   private Integer age;</span><br></pre></td></tr></table></figure>
+<p>当新增数据年龄小于18时,就会提示信息,不能成功插入数据库.<br><img src="https://i.loli.net/2019/06/11/5cffcbd83718661696.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy95ck12uj30nh0csjs0.jpg"><br>上面返回的<code>json</code>信息是经过处理的,后面会讲到</p>
+<h1 id="web进阶"><a href="#web进阶" class="headerlink" title="web进阶"></a>web进阶</h1><p>springboot用在web方面结合时,主要用到的的AOP日志消息机制和统一异常处理</p>
+<h2 id="使用AOP处理请求"><a href="#使用AOP处理请求" class="headerlink" title="使用AOP处理请求"></a>使用AOP处理请求</h2><blockquote>
+<p>自己建一个Aspect类</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:17:52</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Aspect</span><br><span class="line">@Component</span><br><span class="line">public class HttpAspect &#123;</span><br><span class="line"></span><br><span class="line">    @Before(&quot;execution(public * com.hsl.springboot.demo.web.GirlController.girlList(..))&quot;)</span><br><span class="line">    public void log()&#123;</span><br><span class="line">        System.out.println(&quot;前置通知消息&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>类头上面注意所加的注解<br>运行girlList()方法,结果如下.<br><img src="https://i.loli.net/2019/06/11/5cffcbf3613e314449.jpg" alt="SpringBoot学习.md---005WV0MDly1fsy9cyi3q3j30is063410.jpg"></p>
+<h2 id="统一异常处理"><a href="#统一异常处理" class="headerlink" title="统一异常处理"></a>统一异常处理</h2><blockquote>
+<p>抛出Exception时,因为错误种类条件很多,不能自己定义状态码,所以建议自定义异常类</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-04</span><br><span class="line"> * Time:14:24</span><br><span class="line"> *&#x2F;</span><br><span class="line">@ControllerAdvice</span><br><span class="line">public class ExceptionHandle &#123;</span><br><span class="line"></span><br><span class="line">    @ExceptionHandler(value &#x3D; Exception.class)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    public Result handle(Exception e)&#123;</span><br><span class="line">        if(e instanceof MyException)&#123;</span><br><span class="line">            MyException myException &#x3D; (MyException) e;</span><br><span class="line">            return ResultUtil.error(myException.getCode(),myException.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        return ResultUtil.error(CodeMsg.UNKNOW_ERROR.getCode(),CodeMsg.UNKNOW_ERROR.getMsg());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>自定义异常类</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-04</span><br><span class="line"> * Time:14:30</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class MyException extends RuntimeException &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;错误状态码</span><br><span class="line">    private Integer code;</span><br><span class="line"></span><br><span class="line">    public MyException(CodeMsg codeMsg)&#123;</span><br><span class="line">        super(codeMsg.getMsg());</span><br><span class="line">        this.code &#x3D; codeMsg.getCode();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getCode() &#123;</span><br><span class="line">        return code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCode(Integer code) &#123;</span><br><span class="line">        this.code &#x3D; code;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>其中自己封装了下返回所需的结果.全部如下<br>状态码和信息<code>CodeMsg</code>枚举类</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-04</span><br><span class="line"> * Time:14:42</span><br><span class="line"> *&#x2F;</span><br><span class="line">public enum CodeMsg &#123;</span><br><span class="line">    UNKNOW_ERROR(-10,&quot;系统未知错误&quot;),</span><br><span class="line">    SUCCESS(0,&quot;成功&quot;),</span><br><span class="line">    Sixth(100,&quot;不到16岁&quot;),</span><br><span class="line">    eighth(101,&quot;不到18周岁&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private Integer code;</span><br><span class="line">    private String msg;</span><br><span class="line"></span><br><span class="line">    CodeMsg(Integer code, String msg) &#123;</span><br><span class="line">        this.code &#x3D; code;</span><br><span class="line">        this.msg &#x3D; msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getCode() &#123;</span><br><span class="line">        return code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMsg() &#123;</span><br><span class="line">        return msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>统一返回结果<code>Result</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Created by hsl on 2018-07-03</span><br><span class="line"> * Time:22:47</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class Result&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    private int code;</span><br><span class="line">    private String msg;</span><br><span class="line">    private T data;</span><br><span class="line">    &#x2F;&#x2F;省略set get方法</span><br></pre></td></tr></table></figure>
+<p><code>ResultUtil</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class ResultUtil &#123;</span><br><span class="line"></span><br><span class="line">    public static Result&lt;Girl&gt; success(Girl girl)&#123;</span><br><span class="line">        Result result &#x3D; new Result();</span><br><span class="line">        result.setCode(0);</span><br><span class="line">        result.setMsg(&quot;新增成功&quot;);</span><br><span class="line">        result.setData(girl);</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static Result error(Integer code,String msg)&#123;</span><br><span class="line">        Result result &#x3D; new Result();</span><br><span class="line">        result.setCode(code);</span><br><span class="line">        result.setMsg(msg);</span><br><span class="line">        return result;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><blockquote>
+<p>算是稍微入门了SpringBoot,后续用到的会有补充</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>SpringBoot</tag>
+        <tag>spring</tag>
+        <tag>jpa</tag>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>day03</title>
     <url>/2017/07/04/day03/</url>
     <content><![CDATA[<p>先来fark一下别人的图<br><img src="http://upload-images.jianshu.io/upload_images/3332049-e1bb096b598e13ea.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="你想要锦上添花，你得先变成锦(作品：小瓜记不住那些好)"><br>所谓的迷茫，只是懒散，只是想要不劳而获。</p>
@@ -745,18 +745,13 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/09/21/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h1 id="hello-mybolg-forqxy-top"><a href="#hello-mybolg-forqxy-top" class="headerlink" title="hello mybolg  forqxy.top"></a>hello mybolg  forqxy.top</h1><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
+    <title>记在第一篇</title>
+    <url>/2017/07/02/mark%E5%9C%A8%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
+    <content><![CDATA[<p>刷知乎的时候,看到了一个人的评论,就顺便进了ta的GitHub,给了我一点的启发….<br>从某一天晚上开始吧.百度看别人的博客,取经验到凌晨两点,第二天一大早起来开始很有兴趣的去搭建一个属于自己的博客.之前不知道的时候<br>觉得是真的很难,也许那是因为没有去尝试.去做了后,发现并没有想象的那么难…</p>
 ]]></content>
+      <categories>
+        <category>life</category>
+      </categories>
   </entry>
   <entry>
     <title>hibernate进阶</title>
@@ -815,13 +810,73 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       </tags>
   </entry>
   <entry>
-    <title>记在第一篇</title>
-    <url>/2017/07/02/mark%E5%9C%A8%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
-    <content><![CDATA[<p>刷知乎的时候,看到了一个人的评论,就顺便进了ta的GitHub,给了我一点的启发….<br>从某一天晚上开始吧.百度看别人的博客,取经验到凌晨两点,第二天一大早起来开始很有兴趣的去搭建一个属于自己的博客.之前不知道的时候<br>觉得是真的很难,也许那是因为没有去尝试.去做了后,发现并没有想象的那么难…</p>
+    <title>struts2</title>
+    <url>/2017/06/06/struts2/</url>
+    <content><![CDATA[<h1 id="Struts2简介"><a href="#Struts2简介" class="headerlink" title="Struts2简介"></a>Struts2简介</h1><h2 id="1、Struts2概述"><a href="#1、Struts2概述" class="headerlink" title="1、Struts2概述"></a>1、Struts2概述</h2><p>Struts2是Apache发行的MVC开源框架。注意：它只是表现层（MVC）框架。</p>
+<h2 id="2、Struts2的来历"><a href="#2、Struts2的来历" class="headerlink" title="2、Struts2的来历"></a>2、Struts2的来历</h2><p>Struts1：也是apache开发的一套mvc的开源框架。在2005年之前非常流行。<br> 弊端：Struts1的核心控制器就是一个Servlet。随着使用者的增多，弊端开始出现。<br>Struts2：在long long ago，有一个设计超前的框架XWork，后来推出了XWork1和WebWork2。Struts2就是apache和OpenSymphony组织合并开发出来。<br>里面包含了WebWork2的核心及Struts的一些特性和功能。除此之外，和Struts1没有任何关系了。</p>
+<h1 id="搭建Struts2开发环境"><a href="#搭建Struts2开发环境" class="headerlink" title="搭建Struts2开发环境"></a>搭建Struts2开发环境</h1><blockquote>
+<p>1.下载struts2开发包<br><code>struts2</code> <a href="http://struts.apache.org/">链接</a><br>拷贝哪些jar包？<br>找到Struts2自带的例子中，struts-blank的war包，在它的\WEB-INF\lib目录下的jar包全拷贝。<br>2.创建struts2的配置文件</p>
+</blockquote>
+<p>在顶层目录创建一个struts2.xml的配置文件<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjaygmrfx4j30lc02paa2.jpg"></p>
+<blockquote>
+<p>3.配置struts2的核心控制器</p>
+</blockquote>
+<p>在web.xml中配置<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjaynkq6glj30py05a3yn.jpg"><br>部署应用，启动Tomcat，不报错表示搭建成功。</p>
+<h1 id="第一个Struts2荔枝"><a href="#第一个Struts2荔枝" class="headerlink" title="第一个Struts2荔枝"></a>第一个Struts2荔枝</h1><p>1.新建一个jsp<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjays051w3j30pp03yglr.jpg"><br>2.在struts2.xml文件中配置action<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjayw3achkj30np058t8u.jpg"><br>3.创建动作类和动作方法<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjayxwc85cj30fg03at8n.jpg"><br>4.创建结果视图<br>success.jsp成功页面<br>5.部署项目,访问hello.action.出现成功页面</p>
+<p><strong>struts2执行过程图</strong><br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjazouhlijj30hs0kuq5a.jpg"></p>
+<h2 id="struts2-xml的主要元素"><a href="#struts2-xml的主要元素" class="headerlink" title="struts2.xml的主要元素"></a>struts2.xml的主要元素</h2><p>1、package元素<br>1.1、作用：<br>在struts2的配置文件中引入了面向对象思想，使用了分包管理。易于管理动作类。便于模块化开发动作类。<br>1.2、属性：<br>name：包的名称。必须写。且必须唯一。<br>extends：一般情况下需要继承struts-default包，但不是必须的。不过如果不继承的话，将无法使用struts2提供的核心功能。<br>    struts-default.xml中定义着struts-default这个包。而struts-default.xml是在我们的struts.xml加载之前加载。<br>abstract：把包声明为抽象包，抽象包就是用来被继承的。只要是没有<action>元素的包，就可以声明为抽象包。<br>    namespace：名称空间。不写默认不是”/“.是””.<br>名称空间    +    动作名称    =    访问路径<br>2.action元素:<br>作用:配置动作用的<br>属性:name   动作名称<br>    class:动作类全名<br>动作类:<br>就是一个pojo类.通常推荐继承<code>ActionSupport</code></p>
+<h2 id="结果类型视图"><a href="#结果类型视图" class="headerlink" title="结果类型视图"></a>结果类型视图</h2><p>1.result元素:<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjb3chb84jj30cx01mmx2.jpg"><br>type：结果类型，指的就是用什么方式转到定义的页面。默认是dispatcher。<br><strong>type属性的取值在struts-default.xml中定义着</strong><br>常用结果类型介绍：<br>dispatcher：(默认值)<br>    使用请求转发，转向一个页面。<br>redirect：<br>    使用重定向，转向一个页面。</p>
+<h2 id="在动作类中访问Servlet的API"><a href="#在动作类中访问Servlet的API" class="headerlink" title="在动作类中访问Servlet的API"></a>在动作类中访问Servlet的API</h2><h3 id="1-第一种方式：使用ServletActionContext类"><a href="#1-第一种方式：使用ServletActionContext类" class="headerlink" title="1.第一种方式：使用ServletActionContext类"></a>1.第一种方式：使用ServletActionContext类</h3><p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjb3l144plj30hq06ctae.jpg"><br>第二种方式：使用实现接口的方式<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjb3okjiguj30in02hgm1.jpg"></p>
+<h2 id="封装请求正文到对象中"><a href="#封装请求正文到对象中" class="headerlink" title="封装请求正文到对象中"></a>封装请求正文到对象中</h2><p>动态参数封装:<br>    通过用户的表单封装请求正文参数。<br>1.动作类作为实体模型<br>表单参数直接写在动作类里面;由struts2的params拦截器完成封装<br>2.动作类和实体模型分开<br><strong>动作类</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Action02 extends ActionSupport&#123;</span><br><span class="line">	private User u;</span><br><span class="line">	public String login()&#123;</span><br><span class="line">		System.out.println(u);</span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public User getU() &#123;</span><br><span class="line">		return u;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public void setU(User u) &#123;</span><br><span class="line">		this.u &#x3D; u;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>jsp页面<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjbfjs0sxdj30j803emx9.jpg"></p>
+<p>3.模型驱动<br>实现模型驱动接口,<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjbfrh0eb4j30l807r74i.jpg"></p>
+<blockquote>
+<ul>
+<li>实体需要我们自己new创建出来</li>
+</ul>
+</blockquote>
+<h2 id="struts2的数据表单验证"><a href="#struts2的数据表单验证" class="headerlink" title="struts2的数据表单验证"></a>struts2的数据表单验证</h2><p>1.编程式验证</p>
+<blockquote>
+<p>针对动作类中的所有动作方法进行验证：<br>在动作类中覆盖public void validate()方法。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;编程式验证</span><br><span class="line">	&#x2F;**</span><br><span class="line">	 * 1.动作类必须继承ActionSupport,</span><br><span class="line">	 * 2.重写validate方法(会对所有动作有效)</span><br><span class="line">	 * @return</span><br><span class="line">	 *&#x2F;</span><br><span class="line">	@Override</span><br><span class="line">	public void validate() &#123;</span><br><span class="line">		if(user.getUsername().isEmpty())&#123;</span><br><span class="line">			addFieldError(&quot;username&quot;, &quot;请输入用户名!&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>该验证方法会对动作类中的所有动作方法进行验证<br>解决办法1：给不需要验证的动作方法添加一个@SkipValidation注解。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjbg71ig0nj30an02u0sn.jpg"><br>解决办法2：validation方法遵守书写规范。<br>如验证find方法.写法如下validate+方法名首字母大写. <code>validateFind()</code><br><strong>所有编程式验证的弊端：硬编码。</strong></p>
+</blockquote>
+<h3 id="声明式验证"><a href="#声明式验证" class="headerlink" title="声明式验证"></a>声明式验证</h3><blockquote>
+<p>通过编写验证规则的xml文件。需要验证时，编写xml文件，不要验证，就不写。</p>
+</blockquote>
+<p>a、针对动作类中的所有动作进行验证：在动作类所在的包中，建立一个ActionClassName-validation.xml的文件<br>添加约束文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE validators PUBLIC</span><br><span class="line">  		&quot;-&#x2F;&#x2F;Apache Struts&#x2F;&#x2F;XWork Validator 1.0.3&#x2F;&#x2F;EN&quot;</span><br><span class="line">  		&quot;http:&#x2F;&#x2F;struts.apache.org&#x2F;dtds&#x2F;xwork-validator-1.0.3.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;validators&gt;</span><br><span class="line">	&lt;field name&#x3D;&quot;username&quot;&gt;</span><br><span class="line">		&lt;field-validator type&#x3D;&quot;requiredstring&quot;&gt;</span><br><span class="line">		&lt;message&gt;用户名呢&lt;&#x2F;message&gt;</span><br><span class="line">		&lt;&#x2F;field-validator&gt;</span><br><span class="line">		</span><br><span class="line">	&lt;&#x2F;field&gt;</span><br><span class="line">	</span><br><span class="line">&lt;&#x2F;validators&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>b、针对动作类中的某个动作进行验证：在动作类所在的包中建立一个xml文件，名称为ActionClassName-ActionName-validation.xml。</p>
+</blockquote>
+<p><em>Struts2内置的常用声明式验证器</em><br>位置：<br><code>xwork-core-2.3.15.3.jar\com\opensymphony\xwork2\validator\validator\default.xml</code></p>
+<h1 id="struts2中的拦截器"><a href="#struts2中的拦截器" class="headerlink" title="struts2中的拦截器"></a>struts2中的拦截器</h1><h2 id="拦截器的重要性"><a href="#拦截器的重要性" class="headerlink" title="拦截器的重要性"></a>拦截器的重要性</h2><blockquote>
+<p>Struts2中的很多功能都是由拦截器完成的。比如：servletConfig，staticParam，params，modelDriven等等。<br>是AOP编程思想的一种应用形式。</p>
+</blockquote>
+<h3 id="自定义拦截器"><a href="#自定义拦截器" class="headerlink" title="自定义拦截器"></a>自定义拦截器</h3><ol>
+<li>编写步骤<br>编写一个类，继承AbstractInterceptor类或者实现Interceptor接口。重写intercept方法。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc2kw9j2vj30n607a3yx.jpg"><br>配置拦截器：注意拦截器必须先声明再使用<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc2nretosj30oh06x0t8.jpg"></li>
+</ol>
+<p><strong>多个拦截器的执行顺序是由使用顺序决定的</strong></p>
+<blockquote>
+<p>写了自定义的拦截器后,默认拦截器就不起作用了<br>所以:<br>我们在自定义拦截器时，还可以继承MethodFilterInterceptor并且重写doIntercept方法。<br>并且在struts的配置文件中，配置需要拦截哪些方法，和需要放过哪些方法。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc3081mwpj30p307lgm5.jpg"><br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc315jyl7j30l604imxa.jpg"></p>
+</blockquote>
+<h2 id="struts2中文件的上传和下载"><a href="#struts2中文件的上传和下载" class="headerlink" title="struts2中文件的上传和下载"></a>struts2中文件的上传和下载</h2><p>必要前提：<br>    a.表单method必须是post；<br>    b.enctype取值必须是multipart/form-data；<br>    c.提供文件选择域。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc63su8u9j30k3092dgf.jpg"></p>
+<p>动作类:<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc65awp3kj30pm0a3754.jpg"><br>文件上传大小限制（默认是2MB）<br>如果上传文件超过了默认大小，upload拦截器会转向一个input的逻辑视图。</p>
+<p>在struts.xml中改变default.properties文件中的常量。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc69nj315j30pd07w0tc.jpg"></p>
+<h3 id="限制文件上传的类型"><a href="#限制文件上传的类型" class="headerlink" title="限制文件上传的类型"></a>限制文件上传的类型</h3><p>1.给fileUpload拦截器注入参数<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6b2n2vyj30oj04dglw.jpg"><br>或通过限制上传文件的MIME类型<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6d6pn0oj30pw05jwex.jpg"></p>
+<h3 id="多文件上传"><a href="#多文件上传" class="headerlink" title="多文件上传"></a>多文件上传</h3><p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6fcyqkqj30ov0bjwf3.jpg"></p>
+<h3 id="文件的下载"><a href="#文件的下载" class="headerlink" title="文件的下载"></a>文件的下载</h3><p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6ileoxbj30ry0axmxr.jpg"><br><strong>动作类</strong><br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6j3z3bbj30ov07274v.jpg"></p>
 ]]></content>
       <categories>
-        <category>life</category>
+        <category>technology</category>
       </categories>
+      <tags>
+        <tag>struts2</tag>
+        <tag>mvc</tag>
+      </tags>
   </entry>
   <entry>
     <title>mybatis与spring整合</title>
@@ -897,75 +952,6 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       </tags>
   </entry>
   <entry>
-    <title>struts2</title>
-    <url>/2017/06/06/struts2/</url>
-    <content><![CDATA[<h1 id="Struts2简介"><a href="#Struts2简介" class="headerlink" title="Struts2简介"></a>Struts2简介</h1><h2 id="1、Struts2概述"><a href="#1、Struts2概述" class="headerlink" title="1、Struts2概述"></a>1、Struts2概述</h2><p>Struts2是Apache发行的MVC开源框架。注意：它只是表现层（MVC）框架。</p>
-<h2 id="2、Struts2的来历"><a href="#2、Struts2的来历" class="headerlink" title="2、Struts2的来历"></a>2、Struts2的来历</h2><p>Struts1：也是apache开发的一套mvc的开源框架。在2005年之前非常流行。<br> 弊端：Struts1的核心控制器就是一个Servlet。随着使用者的增多，弊端开始出现。<br>Struts2：在long long ago，有一个设计超前的框架XWork，后来推出了XWork1和WebWork2。Struts2就是apache和OpenSymphony组织合并开发出来。<br>里面包含了WebWork2的核心及Struts的一些特性和功能。除此之外，和Struts1没有任何关系了。</p>
-<h1 id="搭建Struts2开发环境"><a href="#搭建Struts2开发环境" class="headerlink" title="搭建Struts2开发环境"></a>搭建Struts2开发环境</h1><blockquote>
-<p>1.下载struts2开发包<br><code>struts2</code> <a href="http://struts.apache.org/">链接</a><br>拷贝哪些jar包？<br>找到Struts2自带的例子中，struts-blank的war包，在它的\WEB-INF\lib目录下的jar包全拷贝。<br>2.创建struts2的配置文件</p>
-</blockquote>
-<p>在顶层目录创建一个struts2.xml的配置文件<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjaygmrfx4j30lc02paa2.jpg"></p>
-<blockquote>
-<p>3.配置struts2的核心控制器</p>
-</blockquote>
-<p>在web.xml中配置<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjaynkq6glj30py05a3yn.jpg"><br>部署应用，启动Tomcat，不报错表示搭建成功。</p>
-<h1 id="第一个Struts2荔枝"><a href="#第一个Struts2荔枝" class="headerlink" title="第一个Struts2荔枝"></a>第一个Struts2荔枝</h1><p>1.新建一个jsp<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjays051w3j30pp03yglr.jpg"><br>2.在struts2.xml文件中配置action<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjayw3achkj30np058t8u.jpg"><br>3.创建动作类和动作方法<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjayxwc85cj30fg03at8n.jpg"><br>4.创建结果视图<br>success.jsp成功页面<br>5.部署项目,访问hello.action.出现成功页面</p>
-<p><strong>struts2执行过程图</strong><br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjazouhlijj30hs0kuq5a.jpg"></p>
-<h2 id="struts2-xml的主要元素"><a href="#struts2-xml的主要元素" class="headerlink" title="struts2.xml的主要元素"></a>struts2.xml的主要元素</h2><p>1、package元素<br>1.1、作用：<br>在struts2的配置文件中引入了面向对象思想，使用了分包管理。易于管理动作类。便于模块化开发动作类。<br>1.2、属性：<br>name：包的名称。必须写。且必须唯一。<br>extends：一般情况下需要继承struts-default包，但不是必须的。不过如果不继承的话，将无法使用struts2提供的核心功能。<br>    struts-default.xml中定义着struts-default这个包。而struts-default.xml是在我们的struts.xml加载之前加载。<br>abstract：把包声明为抽象包，抽象包就是用来被继承的。只要是没有<action>元素的包，就可以声明为抽象包。<br>    namespace：名称空间。不写默认不是”/“.是””.<br>名称空间    +    动作名称    =    访问路径<br>2.action元素:<br>作用:配置动作用的<br>属性:name   动作名称<br>    class:动作类全名<br>动作类:<br>就是一个pojo类.通常推荐继承<code>ActionSupport</code></p>
-<h2 id="结果类型视图"><a href="#结果类型视图" class="headerlink" title="结果类型视图"></a>结果类型视图</h2><p>1.result元素:<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjb3chb84jj30cx01mmx2.jpg"><br>type：结果类型，指的就是用什么方式转到定义的页面。默认是dispatcher。<br><strong>type属性的取值在struts-default.xml中定义着</strong><br>常用结果类型介绍：<br>dispatcher：(默认值)<br>    使用请求转发，转向一个页面。<br>redirect：<br>    使用重定向，转向一个页面。</p>
-<h2 id="在动作类中访问Servlet的API"><a href="#在动作类中访问Servlet的API" class="headerlink" title="在动作类中访问Servlet的API"></a>在动作类中访问Servlet的API</h2><h3 id="1-第一种方式：使用ServletActionContext类"><a href="#1-第一种方式：使用ServletActionContext类" class="headerlink" title="1.第一种方式：使用ServletActionContext类"></a>1.第一种方式：使用ServletActionContext类</h3><p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjb3l144plj30hq06ctae.jpg"><br>第二种方式：使用实现接口的方式<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjb3okjiguj30in02hgm1.jpg"></p>
-<h2 id="封装请求正文到对象中"><a href="#封装请求正文到对象中" class="headerlink" title="封装请求正文到对象中"></a>封装请求正文到对象中</h2><p>动态参数封装:<br>    通过用户的表单封装请求正文参数。<br>1.动作类作为实体模型<br>表单参数直接写在动作类里面;由struts2的params拦截器完成封装<br>2.动作类和实体模型分开<br><strong>动作类</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Action02 extends ActionSupport&#123;</span><br><span class="line">	private User u;</span><br><span class="line">	public String login()&#123;</span><br><span class="line">		System.out.println(u);</span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public User getU() &#123;</span><br><span class="line">		return u;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public void setU(User u) &#123;</span><br><span class="line">		this.u &#x3D; u;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>jsp页面<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjbfjs0sxdj30j803emx9.jpg"></p>
-<p>3.模型驱动<br>实现模型驱动接口,<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjbfrh0eb4j30l807r74i.jpg"></p>
-<blockquote>
-<ul>
-<li>实体需要我们自己new创建出来</li>
-</ul>
-</blockquote>
-<h2 id="struts2的数据表单验证"><a href="#struts2的数据表单验证" class="headerlink" title="struts2的数据表单验证"></a>struts2的数据表单验证</h2><p>1.编程式验证</p>
-<blockquote>
-<p>针对动作类中的所有动作方法进行验证：<br>在动作类中覆盖public void validate()方法。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;编程式验证</span><br><span class="line">	&#x2F;**</span><br><span class="line">	 * 1.动作类必须继承ActionSupport,</span><br><span class="line">	 * 2.重写validate方法(会对所有动作有效)</span><br><span class="line">	 * @return</span><br><span class="line">	 *&#x2F;</span><br><span class="line">	@Override</span><br><span class="line">	public void validate() &#123;</span><br><span class="line">		if(user.getUsername().isEmpty())&#123;</span><br><span class="line">			addFieldError(&quot;username&quot;, &quot;请输入用户名!&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>该验证方法会对动作类中的所有动作方法进行验证<br>解决办法1：给不需要验证的动作方法添加一个@SkipValidation注解。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjbg71ig0nj30an02u0sn.jpg"><br>解决办法2：validation方法遵守书写规范。<br>如验证find方法.写法如下validate+方法名首字母大写. <code>validateFind()</code><br><strong>所有编程式验证的弊端：硬编码。</strong></p>
-</blockquote>
-<h3 id="声明式验证"><a href="#声明式验证" class="headerlink" title="声明式验证"></a>声明式验证</h3><blockquote>
-<p>通过编写验证规则的xml文件。需要验证时，编写xml文件，不要验证，就不写。</p>
-</blockquote>
-<p>a、针对动作类中的所有动作进行验证：在动作类所在的包中，建立一个ActionClassName-validation.xml的文件<br>添加约束文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE validators PUBLIC</span><br><span class="line">  		&quot;-&#x2F;&#x2F;Apache Struts&#x2F;&#x2F;XWork Validator 1.0.3&#x2F;&#x2F;EN&quot;</span><br><span class="line">  		&quot;http:&#x2F;&#x2F;struts.apache.org&#x2F;dtds&#x2F;xwork-validator-1.0.3.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;validators&gt;</span><br><span class="line">	&lt;field name&#x3D;&quot;username&quot;&gt;</span><br><span class="line">		&lt;field-validator type&#x3D;&quot;requiredstring&quot;&gt;</span><br><span class="line">		&lt;message&gt;用户名呢&lt;&#x2F;message&gt;</span><br><span class="line">		&lt;&#x2F;field-validator&gt;</span><br><span class="line">		</span><br><span class="line">	&lt;&#x2F;field&gt;</span><br><span class="line">	</span><br><span class="line">&lt;&#x2F;validators&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>b、针对动作类中的某个动作进行验证：在动作类所在的包中建立一个xml文件，名称为ActionClassName-ActionName-validation.xml。</p>
-</blockquote>
-<p><em>Struts2内置的常用声明式验证器</em><br>位置：<br><code>xwork-core-2.3.15.3.jar\com\opensymphony\xwork2\validator\validator\default.xml</code></p>
-<h1 id="struts2中的拦截器"><a href="#struts2中的拦截器" class="headerlink" title="struts2中的拦截器"></a>struts2中的拦截器</h1><h2 id="拦截器的重要性"><a href="#拦截器的重要性" class="headerlink" title="拦截器的重要性"></a>拦截器的重要性</h2><blockquote>
-<p>Struts2中的很多功能都是由拦截器完成的。比如：servletConfig，staticParam，params，modelDriven等等。<br>是AOP编程思想的一种应用形式。</p>
-</blockquote>
-<h3 id="自定义拦截器"><a href="#自定义拦截器" class="headerlink" title="自定义拦截器"></a>自定义拦截器</h3><ol>
-<li>编写步骤<br>编写一个类，继承AbstractInterceptor类或者实现Interceptor接口。重写intercept方法。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc2kw9j2vj30n607a3yx.jpg"><br>配置拦截器：注意拦截器必须先声明再使用<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc2nretosj30oh06x0t8.jpg"></li>
-</ol>
-<p><strong>多个拦截器的执行顺序是由使用顺序决定的</strong></p>
-<blockquote>
-<p>写了自定义的拦截器后,默认拦截器就不起作用了<br>所以:<br>我们在自定义拦截器时，还可以继承MethodFilterInterceptor并且重写doIntercept方法。<br>并且在struts的配置文件中，配置需要拦截哪些方法，和需要放过哪些方法。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc3081mwpj30p307lgm5.jpg"><br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc315jyl7j30l604imxa.jpg"></p>
-</blockquote>
-<h2 id="struts2中文件的上传和下载"><a href="#struts2中文件的上传和下载" class="headerlink" title="struts2中文件的上传和下载"></a>struts2中文件的上传和下载</h2><p>必要前提：<br>    a.表单method必须是post；<br>    b.enctype取值必须是multipart/form-data；<br>    c.提供文件选择域。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc63su8u9j30k3092dgf.jpg"></p>
-<p>动作类:<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc65awp3kj30pm0a3754.jpg"><br>文件上传大小限制（默认是2MB）<br>如果上传文件超过了默认大小，upload拦截器会转向一个input的逻辑视图。</p>
-<p>在struts.xml中改变default.properties文件中的常量。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc69nj315j30pd07w0tc.jpg"></p>
-<h3 id="限制文件上传的类型"><a href="#限制文件上传的类型" class="headerlink" title="限制文件上传的类型"></a>限制文件上传的类型</h3><p>1.给fileUpload拦截器注入参数<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6b2n2vyj30oj04dglw.jpg"><br>或通过限制上传文件的MIME类型<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6d6pn0oj30pw05jwex.jpg"></p>
-<h3 id="多文件上传"><a href="#多文件上传" class="headerlink" title="多文件上传"></a>多文件上传</h3><p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6fcyqkqj30ov0bjwf3.jpg"></p>
-<h3 id="文件的下载"><a href="#文件的下载" class="headerlink" title="文件的下载"></a>文件的下载</h3><p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6ileoxbj30ry0axmxr.jpg"><br><strong>动作类</strong><br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6j3z3bbj30ov07274v.jpg"></p>
-]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>struts2</tag>
-        <tag>mvc</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>初探WebService</title>
     <url>/2018/06/30/%E5%88%9D%E6%8E%A2WebService/</url>
     <content><![CDATA[<h1 id="什么是Web-Service"><a href="#什么是Web-Service" class="headerlink" title="什么是Web Service"></a>什么是Web Service</h1><blockquote>
@@ -1015,39 +1001,6 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       <tags>
         <tag>WebService</tag>
         <tag>cxf</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>小结</title>
-    <url>/2018/06/09/%E5%B0%8F%E7%BB%93/</url>
-    <content><![CDATA[<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
-<p>这么久没有去维护自己的<code>blog</code>,说起来都有些惭愧.给自己找理由是因为回校搞毕设等办理各种手续,<br>  可说到底那都不是懒得借口.今天突然动起来去写,发现好多最基础的命令都忘记了,真的是重新温习<br>  下才有了印象.改了些东西竟然发现提交都出问题了.真的是…去百度了下知道了问题的所在,原来是<br>  因为<code>Github</code> 禁用了<code>TLS v1.0 and v1.1</code>，必须更新<code>Windows</code>的<code>git</code>凭证管理器.遇到的问题如下:</p>
-</blockquote>
-<p><img src="https://i.loli.net/2019/06/11/5cffc5f0867cc72843.jpg" alt="I-come-back.md---005WV0MDgy1fs52s6mf0wj30hb0c1gme.jpg"><br>如图出现了<code>HttpRequestException encountered</code>问题.<br>因为<code>Github</code> 禁用了<code>TLS v1.0 and v1.1</code>，必须更新<code>Windows</code>的<code>git</code>凭证管理器<br>这个时候去<a href="https://github.com/Microsoft/Git-Credential-Manager-for-Windows/releases/">此链接https://github.com/Microsoft/</a><br>下载<code>git</code>凭证管理器.下载完点击安装运行就可以了.提交成功.<br><img src="https://i.loli.net/2019/06/11/5cffc60513a6f16209.jpg" alt="I-come-back.md---005WV0MDgy1fs52xpco40j30hb0a3gmc.jpg"><br>更新后就这么点小问题.</p>
-]]></content>
-      <categories>
-        <category>life</category>
-      </categories>
-      <tags>
-        <tag>life</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>发现开发技巧篇</title>
-    <url>/2018/07/16/%E5%8F%91%E7%8E%B0%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7%E7%AF%87/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2019/06/12/5d011fd75bee774966.jpg"></p>
-<h1 id="基于Springboot开发"><a href="#基于Springboot开发" class="headerlink" title="基于Springboot开发"></a>基于Springboot开发</h1><h2 id="插入数据库时遇到的问题"><a href="#插入数据库时遇到的问题" class="headerlink" title="插入数据库时遇到的问题"></a>插入数据库时遇到的问题</h2><p>在调用<code>jpa</code>的<code>save</code>方法时,发现不能成功的插入数据.调用<code>JpaRepository</code>接口的<code>save</code>方法保存一个对象到数据库中的时候就会出错.<br><code>com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException</code><br>后来试了多次发现是主键自增策略引起的问题.改为如下后就解决了<br><img src="https://i.loli.net/2019/06/12/5d01207b1e0c797324.jpg"><br>原因是默认就是<code>auto</code>,不能由程序自己控制.具体原因如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Hibernate 能够出色地自动生成主键。Hibernate&#x2F;EBJ 3 注释也可以为主键的自动生成提供丰富的支持，允许实现各种策略。</span><br><span class="line">其生成规则由@GeneratedValue设定的.这里的@id和@GeneratedValue都是JPA的标准用法, JPA提供四种标准用法,由@GeneratedValue的源代码可以明显看出.</span><br><span class="line">JPA提供的四种标准用法为TABLE,SEQUENCE,IDENTITY,AUTO.</span><br><span class="line">TABLE：使用一个特定的数据库表格来保存主键。</span><br><span class="line">SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列。</span><br><span class="line">IDENTITY：主键由数据库自动生成（主要是自动增长型）</span><br><span class="line">AUTO：主键由程序控制。</span><br><span class="line">在指定主键时，如果不指定主键生成策略，默认为AUTO。</span><br><span class="line">@Id</span><br><span class="line">相当于</span><br><span class="line">@Id</span><br><span class="line">@GeneratedValue(strategy &#x3D; GenerationType.AUTO)</span><br><span class="line"></span><br><span class="line">identity:</span><br><span class="line">使用SQL Server 和 MySQL 的自增字段，这个方法不能放到 Oracle 中，Oracle 不支持自增字段，要设定sequence（MySQL 和 SQL Server 中很常用）。</span><br><span class="line">Oracle就要采用sequence了.</span><br><span class="line"></span><br><span class="line">同时,也可采用uuid,native等其它策略.(相关用法,上网查询)</span><br></pre></td></tr></table></figure>
-<p>即<code>auto</code>为当数据库中不存在这张表的时候可以用它建表的时候,制定自增的方式,存在的时候插入数据还用它就会出错了.</p>
-<p><code>identity</code>使用<code>MySQL</code>的自增字段.</p>
-<h2 id="开发过程中的实用技能"><a href="#开发过程中的实用技能" class="headerlink" title="开发过程中的实用技能"></a>开发过程中的实用技能</h2><p>在编写实体类的时候,每次都要写<code>get</code>和<code>set</code>或<code>tostring</code>方法,虽然可以快捷键生成,不过还是显得臃肿麻烦.<br>这个时候,就可以用到上篇日志中说到的<code>lombok</code>插件.<br>首先,<code>pom</code>文件中引入依赖.然后在实体类上面加上一个<code>@Data</code>注解就可以了,就是这么简单.<br><img src="https://i.loli.net/2019/06/12/5d0120d9d786e48428.jpg"><br><code>@DynamicUpdate</code>这个注解是动态更新数据库表中的时间属性.每次更改就会更新时间戳,不需要人为管理.<br><code>@Transactional</code>在测试方法上面添加这个注解,相当于回滚事务,数据库不发生更改.方便测试.<br><img src="https://i.loli.net/2019/06/12/5d01215a565dc96326.jpg"></p>
-]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>实用技能</tag>
-        <tag>方便高效</tag>
       </tags>
   </entry>
   <entry>
@@ -1167,6 +1120,59 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       </tags>
   </entry>
   <entry>
+    <title>发现开发技巧篇</title>
+    <url>/2018/07/16/%E5%8F%91%E7%8E%B0%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7%E7%AF%87/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2019/06/12/5d011fd75bee774966.jpg"></p>
+<h1 id="基于Springboot开发"><a href="#基于Springboot开发" class="headerlink" title="基于Springboot开发"></a>基于Springboot开发</h1><h2 id="插入数据库时遇到的问题"><a href="#插入数据库时遇到的问题" class="headerlink" title="插入数据库时遇到的问题"></a>插入数据库时遇到的问题</h2><p>在调用<code>jpa</code>的<code>save</code>方法时,发现不能成功的插入数据.调用<code>JpaRepository</code>接口的<code>save</code>方法保存一个对象到数据库中的时候就会出错.<br><code>com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException</code><br>后来试了多次发现是主键自增策略引起的问题.改为如下后就解决了<br><img src="https://i.loli.net/2019/06/12/5d01207b1e0c797324.jpg"><br>原因是默认就是<code>auto</code>,不能由程序自己控制.具体原因如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Hibernate 能够出色地自动生成主键。Hibernate&#x2F;EBJ 3 注释也可以为主键的自动生成提供丰富的支持，允许实现各种策略。</span><br><span class="line">其生成规则由@GeneratedValue设定的.这里的@id和@GeneratedValue都是JPA的标准用法, JPA提供四种标准用法,由@GeneratedValue的源代码可以明显看出.</span><br><span class="line">JPA提供的四种标准用法为TABLE,SEQUENCE,IDENTITY,AUTO.</span><br><span class="line">TABLE：使用一个特定的数据库表格来保存主键。</span><br><span class="line">SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列。</span><br><span class="line">IDENTITY：主键由数据库自动生成（主要是自动增长型）</span><br><span class="line">AUTO：主键由程序控制。</span><br><span class="line">在指定主键时，如果不指定主键生成策略，默认为AUTO。</span><br><span class="line">@Id</span><br><span class="line">相当于</span><br><span class="line">@Id</span><br><span class="line">@GeneratedValue(strategy &#x3D; GenerationType.AUTO)</span><br><span class="line"></span><br><span class="line">identity:</span><br><span class="line">使用SQL Server 和 MySQL 的自增字段，这个方法不能放到 Oracle 中，Oracle 不支持自增字段，要设定sequence（MySQL 和 SQL Server 中很常用）。</span><br><span class="line">Oracle就要采用sequence了.</span><br><span class="line"></span><br><span class="line">同时,也可采用uuid,native等其它策略.(相关用法,上网查询)</span><br></pre></td></tr></table></figure>
+<p>即<code>auto</code>为当数据库中不存在这张表的时候可以用它建表的时候,制定自增的方式,存在的时候插入数据还用它就会出错了.</p>
+<p><code>identity</code>使用<code>MySQL</code>的自增字段.</p>
+<h2 id="开发过程中的实用技能"><a href="#开发过程中的实用技能" class="headerlink" title="开发过程中的实用技能"></a>开发过程中的实用技能</h2><p>在编写实体类的时候,每次都要写<code>get</code>和<code>set</code>或<code>tostring</code>方法,虽然可以快捷键生成,不过还是显得臃肿麻烦.<br>这个时候,就可以用到上篇日志中说到的<code>lombok</code>插件.<br>首先,<code>pom</code>文件中引入依赖.然后在实体类上面加上一个<code>@Data</code>注解就可以了,就是这么简单.<br><img src="https://i.loli.net/2019/06/12/5d0120d9d786e48428.jpg"><br><code>@DynamicUpdate</code>这个注解是动态更新数据库表中的时间属性.每次更改就会更新时间戳,不需要人为管理.<br><code>@Transactional</code>在测试方法上面添加这个注解,相当于回滚事务,数据库不发生更改.方便测试.<br><img src="https://i.loli.net/2019/06/12/5d01215a565dc96326.jpg"></p>
+]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>实用技能</tag>
+        <tag>方便高效</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小结</title>
+    <url>/2018/06/09/%E5%B0%8F%E7%BB%93/</url>
+    <content><![CDATA[<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
+<p>这么久没有去维护自己的<code>blog</code>,说起来都有些惭愧.给自己找理由是因为回校搞毕设等办理各种手续,<br>  可说到底那都不是懒得借口.今天突然动起来去写,发现好多最基础的命令都忘记了,真的是重新温习<br>  下才有了印象.改了些东西竟然发现提交都出问题了.真的是…去百度了下知道了问题的所在,原来是<br>  因为<code>Github</code> 禁用了<code>TLS v1.0 and v1.1</code>，必须更新<code>Windows</code>的<code>git</code>凭证管理器.遇到的问题如下:</p>
+</blockquote>
+<p><img src="https://i.loli.net/2019/06/11/5cffc5f0867cc72843.jpg" alt="I-come-back.md---005WV0MDgy1fs52s6mf0wj30hb0c1gme.jpg"><br>如图出现了<code>HttpRequestException encountered</code>问题.<br>因为<code>Github</code> 禁用了<code>TLS v1.0 and v1.1</code>，必须更新<code>Windows</code>的<code>git</code>凭证管理器<br>这个时候去<a href="https://github.com/Microsoft/Git-Credential-Manager-for-Windows/releases/">此链接https://github.com/Microsoft/</a><br>下载<code>git</code>凭证管理器.下载完点击安装运行就可以了.提交成功.<br><img src="https://i.loli.net/2019/06/11/5cffc60513a6f16209.jpg" alt="I-come-back.md---005WV0MDgy1fs52xpco40j30hb0a3gmc.jpg"><br>更新后就这么点小问题.</p>
+]]></content>
+      <categories>
+        <category>life</category>
+      </categories>
+      <tags>
+        <tag>life</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>开发过程中遇到的问题之sql_mode</title>
+    <url>/2018/07/10/%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1ft4m9bo88kj30m8099wh2.jpg"><br>记一下开发中遇到的问题,一个小小的问题困扰了几个小时.崩溃,从晚到早,还好最后解决了.<br>用<code>mysql</code>建表时,报了1055错误,虽然不影响数据,但是看着就是特不爽.后来,上网查了查,是<br>因为mysql在5.7版本后增加了新的特性,对<code>sql</code>语句要求越来越严格.对于<code>sql_mode</code>变化如<br><a href="https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html#sql-mode-changes">官方文档</a></p>
+<blockquote>
+<p>严格的事务性存储引擎SQL模式(STRICT_TRANS_TABLES)现在是默认启用。<br> 实现ONLY_FULL_GROUP_BY SQL模式使更有经验，不再拒绝之前被拒绝的确定性查询。结果,这种模式现在是默认启用,只禁止包含的表达式在一个组里且不能保证唯一确定的不确定性查询。<br> <code>ERROR_FOR_DIVISION_BY_ZERO</code>,<code>NO_ZERO_DATE</code>和<code>NO_ZERO_IN_DATE</code> <code>SQL</code>模式现在已经弃用,但默认启用。长期的计划是让他们包含在严格的<code>SQL</code>模式和删除它们明确的模式在未来的<code>MySQL</code>版本。<br> 更改默认的<code>SQL</code>模式导致默认的<code>sql_mode</code>系统变量值使得这些模式启用： <code>ONLY_FULL_GROUP_BY</code>, <code>STRICT_TRANS_TABLES</code>, <code>NO_ZERO_IN_DATE</code>, <code>NO_ZERO_DATE</code>, <code>ERROR_FOR_DIVISION_BY_ZERO</code>, <code>NO_AUTO_CREATE_USER</code>, and <code>NO_ENGINE_SUBSTITUTION</code>.</p>
+</blockquote>
+<p>解决办法:<br>直接修改配置文件,不然每次重启服务还是会有错误.<br>进入<code>mysql</code>命令模式,mysql -uroot -p<br>输入命令select @@sql_mode;可以看到详细属性<br>修改<code>my.cnf</code>如下<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1ft4pvaykq0j30ul0bxjrq.jpg"><br>完成后重启mysql服务,service mysqld restart.再查看<code>sql_mode</code><br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1ft4pzu14puj30v503sjr9.jpg"><br>已经修改成功,</p>
+<blockquote>
+<p>之前修改试了几次一直重启服务不成功,不知道是不是写的位置的原因……注意了注意了…..</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>linux部署</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>强大的OGNL表达式</title>
     <url>/2017/06/08/%E5%BC%BA%E5%A4%A7%E7%9A%84OGNL%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
     <content><![CDATA[<h1 id="1-OGNL简介"><a href="#1-OGNL简介" class="headerlink" title="1.OGNL简介"></a>1.OGNL简介</h1><h2 id="1-1-什么是OGNL"><a href="#1-1-什么是OGNL" class="headerlink" title="1.1 什么是OGNL"></a>1.1 什么是OGNL</h2><blockquote>
@@ -1198,26 +1204,6 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       <tags>
         <tag>struts2</tag>
         <tag>ognl</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>开发过程中遇到的问题之sql_mode</title>
-    <url>/2018/07/10/%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1ft4m9bo88kj30m8099wh2.jpg"><br>记一下开发中遇到的问题,一个小小的问题困扰了几个小时.崩溃,从晚到早,还好最后解决了.<br>用<code>mysql</code>建表时,报了1055错误,虽然不影响数据,但是看着就是特不爽.后来,上网查了查,是<br>因为mysql在5.7版本后增加了新的特性,对<code>sql</code>语句要求越来越严格.对于<code>sql_mode</code>变化如<br><a href="https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html#sql-mode-changes">官方文档</a></p>
-<blockquote>
-<p>严格的事务性存储引擎SQL模式(STRICT_TRANS_TABLES)现在是默认启用。<br> 实现ONLY_FULL_GROUP_BY SQL模式使更有经验，不再拒绝之前被拒绝的确定性查询。结果,这种模式现在是默认启用,只禁止包含的表达式在一个组里且不能保证唯一确定的不确定性查询。<br> <code>ERROR_FOR_DIVISION_BY_ZERO</code>,<code>NO_ZERO_DATE</code>和<code>NO_ZERO_IN_DATE</code> <code>SQL</code>模式现在已经弃用,但默认启用。长期的计划是让他们包含在严格的<code>SQL</code>模式和删除它们明确的模式在未来的<code>MySQL</code>版本。<br> 更改默认的<code>SQL</code>模式导致默认的<code>sql_mode</code>系统变量值使得这些模式启用： <code>ONLY_FULL_GROUP_BY</code>, <code>STRICT_TRANS_TABLES</code>, <code>NO_ZERO_IN_DATE</code>, <code>NO_ZERO_DATE</code>, <code>ERROR_FOR_DIVISION_BY_ZERO</code>, <code>NO_AUTO_CREATE_USER</code>, and <code>NO_ENGINE_SUBSTITUTION</code>.</p>
-</blockquote>
-<p>解决办法:<br>直接修改配置文件,不然每次重启服务还是会有错误.<br>进入<code>mysql</code>命令模式,mysql -uroot -p<br>输入命令select @@sql_mode;可以看到详细属性<br>修改<code>my.cnf</code>如下<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1ft4pvaykq0j30ul0bxjrq.jpg"><br>完成后重启mysql服务,service mysqld restart.再查看<code>sql_mode</code><br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1ft4pzu14puj30v503sjr9.jpg"><br>已经修改成功,</p>
-<blockquote>
-<p>之前修改试了几次一直重启服务不成功,不知道是不是写的位置的原因……注意了注意了…..</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>mysql</tag>
-        <tag>linux部署</tag>
       </tags>
   </entry>
   <entry>

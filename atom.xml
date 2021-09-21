@@ -36,26 +36,6 @@
   </entry>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://forxyz.top/2021/09/21/hello-world/"/>
-    <id>http://forxyz.top/2021/09/21/hello-world/</id>
-    <published>2021-09-21T08:53:01.698Z</published>
-    <updated>2017-09-08T07:27:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h1 id="hello-mybolg-forqxy-top"><a href="#hello-mybolg-forqxy-top" class="headerlink" title="hello mybolg  forqxy.top"></a>hello mybolg  forqxy.top</h1><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
     <title>gradle构建工具</title>
     <link href="http://forxyz.top/2021/02/01/gradle%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/"/>
     <id>http://forxyz.top/2021/02/01/gradle%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/</id>
@@ -541,6 +521,34 @@
     <category term="前端" scheme="http://forxyz.top/tags/%E5%89%8D%E7%AB%AF/"/>
     
     <category term="Ajax" scheme="http://forxyz.top/tags/Ajax/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>day03</title>
+    <link href="http://forxyz.top/2017/07/04/day03/"/>
+    <id>http://forxyz.top/2017/07/04/day03/</id>
+    <published>2017-07-04T08:26:51.000Z</published>
+    <updated>2018-06-09T08:28:36.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>先来fark一下别人的图<br><img src="http://upload-images.jianshu.io/upload_images/3332049-e1bb096b598e13ea.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="你想要锦上添花，你得先变成锦(作品：小瓜记不住那些好)"><br>所谓的迷茫，只是懒散，只是想要不劳而获。</p><blockquote><p>三分钟热度；对现状焦虑却不知道如何改变；喜欢幻想未来，却又不付出实际行动；<br>简而言之，就是间歇性的踌躇满志，持续性的混吃等死。<br>将自己的懒散包装成迷茫，让自己可以继续心安理得的不求上进，<br>然后将所有的不满足跟憎恶归结为迷茫。</p></blockquote><p>当懒散成为习惯，当迷茫成为常态，浑浑噩噩、煎熬焦虑也就变成了生活的主流。</p><p>你可以迷茫，但不能懒散；你可以焦虑，但不能不思进取；你可以不励志，但不能不自律。</p><p>不说那么多,以后就开始写一些学习上技术上的东西.这样也可以为日后留用……</p><h3 id="END"><a href="#END" class="headerlink" title="-END-"></a>-END-</h3>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;先来fark一下别人的图&lt;br&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3332049-e1bb096b598e13ea.jpg?imageMogr2/auto-orient/strip%7Cimage</summary>
+      
+    
+    
+    
+    <category term="life" scheme="http://forxyz.top/categories/life/"/>
+    
+    
+    <category term="first" scheme="http://forxyz.top/tags/first/"/>
+    
+    <category term="life" scheme="http://forxyz.top/tags/life/"/>
+    
+    <category term="随笔" scheme="http://forxyz.top/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   

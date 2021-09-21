@@ -98,7 +98,7 @@
 <meta name="description" content="just do it follow your heart.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="forqxy&#39;s blog">
-<meta property="og:url" content="http://forxyz.top/tags/mybatis/index.html">
+<meta property="og:url" content="http://forxyz.top/tags/MyBatis/index.html">
 <meta property="og:site_name" content="forqxy&#39;s blog">
 <meta property="og:description" content="just do it follow your heart.">
 <meta property="og:locale">
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://forxyz.top/tags/mybatis/"/>
+  <link rel="canonical" href="http://forxyz.top/tags/MyBatis/"/>
 
 
 
 
 
-  <title>标签: mybatis | forqxy's blog</title>
+  <title>标签: MyBatis | forqxy's blog</title>
   
 
 
@@ -342,7 +342,7 @@
 
   <div id="posts" class="posts-collapse">
     <div class="collection-title">
-      <h1>mybatis<small>标签</small>
+      <h1>MyBatis<small>标签</small>
       </h1>
     </div>
 
@@ -354,37 +354,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/10/16/Shiro%E8%A7%92%E8%89%B2%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" itemprop="url">
+            <a class="post-title-link" href="/2017/08/04/MyBatis%E5%85%A5%E9%97%A8/" itemprop="url">
               
-                <span itemprop="name">Shiro角色权限管理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-16T08:50:14+08:00"
-              content="2017-10-16" >
-          10-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/08/05/%E5%88%9D%E8%AF%86Spring-MVC/" itemprop="url">
-              
-                <span itemprop="name">初识Spring MVC</span>
+                <span itemprop="name">MyBatis入门</span>
               
             </a>
         
@@ -392,37 +364,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-05T20:28:27+08:00"
-              content="2017-08-05" >
-          08-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/08/05/mybatis%E4%B8%8Espring%E6%95%B4%E5%90%88/" itemprop="url">
-              
-                <span itemprop="name">mybatis与spring整合</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-05T16:24:45+08:00"
-              content="2017-08-05" >
-          08-05
+              datetime="2017-08-04T10:34:48+08:00"
+              content="2017-08-04" >
+          08-04
         </time>
       </div>
 
@@ -476,7 +420,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1133,6 +1077,62 @@ src="//music.163.com/outchain/player?type=2&id=33920425&auto=0&height=66"></ifra
                 $element.find('.leancloud-visitors-count').text(counter.get('time'));
               },
               error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+on(counter, error) {
                 console.log('Failed to save Visitor num, with error message: ' + error.message);
               }
             });
