@@ -1,0 +1,1462 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MyBatis," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="forqxy's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="MyBatis简介什么是MyBatisMyBatis参考资料官网  mybatis就是一个封装来jdbc的持久层框架，它和hibernate都属于ORM框架，但是具体的说，  hibernate是一个完全的orm框架，而mybatis是一个不完全的orm框架。  Mybatis让程序员只关注sql本身，而不需要去关注如连接的创建、statement的创建等操作。  Mybatis会将输入参数、输出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis入门">
+<meta property="og:url" content="http://forxyz.top/2017/08/04/MyBatis%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="forqxy&#39;s blog">
+<meta property="og:description" content="MyBatis简介什么是MyBatisMyBatis参考资料官网  mybatis就是一个封装来jdbc的持久层框架，它和hibernate都属于ORM框架，但是具体的说，  hibernate是一个完全的orm框架，而mybatis是一个不完全的orm框架。  Mybatis让程序员只关注sql本身，而不需要去关注如连接的创建、statement的创建等操作。  Mybatis会将输入参数、输出">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.loli.net/2019/06/11/5cffc73c6ba0899363.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/06/11/5cffc748d185569932.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/06/11/5cffc7568bbdd82080.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/06/11/5cffc7606551650164.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/06/11/5cffc76996ef584225.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/06/11/5cffc772f209f18025.jpg">
+<meta property="article:published_time" content="2017-08-04T02:34:48.000Z">
+<meta property="article:modified_time" content="2019-06-11T15:28:50.000Z">
+<meta property="article:author" content="hsl">
+<meta property="article:tag" content="MyBatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/06/11/5cffc73c6ba0899363.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://forxyz.top/2017/08/04/MyBatis入门/"/>
+
+
+
+
+
+  <title>MyBatis入门 | forqxy's blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?564397510bf541ed794bfae97b925d73";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">forqxy's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">just do it follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-life">
+          <a href="/categories/life" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bicycle"></i> <br />
+            
+            生活
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-technology">
+          <a href="/categories/technology" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-rocket"></i> <br />
+            
+            技术
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://forxyz.top/2017/08/04/MyBatis%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/QQ2018.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="forqxy's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MyBatis入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-04T10:34:48+08:00">
+                2017-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/technology/" itemprop="url" rel="index">
+                    <span itemprop="name">technology</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/08/04/MyBatis%E5%85%A5%E9%97%A8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/08/04/MyBatis%E5%85%A5%E9%97%A8/" class="leancloud_visitors" data-flag-title="MyBatis入门">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+		<span class="post-meta-divider">|</span>
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                   字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="MyBatis简介"><a href="#MyBatis简介" class="headerlink" title="MyBatis简介"></a>MyBatis简介</h1><h2 id="什么是MyBatis"><a href="#什么是MyBatis" class="headerlink" title="什么是MyBatis"></a>什么是MyBatis</h2><p><a target="_blank" rel="noopener" href="https://mybatis.github.io/mybatis-3/zh/index.html">MyBatis参考资料官网</a></p>
+<blockquote>
+<p><code>mybatis</code>就是一个封装来<code>jdbc</code>的持久层框架，它和<code>hibernate</code>都属于ORM框架，但是具体的说，<br>  <code>hibernate</code>是一个完全的<code>orm</code>框架，而<code>mybatis</code>是一个不完全的<code>orm</code>框架。<br>  <code>Mybatis</code>让程序员只关注<code>sql</code>本身，而不需要去关注如连接的创建、<code>statement</code>的创建等操作。<br>  <code>Mybatis</code>会将输入参数、输出结果进行映射。<br><code>MyBatis</code> 是支持定制化 <code>SQL</code>、存储过程以及高级映射的优秀的持久层框架。<br><code>MyBatis</code> 避免了几乎所有的 <code>JDBC</code> 代码和手动设置参数以及获取结果集。<br><code>MyBatis</code> 可以对配置和原生Map使用简单的 <code>XML</code> 或注解，将接口<br>和 <code>Java</code> 的 <code>POJOs(Plain Old Java Objects,普通的 Java对象)</code>映射成数据库中的记录。</p>
+</blockquote>
+<h2 id="MyBatis与Hibernate区别"><a href="#MyBatis与Hibernate区别" class="headerlink" title="MyBatis与Hibernate区别"></a>MyBatis与Hibernate区别</h2><h3 id="MyBatis"><a href="#MyBatis" class="headerlink" title="MyBatis:"></a>MyBatis:</h3><blockquote>
+<p>1.通过直接编写SQL语句，可以直接对SQL进行性能的优化<br>2.学习门槛低，学习成本低。只要有SQL基础，就可以学习mybatis，而且很容易上手；<br>3.由于直接编写SQL语句，所以灵活多变，代码维护性更好。<br>4.不能支持数据库无关性，即数据库发生变更，要写多套代码进行支持，移植性不好。</p>
+</blockquote>
+<h3 id="Hibernate"><a href="#Hibernate" class="headerlink" title="Hibernate:"></a>Hibernate:</h3><blockquote>
+<p>1.标准的orm框架，程序员不需要编写SQL语句。<br>2.具有良好的数据库无关性，即数据库发生变化的话，代码无需再次编写。<br>3.程序员不能自主的去进行SQL性能优化。</p>
+</blockquote>
+<h3 id="Mybatis应用场景："><a href="#Mybatis应用场景：" class="headerlink" title="Mybatis应用场景："></a>Mybatis应用场景：</h3><pre><code>需求多变的互联网项目，例如电商项目。
+</code></pre>
+<h3 id="Hibernate应用场景："><a href="#Hibernate应用场景：" class="headerlink" title="Hibernate应用场景："></a>Hibernate应用场景：</h3><pre><code>需求明确、业务固定的项目，例如OA项目、ERP项目等。
+</code></pre>
+<h1 id="所需环境"><a href="#所需环境" class="headerlink" title="所需环境"></a>所需环境</h1><blockquote>
+<p>jdk1.7+<br>mybatis3.4.4<br>MySQL5.x</p>
+</blockquote>
+<h2 id="下载MyBatis"><a href="#下载MyBatis" class="headerlink" title="下载MyBatis"></a>下载MyBatis</h2><p><a target="_blank" rel="noopener" href="https://github.com/mybatis/mybatis-3/releases">mybatis</a> 由GitHub托管</p>
+<h2 id="开发中所用jar包"><a href="#开发中所用jar包" class="headerlink" title="开发中所用jar包"></a>开发中所用jar包</h2><p><strong>mybatis的核心jar包和lib依赖包</strong><br><strong>mysql驱动包</strong></p>
+<h2 id="使用Maven时"><a href="#使用Maven时" class="headerlink" title="使用Maven时"></a>使用Maven时</h2><p>pom.xml中添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.mybatis&lt;&#x2F;groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;mybatis&lt;&#x2F;artifactId&gt;</span><br><span class="line">  &lt;version&gt;x.x.x&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/jiuqiyuliang/article/details/45286191">以下引自</a><br>mybatis整个执行流程<br><img src="https://i.loli.net/2019/06/11/5cffc73c6ba0899363.jpg" alt="MyBatis入门.md---005WV0MDly1fjd9dp9sooj30i50bomz8.jpg"><br>原理详解：<br>MyBatis应用程序根据XML配置文件创建SqlSessionFactory，SqlSessionFactory在根据配置，<br>配置来源于两个地方，一处是配置文件，一处是Java代码的注解，获取一个SqlSession。<br>SqlSession包含了执行sql所需要的所有方法，可以通过SqlSession实例直接运行映射的sql语句，<br>完成对数据的增删改查和事务提交等，用完之后关闭SqlSession。</p>
+<h1 id="第一个mybatis项目"><a href="#第一个mybatis项目" class="headerlink" title="第一个mybatis项目"></a>第一个mybatis项目</h1><p>数据库建表,与实体类属性一致</p>
+<h2 id="1-创建po类"><a href="#1-创建po类" class="headerlink" title="1.创建po类"></a>1.创建po类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class User &#123;</span><br><span class="line">	private int id;</span><br><span class="line">	private String username;&#x2F;&#x2F; 用户姓名</span><br><span class="line">	private String sex;&#x2F;&#x2F; 性别</span><br><span class="line">	private Date birthday;&#x2F;&#x2F; 生日</span><br><span class="line">	private String address;&#x2F;&#x2F; 地址</span><br><span class="line">	&#x2F;&#x2F;set.get方法略</span><br></pre></td></tr></table></figure>
+<h2 id="2-创建全局配置文件"><a href="#2-创建全局配置文件" class="headerlink" title="2.创建全局配置文件"></a>2.创建全局配置文件</h2><p>可以创建一个资源文件夹,用于放配置文件<br>加入<code>log4j.properties</code>和<code>SqlMapConfig.xml</code>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Global logging configuration</span><br><span class="line">log4j.rootLogger&#x3D;DEBUG, stdout</span><br><span class="line"># Console output...</span><br><span class="line">log4j.appender.stdout&#x3D;org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.stdout.layout&#x3D;org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern&#x3D;%5p [%t] - %m%n</span><br></pre></td></tr></table></figure>
+<p><code>SqlMapConfig.xml</code>文件如下:<br>SqlMapConfig.xml是mybatis核心配置文件，配置文件内容为数据源、事务管理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE configuration</span><br><span class="line">PUBLIC &quot;-&#x2F;&#x2F;mybatis.org&#x2F;&#x2F;DTD Config 3.0&#x2F;&#x2F;EN&quot;</span><br><span class="line">&quot;http:&#x2F;&#x2F;mybatis.org&#x2F;dtd&#x2F;mybatis-3-config.dtd&quot;&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 配置mybatis的环境信息，与spring整合，该信息由spring来管理 --&gt;</span><br><span class="line">	&lt;environments default&#x3D;&quot;development&quot;&gt;</span><br><span class="line">		&lt;environment id&#x3D;&quot;development&quot;&gt;</span><br><span class="line">			&lt;!-- 配置JDBC事务控制，由mybatis进行管理 --&gt;</span><br><span class="line">			&lt;transactionManager type&#x3D;&quot;JDBC&quot;&gt;&lt;&#x2F;transactionManager&gt;</span><br><span class="line">			&lt;!-- 配置数据源，采用mybatis连接池 --&gt;</span><br><span class="line">			&lt;dataSource type&#x3D;&quot;POOLED&quot;&gt;</span><br><span class="line">				&lt;property name&#x3D;&quot;driver&quot; value&#x3D;&quot;com.mysql.jdbc.Driver&quot; &#x2F;&gt;</span><br><span class="line">				&lt;property name&#x3D;&quot;url&quot; value&#x3D;&quot;jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;how2j&quot; &#x2F;&gt;</span><br><span class="line">				&lt;property name&#x3D;&quot;username&quot; value&#x3D;&quot;root&quot; &#x2F;&gt;</span><br><span class="line">				&lt;property name&#x3D;&quot;password&quot; value&#x3D;&quot;root&quot; &#x2F;&gt;</span><br><span class="line">			&lt;&#x2F;dataSource&gt;</span><br><span class="line">		&lt;&#x2F;environment&gt;</span><br><span class="line">	&lt;&#x2F;environments&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 加载映射文件 --&gt;</span><br><span class="line">	&lt;mappers&gt;</span><br><span class="line">		&lt;mapper resource&#x3D;&quot;User.xml&quot; &#x2F;&gt;</span><br><span class="line">		&lt;mapper resource&#x3D;&quot;UserMapper.xml&quot;&#x2F;&gt;</span><br><span class="line">		&lt;mapper resource&#x3D;&quot;OrderMapper.xml&quot;&#x2F;&gt;</span><br><span class="line">	&lt;&#x2F;mappers&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="3-编写mapper映射文件"><a href="#3-编写mapper映射文件" class="headerlink" title="3. 编写mapper映射文件"></a>3. 编写mapper映射文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE mapper</span><br><span class="line">PUBLIC &quot;-&#x2F;&#x2F;mybatis.org&#x2F;&#x2F;DTD Mapper 3.0&#x2F;&#x2F;EN&quot;</span><br><span class="line">&quot;http:&#x2F;&#x2F;mybatis.org&#x2F;dtd&#x2F;mybatis-3-mapper.dtd&quot;&gt;</span><br><span class="line">&lt;mapper namespace&#x3D;&quot;cn.hsl.dao.UserMapper&quot;&gt;</span><br><span class="line">	&lt;select id&#x3D;&quot;findUserById&quot; parameterType&#x3D;&quot;int&quot; resultType&#x3D;&quot;cn.hsl.po.User&quot;&gt;</span><br><span class="line">	select * from user where id&#x3D; #&#123;id&#125;</span><br><span class="line">	&lt;&#x2F;select&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="测试junit"><a href="#测试junit" class="headerlink" title="测试junit"></a>测试junit</h2><p> 1.创建SqlSessionFactoryBuilder对象<br> 2. 加载SqlMapConfig.xml配置文件<br> 3. 创建SqlSessionFactory对象<br> 4. 创建SqlSession对象<br> 5. 执行SqlSession对象执行查询，获取结果User<br> 6. 打印结果<br> 7. 释放资源</p>
+<p><img src="https://i.loli.net/2019/06/11/5cffc748d185569932.jpg" alt="MyBatis入门.md---005WV0MDly1fjdbq9n6nvj30mf0660sy.jpg"></p>
+<h1 id="mapper代理开发"><a href="#mapper代理开发" class="headerlink" title="mapper代理开发"></a>mapper代理开发</h1><p>Mapper接口开发方法只需要程序员编写Mapper接口（相当于Dao接口），<br>由Mybatis框架根据接口定义创建接口的动态代理对象，代理对象的方法体同上边Dao接口实现类方法。</p>
+<p>Mapper接口开发需要遵循以下规范：<br>1、Mapper.xml文件中的namespace与mapper接口的类路径相同。<br>2、Mapper接口方法名和Mapper.xml中定义的每个statement的id相同<br>3、Mapper接口方法的输入参数类型和mapper.xml中定义的每个sql 的parameterType的类型相同<br>4、Mapper接口方法的输出参数类型和mapper.xml中定义的每个sql的resultType的类型相同<br><img src="https://i.loli.net/2019/06/11/5cffc7568bbdd82080.jpg" alt="MyBatis入门.md---005WV0MDly1fjdc7h70duj30le054mxk.jpg"><br>测试时加载mapper类<br><img src="https://i.loli.net/2019/06/11/5cffc7606551650164.jpg" alt="MyBatis入门.md---005WV0MDly1fjdc99pq6xj30hu044q2y.jpg"></p>
+<blockquote>
+<p>Mapper.xml映射文件中定义了操作数据库的sql，每个sql是一个statement，映射文件是mybatis的核心。</p>
+</blockquote>
+<h1 id="动态SQL"><a href="#动态SQL" class="headerlink" title="动态SQL"></a>动态SQL</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id&#x3D;&quot;queryUserByWhere&quot; parameterType&#x3D;&quot;cn.hsl.po.User&quot; resultType&#x3D;&quot;cn.hsl.po.User&quot;&gt;</span><br><span class="line">	SELECT id, username, birthday, sex, address FROM &#96;user&#96;</span><br><span class="line"></span><br><span class="line">	&lt;where&gt;</span><br><span class="line">		&lt;if test&#x3D;&quot;sex!&#x3D;null&quot;&gt;</span><br><span class="line">		sex &#x3D; #&#123;sex&#125;</span><br><span class="line">		&lt;&#x2F;if&gt;</span><br><span class="line">		&lt;if test&#x3D;&quot;username!&#x3D;null and username !&#x3D; &#39;&#39;&quot;&gt;</span><br><span class="line">		&lt;include refid&#x3D;&quot;sql01&quot;&#x2F;&gt;</span><br><span class="line">	&#39;%$&#123;username&#125;%&#39;</span><br><span class="line">		&lt;&#x2F;if&gt;</span><br><span class="line">	&lt;&#x2F;where&gt;</span><br><span class="line">	&lt;&#x2F;select&gt;</span><br><span class="line">	&lt;sql id&#x3D;&quot;sql01&quot;&gt;</span><br><span class="line">	AND username LIKE</span><br><span class="line">	&lt;&#x2F;sql&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="关联查询"><a href="#关联查询" class="headerlink" title="关联查询"></a>关联查询</h1><h2 id="一对一查询"><a href="#一对一查询" class="headerlink" title="一对一查询"></a>一对一查询</h2><p>需求：查询所有订单信息，关联查询下单用户信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	o.id,</span><br><span class="line">	o.user_id userId,</span><br><span class="line">	o.number,</span><br><span class="line">	o.createtime,</span><br><span class="line">	o.note,</span><br><span class="line">	u.username,</span><br><span class="line">	u.address</span><br><span class="line">FROM</span><br><span class="line">	&#96;order&#96; o</span><br><span class="line">LEFT JOIN &#96;user&#96; u ON o.user_id &#x3D; u.id</span><br></pre></td></tr></table></figure>
+<h3 id="方法一：使用resultType"><a href="#方法一：使用resultType" class="headerlink" title="方法一：使用resultType"></a>方法一：使用resultType</h3><p>使用resultType，改造订单pojo类，此pojo类中包括了订单信息和用户信息<br>这样返回对象的时候，mybatis自动把用户信息也注入进来了<br><img src="https://i.loli.net/2019/06/11/5cffc76996ef584225.jpg" alt="MyBatis入门.md---005WV0MDly1fjdd4f28n7j30b2047dft.jpg"><br>在UserMapper.xml添加sql，如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 查询订单，同时包含用户数据 --&gt;</span><br><span class="line">&lt;select id&#x3D;&quot;queryOrderUser&quot; resultType&#x3D;&quot;orderUser&quot;&gt;</span><br><span class="line">	SELECT</span><br><span class="line">	o.id,</span><br><span class="line">	o.user_id</span><br><span class="line">	userId,</span><br><span class="line">	o.number,</span><br><span class="line">	o.createtime,</span><br><span class="line">	o.note,</span><br><span class="line">	u.username,</span><br><span class="line">	u.address</span><br><span class="line">	FROM</span><br><span class="line">	&#96;order&#96; o</span><br><span class="line">	LEFT JOIN &#96;user&#96; u ON o.user_id &#x3D; u.id</span><br><span class="line">&lt;&#x2F;select&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="方法二：使用resultMap"><a href="#方法二：使用resultMap" class="headerlink" title="方法二：使用resultMap"></a>方法二：使用resultMap</h3><p>使用resultMap，定义专门的resultMap用于映射一对一查询结果。</p>
+<blockquote>
+<p>在Order类中加入User属性，user属性中用于存储关联查询的用户信息，<br>  因为订单关联查询用户是一对一关系，所以这里使用单个User对象存储关联查询的用户信息。<br>mapper.xml定义如下:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;resultMap type&#x3D;&quot;order&quot; id&#x3D;&quot;orderUserResultMap&quot;&gt;</span><br><span class="line">	&lt;id property&#x3D;&quot;id&quot; column&#x3D;&quot;id&quot; &#x2F;&gt;</span><br><span class="line">	&lt;result property&#x3D;&quot;userId&quot; column&#x3D;&quot;user_id&quot; &#x2F;&gt;</span><br><span class="line">	&lt;result property&#x3D;&quot;number&quot; column&#x3D;&quot;number&quot; &#x2F;&gt;</span><br><span class="line">	&lt;result property&#x3D;&quot;createtime&quot; column&#x3D;&quot;createtime&quot; &#x2F;&gt;</span><br><span class="line">	&lt;result property&#x3D;&quot;note&quot; column&#x3D;&quot;note&quot; &#x2F;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- association ：配置一对一属性 --&gt;</span><br><span class="line">	&lt;!-- property:order里面的User属性名 --&gt;</span><br><span class="line">	&lt;!-- javaType:属性类型 --&gt;</span><br><span class="line">	&lt;association property&#x3D;&quot;user&quot; javaType&#x3D;&quot;user&quot;&gt;</span><br><span class="line">		&lt;!-- id:声明主键，表示user_id是关联查询对象的唯一标识--&gt;</span><br><span class="line">		&lt;id property&#x3D;&quot;id&quot; column&#x3D;&quot;user_id&quot; &#x2F;&gt;</span><br><span class="line">		&lt;result property&#x3D;&quot;username&quot; column&#x3D;&quot;username&quot; &#x2F;&gt;</span><br><span class="line">		&lt;result property&#x3D;&quot;address&quot; column&#x3D;&quot;address&quot; &#x2F;&gt;</span><br><span class="line">	&lt;&#x2F;association&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;resultMap&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="一对多查询"><a href="#一对多查询" class="headerlink" title="一对多查询"></a>一对多查询</h2><p>一个用户对应多个订单<br>在User类中加入List<Order> orders属性,如下图：<br><img src="https://i.loli.net/2019/06/11/5cffc772f209f18025.jpg" alt="MyBatis入门.md---005WV0MDly1fjddbjlslaj30ap05a74c.jpg"></p>
+<p>在UserMapper.xml添加sql，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;resultMap type&#x3D;&quot;user&quot; id&#x3D;&quot;userOrderResultMap&quot;&gt;</span><br><span class="line">	&lt;id property&#x3D;&quot;id&quot; column&#x3D;&quot;id&quot; &#x2F;&gt;</span><br><span class="line">	&lt;result property&#x3D;&quot;username&quot; column&#x3D;&quot;username&quot; &#x2F;&gt;</span><br><span class="line">	&lt;result property&#x3D;&quot;birthday&quot; column&#x3D;&quot;birthday&quot; &#x2F;&gt;</span><br><span class="line">	&lt;result property&#x3D;&quot;sex&quot; column&#x3D;&quot;sex&quot; &#x2F;&gt;</span><br><span class="line">	&lt;result property&#x3D;&quot;address&quot; column&#x3D;&quot;address&quot; &#x2F;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- 配置一对多的关系 --&gt;</span><br><span class="line">	&lt;collection property&#x3D;&quot;orders&quot; javaType&#x3D;&quot;list&quot; ofType&#x3D;&quot;order&quot;&gt;</span><br><span class="line">		&lt;!-- 配置主键，是关联Order的唯一标识 --&gt;</span><br><span class="line">		&lt;id property&#x3D;&quot;id&quot; column&#x3D;&quot;oid&quot; &#x2F;&gt;</span><br><span class="line">		&lt;result property&#x3D;&quot;number&quot; column&#x3D;&quot;number&quot; &#x2F;&gt;</span><br><span class="line">		&lt;result property&#x3D;&quot;createtime&quot; column&#x3D;&quot;createtime&quot; &#x2F;&gt;</span><br><span class="line">		&lt;result property&#x3D;&quot;note&quot; column&#x3D;&quot;note&quot; &#x2F;&gt;</span><br><span class="line">	&lt;&#x2F;collection&gt;</span><br><span class="line">&lt;&#x2F;resultMap&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，客官,赏一点呗！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.jpg" alt=" WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.jpg" alt=" Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      hsl
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://forxyz.top/2017/08/04/MyBatis%E5%85%A5%E9%97%A8/" title="MyBatis入门">http://forxyz.top/2017/08/04/MyBatis%E5%85%A5%E9%97%A8/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/01/Maven%E5%85%A5%E9%97%A8/" rel="next" title="Maven入门">
+                <i class="fa fa-chevron-left"></i> Maven入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/05/mybatis%E4%B8%8Espring%E6%95%B4%E5%90%88/" rel="prev" title="mybatis与spring整合">
+                mybatis与spring整合 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/QQ2018.jpg"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/forqxy" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="" title="汪汪狗粮" target="_blank">汪汪狗粮</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://theme-next.iissnan.com/" title="源于NexT" target="_blank">源于NexT</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86
+src="//music.163.com/outchain/player?type=2&id=33920425&auto=0&height=66"></iframe>
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MyBatis%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">MyBatis简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFMyBatis"><span class="nav-number">1.1.</span> <span class="nav-text">什么是MyBatis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis%E4%B8%8EHibernate%E5%8C%BA%E5%88%AB"><span class="nav-number">1.2.</span> <span class="nav-text">MyBatis与Hibernate区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MyBatis"><span class="nav-number">1.2.1.</span> <span class="nav-text">MyBatis:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hibernate"><span class="nav-number">1.2.2.</span> <span class="nav-text">Hibernate:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">Mybatis应用场景：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hibernate%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="nav-number">1.2.4.</span> <span class="nav-text">Hibernate应用场景：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%80%E9%9C%80%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">所需环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDMyBatis"><span class="nav-number">2.1.</span> <span class="nav-text">下载MyBatis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E4%B8%AD%E6%89%80%E7%94%A8jar%E5%8C%85"><span class="nav-number">2.2.</span> <span class="nav-text">开发中所用jar包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Maven%E6%97%B6"><span class="nav-number">2.3.</span> <span class="nav-text">使用Maven时</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AAmybatis%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">第一个mybatis项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BApo%E7%B1%BB"><span class="nav-number">3.1.</span> <span class="nav-text">1.创建po类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">2.创建全局配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%BC%96%E5%86%99mapper%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6"><span class="nav-number">3.3.</span> <span class="nav-text">3. 编写mapper映射文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95junit"><span class="nav-number">3.4.</span> <span class="nav-text">测试junit</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mapper%E4%BB%A3%E7%90%86%E5%BC%80%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">mapper代理开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81SQL"><span class="nav-number">5.</span> <span class="nav-text">动态SQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2"><span class="nav-number">6.</span> <span class="nav-text">关联查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%AF%B9%E4%B8%80%E6%9F%A5%E8%AF%A2"><span class="nav-number">6.1.</span> <span class="nav-text">一对一查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E4%BD%BF%E7%94%A8resultType"><span class="nav-number">6.1.1.</span> <span class="nav-text">方法一：使用resultType</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8resultMap"><span class="nav-number">6.1.2.</span> <span class="nav-text">方法二：使用resultMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%AF%B9%E5%A4%9A%E6%9F%A5%E8%AF%A2"><span class="nav-number">6.2.</span> <span class="nav-text">一对多查询</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Powered By -hsl</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+<a target="_blank" rel="noopener" href="https://github.com/forqxy"><img style="position: absolute; top: 0; left: 0; border: 0;"
+ src="https://camo.githubusercontent.com/121cd7cbdc3e4855075ea8b558508b91ac463ac2/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67"
+ alt="Fork me on GitHub"
+ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_green_007200.png">
+</a>
+
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "452b1f3606af4b68bb852636eb65c679",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("FPJ6kKFtOUMYneOIWL1AYOKN-gzGzoHsz", "4flJj4QWqE8782MVoskUwX8w");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
