@@ -12,6 +12,86 @@
       </categories>
   </entry>
   <entry>
+    <title>JAVA进阶</title>
+    <url>/2017/07/05/JAVA%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6/</url>
+    <content><![CDATA[<h2 id="Java中的反射机制"><a href="#Java中的反射机制" class="headerlink" title="Java中的反射机制"></a>Java中的反射机制</h2><hr>
+<h3 id="1-反射"><a href="#1-反射" class="headerlink" title="1.反射"></a>1.反射</h3><p>反射主要是在spring框架体现的较多,用的较广,</p>
+<p>反射的作用:</p>
+<p>先说下类的概念<br>类对象概念： 所有的类，都存在一个类对象，这个类对象用于提供一类层面的信息，比如有几种构造方法， 有多少属性，有哪些普通方法。</p>
+<p>通过加载类的全限定类名来获取所需类的里面的所有属性和方法.<br>有如下三种方式来获得</p>
+<blockquote>
+<ul>
+<li>ClassName为所需类名</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.  Class c &#x3D; Class.forName(ClassName);</span><br><span class="line">2.  Class c &#x3D; ClassName.class();</span><br><span class="line">3.  Class c &#x3D; new ClassName().getClass();</span><br></pre></td></tr></table></figure>
+<p>在一个JVM中，一种类，只会有一个类对象存在。所以以上三种方式取出来的类对象，都是一样的。</p>
+<p>注： 准确的讲是一个ClassLoader下，一种类，只会有一个类对象存在。通常一个JVM下，只会有一个ClassLoader。<br>无论什么途径获取类对象，都会导致静态属性被初始化，而且只会执行一次。</p>
+<p>传统创建一个对象是new出来.</p>
+<blockquote>
+<ul>
+<li>现在通过反射创建一个对象</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &#x2F;&#x2F;类对象</span><br><span class="line">Class pClass&#x3D;Class.forName(className);</span><br><span class="line">&#x2F;&#x2F;构造器</span><br><span class="line">Constructor c&#x3D; pClass.getConstructor();</span><br><span class="line">&#x2F;&#x2F;通过构造器实例化</span><br><span class="line">Hero h2&#x3D; (Hero) c.newInstance();</span><br><span class="line">h2.name &#x3D; &quot;xxx&quot;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li><strong>访问修改属性</strong></li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;获取类Hero的名字叫做name的字段</span><br><span class="line">               Field f1&#x3D; h.getClass().getDeclaredField(&quot;name&quot;);</span><br><span class="line">               &#x2F;&#x2F;修改这个字段的值</span><br><span class="line">               f1.set(h, &quot;xxx&quot;);</span><br></pre></td></tr></table></figure>
+<p>getField和getDeclaredField的区别<br>这两个方法都是用于获取字段<br>getField 只能获取public的，包括从父类继承来的字段。<br>getDeclaredField 可以获取本类所有的字段，包括private的，但是不能获取继承来的字段。 (注： 这里只能获取到private的字段，但并不能访问该private字段的值)</p>
+<blockquote>
+<ul>
+<li><strong>调用方法</strong></li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取这个类的名字叫做setName，参数类型是String的方法</span></span><br><span class="line"> Method m = h.getClass().getMethod(<span class="string">&quot;setName&quot;</span>, String.class);</span><br><span class="line">            <span class="comment">// 对h对象，调用这个方法</span></span><br><span class="line">            m.invoke(h, <span class="string">&quot;xxx&quot;</span>);</span><br><span class="line">            <span class="comment">// 使用传统的方式，调用getName方法</span></span><br><span class="line">            System.out.println(h.getName());</span><br></pre></td></tr></table></figure>
+<h3 id="2-使用Log4j查看详细日志信息"><a href="#2-使用Log4j查看详细日志信息" class="headerlink" title="2.使用Log4j查看详细日志信息"></a>2.使用Log4j查看详细日志信息</h3><p>1.导jar包<br>2.添加配置文件properties或xml都可</p>
+<h3 id="3-json的使用"><a href="#3-json的使用" class="headerlink" title="3.json的使用"></a>3.json的使用</h3><blockquote>
+<ul>
+<li>JSON JavaScript 对象表示法（JavaScript Object Notation） 是一种存储数据的方式。</li>
+</ul>
+</blockquote>
+<p>1.创建一个JSON对象</p>
+<blockquote>
+<ul>
+<li>var people = {“name”:”tom”,”age”:16};<br>这样就创建了一个JSON 对象<br>JSON对象由 名称/值对组成 名称和值之间用冒号:隔开<br>名称必须用双引号” 包含起来<br>值可以是任意javascript数据类型，字符串，布尔，数字 ，数组甚至是对象<br>不同的名称/值对之间用 逗号 , 隔开</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">var people &#x3D; &#123;&quot;name&quot;:&quot;tom&quot;,&quot;age&quot;:16&#125;;</span><br><span class="line">  </span><br><span class="line">document.write(&quot;这是一个JSON对象: &quot;people);</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>输出的是一个object对象:<strong>这是一个JSON对象: [object Object]</strong></p>
+<p>可以通过点来访问对象的属性</p>
+<p>2.通过方括号[] 创建JSON 数组</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xxx&#x3D; [ &#123;&quot;aaa&quot;:&quot;1&quot;&#125;,&#123;&quot;bbb&quot;:&quot;2&quot;&#125;,&#123;&quot;ccc&quot;:&quot;3&quot;&#125;] </span><br></pre></td></tr></table></figure>
+<p>访问时和普通数组一样.通过下标访问</p>
+<blockquote>
+<ul>
+<li>字符串转换为json对象 要用eval()实现.<br>即 : var gareen = eval(“(“+s3+”)”);</li>
+<li>*<em>注意里面的括号()**</em></li>
+</ul>
+</blockquote>
+<h3 id="4-Ajax"><a href="#4-Ajax" class="headerlink" title="4.Ajax"></a>4.Ajax</h3><p><em>AJAX 是一种用于创建快速动态网页的技术。通过AJAX (Asynchronous JAvaScript and XML) 实现异步刷新</em><br><a href="http://www.runoob.com/ajax/ajax-tutorial.html">Ajax详细教程</a><br>1.引入js文件写的Ajax引擎<br>即创建XHR</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xmlhttp;</span><br><span class="line">	if (window.XMLHttpRequest)</span><br><span class="line">	&#123;</span><br><span class="line">		&#x2F;&#x2F;  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码</span><br><span class="line">		xmlhttp&#x3D;new XMLHttpRequest();</span><br><span class="line">	&#125;</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		&#x2F;&#x2F; IE6, IE5 浏览器执行代码</span><br><span class="line">		xmlhttp&#x3D;new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>4.处理响应结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xmlhttp.onreadystatechange&#x3D;function()&#123;</span><br><span class="line">if(xmlhttp.readyState&#x3D;&#x3D;4)&#123;</span><br><span class="line">	if(xmlhttp.status&#x3D;&#x3D;200)&#123;</span><br><span class="line">	&#x2F;&#x2F;处理结果</span><br><span class="line">	&#x2F;&#x2F;document.getElementById(&#39;checkResult&#39;).innerHTML&#x3D;xmlhttp.responseText;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.建立一个连接</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xmlhttp.open(&quot;get&quot;,&quot;url&quot;,true);</span><br></pre></td></tr></table></figure>
+<p>3.发送请求<br>xmlhttp.send(null);</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;处理业务内的代码</span><br><span class="line">&#x2F;&#x2F;从jsp获得</span><br><span class="line"> String name &#x3D; request.getParameter(&quot;name&quot;);</span><br><span class="line">     </span><br><span class="line">    if(&quot;abc&quot;.equals(name))</span><br><span class="line">        out.print(&quot;&lt;font color&#x3D;&#39;red&#39;&gt;已经存在&lt;&#x2F;font&gt;&quot;);</span><br><span class="line">    else </span><br><span class="line">        out.print(&quot;&lt;font color&#x3D;&#39;green&#39;&gt;可以使用&lt;&#x2F;font&gt;&quot;);</span><br></pre></td></tr></table></figure>
+<p>后续……</p>
+]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>technology</tag>
+        <tag>json</tag>
+        <tag>前端</tag>
+        <tag>Ajax</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Lucene全文检索</title>
     <url>/2018/06/27/Lucene%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2/</url>
     <content><![CDATA[<h1 id="Lucene简介"><a href="#Lucene简介" class="headerlink" title="Lucene简介"></a>Lucene简介</h1><blockquote>
@@ -216,86 +296,6 @@
       </categories>
       <tags>
         <tag>MyBatis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JAVA进阶</title>
-    <url>/2017/07/05/JAVA%E9%AB%98%E7%BA%A7%E8%BF%9B%E9%98%B6/</url>
-    <content><![CDATA[<h2 id="Java中的反射机制"><a href="#Java中的反射机制" class="headerlink" title="Java中的反射机制"></a>Java中的反射机制</h2><hr>
-<h3 id="1-反射"><a href="#1-反射" class="headerlink" title="1.反射"></a>1.反射</h3><p>反射主要是在spring框架体现的较多,用的较广,</p>
-<p>反射的作用:</p>
-<p>先说下类的概念<br>类对象概念： 所有的类，都存在一个类对象，这个类对象用于提供一类层面的信息，比如有几种构造方法， 有多少属性，有哪些普通方法。</p>
-<p>通过加载类的全限定类名来获取所需类的里面的所有属性和方法.<br>有如下三种方式来获得</p>
-<blockquote>
-<ul>
-<li>ClassName为所需类名</li>
-</ul>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.  Class c &#x3D; Class.forName(ClassName);</span><br><span class="line">2.  Class c &#x3D; ClassName.class();</span><br><span class="line">3.  Class c &#x3D; new ClassName().getClass();</span><br></pre></td></tr></table></figure>
-<p>在一个JVM中，一种类，只会有一个类对象存在。所以以上三种方式取出来的类对象，都是一样的。</p>
-<p>注： 准确的讲是一个ClassLoader下，一种类，只会有一个类对象存在。通常一个JVM下，只会有一个ClassLoader。<br>无论什么途径获取类对象，都会导致静态属性被初始化，而且只会执行一次。</p>
-<p>传统创建一个对象是new出来.</p>
-<blockquote>
-<ul>
-<li>现在通过反射创建一个对象</li>
-</ul>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> &#x2F;&#x2F;类对象</span><br><span class="line">Class pClass&#x3D;Class.forName(className);</span><br><span class="line">&#x2F;&#x2F;构造器</span><br><span class="line">Constructor c&#x3D; pClass.getConstructor();</span><br><span class="line">&#x2F;&#x2F;通过构造器实例化</span><br><span class="line">Hero h2&#x3D; (Hero) c.newInstance();</span><br><span class="line">h2.name &#x3D; &quot;xxx&quot;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li><strong>访问修改属性</strong></li>
-</ul>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;获取类Hero的名字叫做name的字段</span><br><span class="line">               Field f1&#x3D; h.getClass().getDeclaredField(&quot;name&quot;);</span><br><span class="line">               &#x2F;&#x2F;修改这个字段的值</span><br><span class="line">               f1.set(h, &quot;xxx&quot;);</span><br></pre></td></tr></table></figure>
-<p>getField和getDeclaredField的区别<br>这两个方法都是用于获取字段<br>getField 只能获取public的，包括从父类继承来的字段。<br>getDeclaredField 可以获取本类所有的字段，包括private的，但是不能获取继承来的字段。 (注： 这里只能获取到private的字段，但并不能访问该private字段的值)</p>
-<blockquote>
-<ul>
-<li><strong>调用方法</strong></li>
-</ul>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取这个类的名字叫做setName，参数类型是String的方法</span></span><br><span class="line"> Method m = h.getClass().getMethod(<span class="string">&quot;setName&quot;</span>, String.class);</span><br><span class="line">            <span class="comment">// 对h对象，调用这个方法</span></span><br><span class="line">            m.invoke(h, <span class="string">&quot;xxx&quot;</span>);</span><br><span class="line">            <span class="comment">// 使用传统的方式，调用getName方法</span></span><br><span class="line">            System.out.println(h.getName());</span><br></pre></td></tr></table></figure>
-<h3 id="2-使用Log4j查看详细日志信息"><a href="#2-使用Log4j查看详细日志信息" class="headerlink" title="2.使用Log4j查看详细日志信息"></a>2.使用Log4j查看详细日志信息</h3><p>1.导jar包<br>2.添加配置文件properties或xml都可</p>
-<h3 id="3-json的使用"><a href="#3-json的使用" class="headerlink" title="3.json的使用"></a>3.json的使用</h3><blockquote>
-<ul>
-<li>JSON JavaScript 对象表示法（JavaScript Object Notation） 是一种存储数据的方式。</li>
-</ul>
-</blockquote>
-<p>1.创建一个JSON对象</p>
-<blockquote>
-<ul>
-<li>var people = {“name”:”tom”,”age”:16};<br>这样就创建了一个JSON 对象<br>JSON对象由 名称/值对组成 名称和值之间用冒号:隔开<br>名称必须用双引号” 包含起来<br>值可以是任意javascript数据类型，字符串，布尔，数字 ，数组甚至是对象<br>不同的名称/值对之间用 逗号 , 隔开</li>
-</ul>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">var people &#x3D; &#123;&quot;name&quot;:&quot;tom&quot;,&quot;age&quot;:16&#125;;</span><br><span class="line">  </span><br><span class="line">document.write(&quot;这是一个JSON对象: &quot;people);</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-<p>输出的是一个object对象:<strong>这是一个JSON对象: [object Object]</strong></p>
-<p>可以通过点来访问对象的属性</p>
-<p>2.通过方括号[] 创建JSON 数组</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xxx&#x3D; [ &#123;&quot;aaa&quot;:&quot;1&quot;&#125;,&#123;&quot;bbb&quot;:&quot;2&quot;&#125;,&#123;&quot;ccc&quot;:&quot;3&quot;&#125;] </span><br></pre></td></tr></table></figure>
-<p>访问时和普通数组一样.通过下标访问</p>
-<blockquote>
-<ul>
-<li>字符串转换为json对象 要用eval()实现.<br>即 : var gareen = eval(“(“+s3+”)”);</li>
-<li>*<em>注意里面的括号()**</em></li>
-</ul>
-</blockquote>
-<h3 id="4-Ajax"><a href="#4-Ajax" class="headerlink" title="4.Ajax"></a>4.Ajax</h3><p><em>AJAX 是一种用于创建快速动态网页的技术。通过AJAX (Asynchronous JAvaScript and XML) 实现异步刷新</em><br><a href="http://www.runoob.com/ajax/ajax-tutorial.html">Ajax详细教程</a><br>1.引入js文件写的Ajax引擎<br>即创建XHR</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xmlhttp;</span><br><span class="line">	if (window.XMLHttpRequest)</span><br><span class="line">	&#123;</span><br><span class="line">		&#x2F;&#x2F;  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码</span><br><span class="line">		xmlhttp&#x3D;new XMLHttpRequest();</span><br><span class="line">	&#125;</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		&#x2F;&#x2F; IE6, IE5 浏览器执行代码</span><br><span class="line">		xmlhttp&#x3D;new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>4.处理响应结果</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xmlhttp.onreadystatechange&#x3D;function()&#123;</span><br><span class="line">if(xmlhttp.readyState&#x3D;&#x3D;4)&#123;</span><br><span class="line">	if(xmlhttp.status&#x3D;&#x3D;200)&#123;</span><br><span class="line">	&#x2F;&#x2F;处理结果</span><br><span class="line">	&#x2F;&#x2F;document.getElementById(&#39;checkResult&#39;).innerHTML&#x3D;xmlhttp.responseText;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.建立一个连接</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xmlhttp.open(&quot;get&quot;,&quot;url&quot;,true);</span><br></pre></td></tr></table></figure>
-<p>3.发送请求<br>xmlhttp.send(null);</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;处理业务内的代码</span><br><span class="line">&#x2F;&#x2F;从jsp获得</span><br><span class="line"> String name &#x3D; request.getParameter(&quot;name&quot;);</span><br><span class="line">     </span><br><span class="line">    if(&quot;abc&quot;.equals(name))</span><br><span class="line">        out.print(&quot;&lt;font color&#x3D;&#39;red&#39;&gt;已经存在&lt;&#x2F;font&gt;&quot;);</span><br><span class="line">    else </span><br><span class="line">        out.print(&quot;&lt;font color&#x3D;&#39;green&#39;&gt;可以使用&lt;&#x2F;font&gt;&quot;);</span><br></pre></td></tr></table></figure>
-<p>后续……</p>
-]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>technology</tag>
-        <tag>json</tag>
-        <tag>前端</tag>
-        <tag>Ajax</tag>
       </tags>
   </entry>
   <entry>
@@ -689,6 +689,71 @@
 ]]></content>
   </entry>
   <entry>
+    <title>记在第一篇</title>
+    <url>/2017/07/02/mark%E5%9C%A8%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
+    <content><![CDATA[<p>刷知乎的时候,看到了一个人的评论,就顺便进了ta的GitHub,给了我一点的启发….<br>从某一天晚上开始吧.百度看别人的博客,取经验到凌晨两点,第二天一大早起来开始很有兴趣的去搭建一个属于自己的博客.之前不知道的时候<br>觉得是真的很难,也许那是因为没有去尝试.去做了后,发现并没有想象的那么难…</p>
+]]></content>
+      <categories>
+        <category>life</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>hibernate进阶</title>
+    <url>/2017/06/18/hibernate%E8%BF%9B%E9%98%B6/</url>
+    <content><![CDATA[<h1 id="hibernate之多对对映射"><a href="#hibernate之多对对映射" class="headerlink" title="hibernate之多对对映射"></a>hibernate之多对对映射</h1><p>一个学生可以选多门课程,一个课程也可以被多个学生选<br>所以Student和Course存在多对对的关系<br>Student实体如下:(省去set,get方法)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Student &#123;</span><br><span class="line">	private Integer id;</span><br><span class="line">	private String name;</span><br><span class="line">	private Set&lt;Course&gt; course &#x3D; new HashSet&lt;Course&gt;();</span><br></pre></td></tr></table></figure>
+<p>Course实体</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Course &#123;</span><br><span class="line">	private Integer id;</span><br><span class="line">	private String name;</span><br><span class="line">	private Set&lt;Student&gt; student &#x3D; new HashSet&lt;Student&gt;();</span><br></pre></td></tr></table></figure>
+<p>Student.hbm.xml:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;hibernate-mapping package&#x3D;&quot;cn.hsl.domain&quot;&gt;</span><br><span class="line">	&lt;class name&#x3D;&quot;Student&quot; table&#x3D;&quot;t_student&quot; &gt;</span><br><span class="line">		&lt;id name&#x3D;&quot;id&quot; column&#x3D;&quot;id&quot;&gt;</span><br><span class="line">			&lt;generator class&#x3D;&quot;native&quot;&gt;&lt;&#x2F;generator&gt;</span><br><span class="line">		&lt;&#x2F;id&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;name&quot; column&#x3D;&quot;name&quot; &gt;&lt;&#x2F;property&gt;</span><br><span class="line">		&lt;!-- 多对多关系 --&gt;</span><br><span class="line">		&lt;!--</span><br><span class="line">			set 表达集合</span><br><span class="line">				name: 集合的属性名</span><br><span class="line">				table:多对多中间表的表名</span><br><span class="line">			key 表达外键</span><br><span class="line">				column:引用我的外键名</span><br><span class="line">			many-to-many 表达多对多</span><br><span class="line">				class : 集合引用方的类型</span><br><span class="line">				column:对方在中间表的外键名</span><br><span class="line">		 --&gt;</span><br><span class="line">			&lt;set name&#x3D;&quot;course&quot; table&#x3D;&quot;t_student_course&quot; inverse&#x3D;&quot;false&quot; cascade&#x3D;&quot;save-update&quot; &gt;</span><br><span class="line">			&lt;!--</span><br><span class="line"> 				key 用来描述外键</span><br><span class="line"> 				column : 外键的值</span><br><span class="line"> 			  --&gt;</span><br><span class="line">				&lt;key column&#x3D;&quot;sid&quot;&gt;&lt;&#x2F;key&gt;</span><br><span class="line">				&lt;many-to-many class&#x3D;&quot;Course&quot; column&#x3D;&quot;cid&quot;&gt;&lt;&#x2F;many-to-many&gt;</span><br><span class="line">			&lt;&#x2F;set&gt;</span><br><span class="line">	&lt;&#x2F;class&gt;</span><br></pre></td></tr></table></figure>
+<p>Course.hbm.xml:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;hibernate-mapping package&#x3D;&quot;cn.hsl.domain&quot;&gt;</span><br><span class="line">	&lt;class name&#x3D;&quot;Course&quot; table&#x3D;&quot;t_course&quot; &gt;</span><br><span class="line">		&lt;id name&#x3D;&quot;id&quot; column&#x3D;&quot;id&quot;&gt;</span><br><span class="line">			&lt;generator class&#x3D;&quot;native&quot;&gt;&lt;&#x2F;generator&gt;</span><br><span class="line">		&lt;&#x2F;id&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;name&quot; column&#x3D;&quot;name&quot; &gt;&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">			&lt;set name&#x3D;&quot;student&quot; inverse&#x3D;&quot;true&quot; table&#x3D;&quot;t_student_course&quot; &gt;</span><br><span class="line">			&lt;!--</span><br><span class="line"> 				key 用来描述外键</span><br><span class="line"> 				column : 外键的值</span><br><span class="line"> 			  --&gt;</span><br><span class="line">				&lt;key column&#x3D;&quot;cid&quot;&#x2F;&gt;   &#x2F;&#x2F;当前主键!!!!!</span><br><span class="line">				&lt;many-to-many class&#x3D;&quot;Student&quot; column&#x3D;&quot;sid&quot;&gt;&lt;&#x2F;many-to-many&gt;</span><br><span class="line">			&lt;&#x2F;set&gt;</span><br><span class="line">	&lt;&#x2F;class&gt;</span><br></pre></td></tr></table></figure>
+<p>多对多双向关系中，值得注意的是生成的中间表名称必须一样，生成中间表的字段必须一样。即<code>t_student_course</code></p>
+<h1 id="hibernate的2抓取策略（优化）"><a href="#hibernate的2抓取策略（优化）" class="headerlink" title="hibernate的2抓取策略（优化）"></a>hibernate的2抓取策略（优化）</h1><blockquote>
+<p>检索方式分为两种,</p>
+<ul>
+<li>立即检索：立即查询，在执行查询语句时，立即查询所有的数据。</li>
+<li>延迟检索：延迟查询，在执行查询语句之后，在需要时在查询。（懒加载）</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>检查策略又分为两种</p>
+<ul>
+<li>类级别检索：当前的类的属性获取是否需要延迟。</li>
+<li>关联级别的检索：当前类 关联 另一个类是否需要延迟。</li>
+</ul>
+</blockquote>
+<h2 id="类级别检索"><a href="#类级别检索" class="headerlink" title="类级别检索"></a>类级别检索</h2><p>get：立即检索。get方法一执行，立即查询所有字段的数据。<br>load：延迟检索。默认情况，load方法执行后，如果只使用OID的值不进行查询，如果要使用其他属性值将查询 。<br><code>Customer.hbm.xml  &lt;class  lazy=&quot;true | false&quot;&gt;</code><br>lazy 默认值true，表示延迟检索，如果设置false表示立即检索。</p>
+<h2 id="关联级别查询"><a href="#关联级别查询" class="headerlink" title="关联级别查询"></a>关联级别查询</h2><p>一对多或多对多时<br>容器<set> 提供两个属性：fetch、lazy<br>    fetch：确定使用sql格式<br>    lazy：关联对象是否延迟。</p>
+<blockquote>
+<p>fetch：join、select、subselect<br>join：底层使用迫切左外连接<br>select：使用多个select语句（默认值）<br>subselect：使用子查询<br>lazy：false、true、extra<br>    false：立即<br>    true：延迟（默认值）<br>    extra：极其懒惰</p>
+</blockquote>
+<p><img src="https://i.loli.net/2019/06/11/5cffc3bf9108096749.jpg"></p>
+<blockquote>
+<ul>
+<li><code>fetch</code>=”<code>join</code>“ ，<code>lazy</code>无效</li>
+<li>当前对象 和 关联对象 使用多条select语句查询。<br>lazy=”false” , 立即，先查询客户select，立即查询订单select<br>lazy=”true”,延迟，先查询客户select，需要订单时，再查询订单select<br>lazy=”extra”，极其懒惰（延迟），先查询客户select， 如果只需要订单数，使用聚合函数（不查询详情）</li>
+</ul>
+</blockquote>
+<h2 id="hibernate设置隔离级别"><a href="#hibernate设置隔离级别" class="headerlink" title="hibernate设置隔离级别"></a>hibernate设置隔离级别</h2><p><img src="https://i.loli.net/2019/06/11/5cffc427563a112018.jpg" alt="hibernate进阶.md---005WV0MDly1fjchdrrekkj30lw01v0t4.jpg"><br>悲观锁：丢失更新肯定会发生。<br>    采用数据库锁机制。<br>    读锁：共享锁。<br>        select …. from  … lock in share mode;<br>    写锁：排他锁。（独占）<br>        select … from  ….  for update</p>
+<p>乐观锁：丢失更新肯定不会发生<br>在表中提供一个字段（版本字段），用于标识记录。如果版本不一致，不允许操作。</p>
+<h4 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h4><p>写锁</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test</span><br><span class="line">	public void demo01()&#123;</span><br><span class="line">		&#x2F;&#x2F;1 查询所有</span><br><span class="line">		Session session &#x3D; factory.openSession();</span><br><span class="line">		session.beginTransaction();</span><br><span class="line"></span><br><span class="line">		Customer customer &#x3D; (Customer) session.get(Customer.class, 1 ,LockMode.UPGRADE);</span><br><span class="line">		System.out.println(customer);</span><br><span class="line"></span><br><span class="line">		session.getTransaction().commit();</span><br><span class="line">		session.close();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>打印输出为<br><img src="https://i.loli.net/2019/06/11/5cffc46e297b160209.jpg" alt="hibernate进阶.md---005WV0MDly1fjchihbgkkj30hg08bq49.jpg"></p>
+<h4 id="乐观锁："><a href="#乐观锁：" class="headerlink" title="乐观锁："></a>乐观锁：</h4><ol>
+<li>在PO对象（javabean）提供字段，表示版本字段。一般Integer<br>在*.hbm.xml 文件配置 <version name="..."></li>
+<li>在配置文件里面增加<br><img src="https://i.loli.net/2019/06/11/5cffc493a564487425.jpg" alt="hibernate进阶.md---005WV0MDly1fjchl519cjj30cy03r74z.jpg"></li>
+</ol>
+<h2 id="hibernate的二级缓存"><a href="#hibernate的二级缓存" class="headerlink" title="hibernate的二级缓存"></a>hibernate的二级缓存</h2>]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>hibernate</tag>
+        <tag>dao</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hibernate入门</title>
     <url>/2017/06/11/hibernate%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<h1 id="hibernate"><a href="#hibernate" class="headerlink" title="hibernate"></a>hibernate</h1><h2 id="什么是hibernate"><a href="#什么是hibernate" class="headerlink" title="什么是hibernate"></a>什么是hibernate</h2><blockquote>
@@ -756,71 +821,6 @@ setMaxResults(int) 分页，每页显示个数 pageSize
         <tag>hibernate</tag>
         <tag>ssh</tag>
         <tag>框架</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记在第一篇</title>
-    <url>/2017/07/02/mark%E5%9C%A8%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
-    <content><![CDATA[<p>刷知乎的时候,看到了一个人的评论,就顺便进了ta的GitHub,给了我一点的启发….<br>从某一天晚上开始吧.百度看别人的博客,取经验到凌晨两点,第二天一大早起来开始很有兴趣的去搭建一个属于自己的博客.之前不知道的时候<br>觉得是真的很难,也许那是因为没有去尝试.去做了后,发现并没有想象的那么难…</p>
-]]></content>
-      <categories>
-        <category>life</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>hibernate进阶</title>
-    <url>/2017/06/18/hibernate%E8%BF%9B%E9%98%B6/</url>
-    <content><![CDATA[<h1 id="hibernate之多对对映射"><a href="#hibernate之多对对映射" class="headerlink" title="hibernate之多对对映射"></a>hibernate之多对对映射</h1><p>一个学生可以选多门课程,一个课程也可以被多个学生选<br>所以Student和Course存在多对对的关系<br>Student实体如下:(省去set,get方法)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Student &#123;</span><br><span class="line">	private Integer id;</span><br><span class="line">	private String name;</span><br><span class="line">	private Set&lt;Course&gt; course &#x3D; new HashSet&lt;Course&gt;();</span><br></pre></td></tr></table></figure>
-<p>Course实体</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Course &#123;</span><br><span class="line">	private Integer id;</span><br><span class="line">	private String name;</span><br><span class="line">	private Set&lt;Student&gt; student &#x3D; new HashSet&lt;Student&gt;();</span><br></pre></td></tr></table></figure>
-<p>Student.hbm.xml:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;hibernate-mapping package&#x3D;&quot;cn.hsl.domain&quot;&gt;</span><br><span class="line">	&lt;class name&#x3D;&quot;Student&quot; table&#x3D;&quot;t_student&quot; &gt;</span><br><span class="line">		&lt;id name&#x3D;&quot;id&quot; column&#x3D;&quot;id&quot;&gt;</span><br><span class="line">			&lt;generator class&#x3D;&quot;native&quot;&gt;&lt;&#x2F;generator&gt;</span><br><span class="line">		&lt;&#x2F;id&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;name&quot; column&#x3D;&quot;name&quot; &gt;&lt;&#x2F;property&gt;</span><br><span class="line">		&lt;!-- 多对多关系 --&gt;</span><br><span class="line">		&lt;!--</span><br><span class="line">			set 表达集合</span><br><span class="line">				name: 集合的属性名</span><br><span class="line">				table:多对多中间表的表名</span><br><span class="line">			key 表达外键</span><br><span class="line">				column:引用我的外键名</span><br><span class="line">			many-to-many 表达多对多</span><br><span class="line">				class : 集合引用方的类型</span><br><span class="line">				column:对方在中间表的外键名</span><br><span class="line">		 --&gt;</span><br><span class="line">			&lt;set name&#x3D;&quot;course&quot; table&#x3D;&quot;t_student_course&quot; inverse&#x3D;&quot;false&quot; cascade&#x3D;&quot;save-update&quot; &gt;</span><br><span class="line">			&lt;!--</span><br><span class="line"> 				key 用来描述外键</span><br><span class="line"> 				column : 外键的值</span><br><span class="line"> 			  --&gt;</span><br><span class="line">				&lt;key column&#x3D;&quot;sid&quot;&gt;&lt;&#x2F;key&gt;</span><br><span class="line">				&lt;many-to-many class&#x3D;&quot;Course&quot; column&#x3D;&quot;cid&quot;&gt;&lt;&#x2F;many-to-many&gt;</span><br><span class="line">			&lt;&#x2F;set&gt;</span><br><span class="line">	&lt;&#x2F;class&gt;</span><br></pre></td></tr></table></figure>
-<p>Course.hbm.xml:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;hibernate-mapping package&#x3D;&quot;cn.hsl.domain&quot;&gt;</span><br><span class="line">	&lt;class name&#x3D;&quot;Course&quot; table&#x3D;&quot;t_course&quot; &gt;</span><br><span class="line">		&lt;id name&#x3D;&quot;id&quot; column&#x3D;&quot;id&quot;&gt;</span><br><span class="line">			&lt;generator class&#x3D;&quot;native&quot;&gt;&lt;&#x2F;generator&gt;</span><br><span class="line">		&lt;&#x2F;id&gt;</span><br><span class="line">		&lt;property name&#x3D;&quot;name&quot; column&#x3D;&quot;name&quot; &gt;&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">			&lt;set name&#x3D;&quot;student&quot; inverse&#x3D;&quot;true&quot; table&#x3D;&quot;t_student_course&quot; &gt;</span><br><span class="line">			&lt;!--</span><br><span class="line"> 				key 用来描述外键</span><br><span class="line"> 				column : 外键的值</span><br><span class="line"> 			  --&gt;</span><br><span class="line">				&lt;key column&#x3D;&quot;cid&quot;&#x2F;&gt;   &#x2F;&#x2F;当前主键!!!!!</span><br><span class="line">				&lt;many-to-many class&#x3D;&quot;Student&quot; column&#x3D;&quot;sid&quot;&gt;&lt;&#x2F;many-to-many&gt;</span><br><span class="line">			&lt;&#x2F;set&gt;</span><br><span class="line">	&lt;&#x2F;class&gt;</span><br></pre></td></tr></table></figure>
-<p>多对多双向关系中，值得注意的是生成的中间表名称必须一样，生成中间表的字段必须一样。即<code>t_student_course</code></p>
-<h1 id="hibernate的2抓取策略（优化）"><a href="#hibernate的2抓取策略（优化）" class="headerlink" title="hibernate的2抓取策略（优化）"></a>hibernate的2抓取策略（优化）</h1><blockquote>
-<p>检索方式分为两种,</p>
-<ul>
-<li>立即检索：立即查询，在执行查询语句时，立即查询所有的数据。</li>
-<li>延迟检索：延迟查询，在执行查询语句之后，在需要时在查询。（懒加载）</li>
-</ul>
-</blockquote>
-<blockquote>
-<p>检查策略又分为两种</p>
-<ul>
-<li>类级别检索：当前的类的属性获取是否需要延迟。</li>
-<li>关联级别的检索：当前类 关联 另一个类是否需要延迟。</li>
-</ul>
-</blockquote>
-<h2 id="类级别检索"><a href="#类级别检索" class="headerlink" title="类级别检索"></a>类级别检索</h2><p>get：立即检索。get方法一执行，立即查询所有字段的数据。<br>load：延迟检索。默认情况，load方法执行后，如果只使用OID的值不进行查询，如果要使用其他属性值将查询 。<br><code>Customer.hbm.xml  &lt;class  lazy=&quot;true | false&quot;&gt;</code><br>lazy 默认值true，表示延迟检索，如果设置false表示立即检索。</p>
-<h2 id="关联级别查询"><a href="#关联级别查询" class="headerlink" title="关联级别查询"></a>关联级别查询</h2><p>一对多或多对多时<br>容器<set> 提供两个属性：fetch、lazy<br>    fetch：确定使用sql格式<br>    lazy：关联对象是否延迟。</p>
-<blockquote>
-<p>fetch：join、select、subselect<br>join：底层使用迫切左外连接<br>select：使用多个select语句（默认值）<br>subselect：使用子查询<br>lazy：false、true、extra<br>    false：立即<br>    true：延迟（默认值）<br>    extra：极其懒惰</p>
-</blockquote>
-<p><img src="https://i.loli.net/2019/06/11/5cffc3bf9108096749.jpg"></p>
-<blockquote>
-<ul>
-<li><code>fetch</code>=”<code>join</code>“ ，<code>lazy</code>无效</li>
-<li>当前对象 和 关联对象 使用多条select语句查询。<br>lazy=”false” , 立即，先查询客户select，立即查询订单select<br>lazy=”true”,延迟，先查询客户select，需要订单时，再查询订单select<br>lazy=”extra”，极其懒惰（延迟），先查询客户select， 如果只需要订单数，使用聚合函数（不查询详情）</li>
-</ul>
-</blockquote>
-<h2 id="hibernate设置隔离级别"><a href="#hibernate设置隔离级别" class="headerlink" title="hibernate设置隔离级别"></a>hibernate设置隔离级别</h2><p><img src="https://i.loli.net/2019/06/11/5cffc427563a112018.jpg" alt="hibernate进阶.md---005WV0MDly1fjchdrrekkj30lw01v0t4.jpg"><br>悲观锁：丢失更新肯定会发生。<br>    采用数据库锁机制。<br>    读锁：共享锁。<br>        select …. from  … lock in share mode;<br>    写锁：排他锁。（独占）<br>        select … from  ….  for update</p>
-<p>乐观锁：丢失更新肯定不会发生<br>在表中提供一个字段（版本字段），用于标识记录。如果版本不一致，不允许操作。</p>
-<h4 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h4><p>写锁</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test</span><br><span class="line">	public void demo01()&#123;</span><br><span class="line">		&#x2F;&#x2F;1 查询所有</span><br><span class="line">		Session session &#x3D; factory.openSession();</span><br><span class="line">		session.beginTransaction();</span><br><span class="line"></span><br><span class="line">		Customer customer &#x3D; (Customer) session.get(Customer.class, 1 ,LockMode.UPGRADE);</span><br><span class="line">		System.out.println(customer);</span><br><span class="line"></span><br><span class="line">		session.getTransaction().commit();</span><br><span class="line">		session.close();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>打印输出为<br><img src="https://i.loli.net/2019/06/11/5cffc46e297b160209.jpg" alt="hibernate进阶.md---005WV0MDly1fjchihbgkkj30hg08bq49.jpg"></p>
-<h4 id="乐观锁："><a href="#乐观锁：" class="headerlink" title="乐观锁："></a>乐观锁：</h4><ol>
-<li>在PO对象（javabean）提供字段，表示版本字段。一般Integer<br>在*.hbm.xml 文件配置 <version name="..."></li>
-<li>在配置文件里面增加<br><img src="https://i.loli.net/2019/06/11/5cffc493a564487425.jpg" alt="hibernate进阶.md---005WV0MDly1fjchl519cjj30cy03r74z.jpg"></li>
-</ol>
-<h2 id="hibernate的二级缓存"><a href="#hibernate的二级缓存" class="headerlink" title="hibernate的二级缓存"></a>hibernate的二级缓存</h2>]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>hibernate</tag>
-        <tag>dao</tag>
       </tags>
   </entry>
   <entry>
@@ -1187,6 +1187,40 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       </tags>
   </entry>
   <entry>
+    <title>强大的OGNL表达式</title>
+    <url>/2017/06/08/%E5%BC%BA%E5%A4%A7%E7%9A%84OGNL%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<h1 id="1-OGNL简介"><a href="#1-OGNL简介" class="headerlink" title="1.OGNL简介"></a>1.OGNL简介</h1><h2 id="1-1-什么是OGNL"><a href="#1-1-什么是OGNL" class="headerlink" title="1.1 什么是OGNL"></a>1.1 什么是OGNL</h2><blockquote>
+<p>OGNL是Object Graphic Navigation Language（对象图导航语言）的缩写，它是一个单独的开源项目。<br>Struts2框架使用OGNL作为默认的表达式语言。</p>
+</blockquote>
+<h2 id="1-2-OGNL-的功能"><a href="#1-2-OGNL-的功能" class="headerlink" title="1.2 OGNL 的功能"></a>1.2 OGNL 的功能</h2><p>前提：OGNL是struts2整合的一个开源项目，所以在struts2中，要想使用OGNL表达式，必须使用Struts2标签库<br>1.2.1 支持普通方法的调用<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6yj6vtgj30kt0550sz.jpg"><br>输出结果如下:<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6z11sxdj306402kglf.jpg"><br>1.2.2 访问静态成员</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;%--访问静态方法的方式,@全类名@静态方法名</span><br><span class="line">	Struts2默认是禁止静态方法调用的 --%&gt;</span><br><span class="line">		&lt;s:property value&#x3D;&quot;@java.lang.Math@random()&quot;&#x2F;&gt;&lt;br&gt;</span><br><span class="line">		&lt;s:radio list&#x3D;&quot;&#123;&#39;男&#39;,&#39;女&#39;&#125;&quot; name&#x3D;&quot;gender&quot;&gt;&lt;&#x2F;s:radio&gt;</span><br><span class="line">		&lt;br&#x2F;&gt;</span><br><span class="line">		&lt;s:radio list&#x3D;&quot;#&#123;&#39;1&#39;:&#39;男&#39;,&#39;0&#39;:&#39;女&#39;&#125;&quot; name&#x3D;&quot;gender1&quot;&gt;&lt;&#x2F;s:radio&gt;</span><br><span class="line">	&lt;&#x2F;body&gt;</span><br></pre></td></tr></table></figure>
+<p>输出如下:<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc70xaljcj306g0333yc.jpg"></p>
+<p>1.2.3 操作集合对象<br>创建list   单选按钮<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc74ka7qcj30h505lq30.jpg"><br>创建map<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc7604u1rj30ir05r3yn.jpg"></p>
+<h2 id="2-contextMap"><a href="#2-contextMap" class="headerlink" title="2. contextMap"></a>2. contextMap</h2><p>动作类的生命周期:<br>动作类是多例的，每次动作访问，动作类都会实例化。所以是线程安全的。<br>与Struts1的区别是，struts1的动作类是单例的。<br><em>请求动作的数据存放</em><br>在每次动作执行前，核心控制器StrutsPrepareAndExecuteFilter都会创建一个ActionContext和ValueStack对象。且每次动作访问都会创建。<br>    这两个对象存储了整个动作访问期间用到的数据。<br>    并且把数据绑定到了线程局部变量（ThreadLocal）上了。所以是线程安全的。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc7dqcgyuj30fn05vt8i.jpg"><br>contextMap中存放的主要内容<br>| Key    | Value    | 说明 |<br>| ——–   | —–:  | :—-:  |<br>| value stack (root)    | java.util.List    | 没有root这个key。它是一个list。 |<br>| application    | java.util.Map&lt;String,Object&gt;    | ServletContext中的所有属性。 |<br>| session    | java.util.Map&lt;String,Object&gt;    | HttpSession中的所有属性。 |<br>| request    | java.util.Map&lt;String,Object&gt;    | ServletRequest中的所有属性 。 |<br>| parameters    | java.util.Map    参数 |<br>| attr    | java.util.Map    | 把页面、请求、会话、应用范围内的所有属性放到一起。 |<br><strong>除了value stack之外，全是map，而contextMap也是一个map。其实就是Map中又封装的Map。</strong><br>查看contextMap中的数据：<br>    在页面上使用<code>&lt;s:debug/&gt;</code></p>
+<h3 id="contextMap中的数据操作"><a href="#contextMap中的数据操作" class="headerlink" title="contextMap中的数据操作"></a>contextMap中的数据操作</h3><p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc7lxqyeyj30dm0e6weh.jpg"></p>
+<p><strong>利用ActionContext存数据</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class DemoAction extends ActionSupport&#123;</span><br><span class="line">	public String test01()&#123;</span><br><span class="line">		&#x2F;**</span><br><span class="line">		 * 需要熟悉ActionContext和valueStack的API。框架为我们存数据。</span><br><span class="line">		 *&#x2F;</span><br><span class="line">		&#x2F;&#x2F;获得contextMap的引用</span><br><span class="line">		ActionContext context &#x3D; ActionContext.getContext();</span><br><span class="line">		context.put(&quot;contextMap&quot;,&quot;Hello FirstContextMap&quot;);</span><br><span class="line">		</span><br><span class="line">		&#x2F;&#x2F;向httpsession中放数据.第一种方式</span><br><span class="line">		Map&lt;String, Object&gt; sessionAttributes &#x3D; context.getSession();</span><br><span class="line">		sessionAttributes.put(&quot;sessionMaps&quot;,&quot;Hello sessionMaps&quot;);</span><br><span class="line">		&#x2F;&#x2F;第二种方式 </span><br><span class="line">		HttpSession session &#x3D; ServletActionContext.getRequest().getSession();</span><br><span class="line">		session.setAttribute(&quot;sessionMap1&quot;, &quot;sessionMap1&quot;);</span><br><span class="line">		return SUCCESS;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>利用ValueStack存数据</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Demo2Action extends ActionSupport&#123;</span><br><span class="line">	private String name&#x3D;&quot;动作类中的name&quot;;</span><br><span class="line">	public String test01()&#123;</span><br><span class="line">		&#x2F;&#x2F;获取valuestack对象的引用</span><br><span class="line">		&#x2F;&#x2F;方式一</span><br><span class="line">		ActionContext context &#x3D; ActionContext.getContext();</span><br><span class="line">&#x2F;&#x2F;		Map&lt;String, Object&gt; requestAttributes &#x3D; (Map&lt;String, Object&gt;) context.get(&quot;request&quot;);</span><br><span class="line">&#x2F;&#x2F;		ValueStack vs1 &#x3D; (ValueStack) requestAttributes.get(&quot;struts.valueStack&quot;);</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs1);</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		&#x2F;&#x2F;方式二.使用request对象的attribute对象</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		HttpServletRequest request &#x3D; ServletActionContext.getRequest();</span><br><span class="line">&#x2F;&#x2F;		ValueStack vs2 &#x3D; (ValueStack) request.getAttribute(&quot;struts.valueStack&quot;);</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs2);</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		&#x2F;&#x2F;方式三.使用Actioncontext中的方法直接获得</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">		ValueStack vs3 &#x3D; context.getValueStack();</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs3);</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		&#x2F;&#x2F;打印输出上面3个的内存空间的哈希吗.他们指向同一个内存地址</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs1.hashCode());</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs2.hashCode());</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs3.hashCode());</span><br><span class="line">		Student s1 &#x3D; new Student(&quot;哈喽&quot;,15);</span><br><span class="line">		vs3.push(s1);</span><br><span class="line">&#x2F;&#x2F;		vs3.push(name);</span><br><span class="line">		</span><br><span class="line">		vs3.setValue(&quot;#name&quot;,&quot;李四&quot;);</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		return SUCCESS;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	public String getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setName(String name) &#123;</span><br><span class="line">		this.name &#x3D; name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="取数据"><a href="#取数据" class="headerlink" title="取数据"></a>取数据</h3><p>使用s:property取数据<br><strong>取contextMap中的数据，需使用#</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">	&lt;s:debug&#x2F;&gt;</span><br><span class="line">	&lt;s:property value&#x3D;&quot;#contextMap&quot;&#x2F;&gt;</span><br><span class="line">	&lt;hr&gt;</span><br><span class="line">	&lt;s:property value&#x3D;&quot;#session.sessionMaps&quot;&#x2F;&gt;</span><br><span class="line">	&lt;hr&gt;</span><br><span class="line">	&lt;s:property value&#x3D;&quot;#session.sessionMap1&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>取contextMap里面ValueStack中对象的属性：直接写属性名<br>OGNL的使用总结：<br>    1.取根中对象的属性，不使用#。<br>    2.取contextMap中key的值，要使用#。</p>
+</blockquote>
+<p>Struts2中EL查找顺序改变总结：<br> EL表达式： page Scope————&gt;request Scope————&gt;sessionScope————&gt;application Scope<br> OGNL表达式：page Scope————&gt;request Scope————&gt;valueStack（根中）————&gt;contextMap————&gt;sessionScope————&gt;application Scope</p>
+<h3 id="防止表单重复提交（拦截器）"><a href="#防止表单重复提交（拦截器）" class="headerlink" title="防止表单重复提交（拦截器）"></a>防止表单重复提交（拦截器）</h3><p>使用&lt;s:token/&gt;生成令牌配合tokensession拦截器<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc85zpqjlj30ik0530sv.jpg"><br>配置文件的内容:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;action name&#x3D;&quot;demo6&quot; class&#x3D;&quot;cn.hsl.web.action.Demo6Action&quot; method&#x3D;&quot;demo6&quot; &gt;</span><br><span class="line">	&lt;interceptor-ref name&#x3D;&quot;defaultStack&quot;&gt;&lt;&#x2F;interceptor-ref&gt;</span><br><span class="line">	&lt;interceptor-ref name&#x3D;&quot;tokenSession&quot;&gt;&lt;&#x2F;interceptor-ref&gt;</span><br><span class="line">	&lt;result type&#x3D;&quot;redirect&quot;&gt;&#x2F;success.jsp&lt;&#x2F;result&gt;</span><br><span class="line">	&lt;result name&#x3D;&quot;invalid.token&quot;&gt;&#x2F;error.jsp&lt;&#x2F;result&gt;</span><br><span class="line">&lt;&#x2F;action&gt;</span><br></pre></td></tr></table></figure>
+<p>配置了<code>tokenSesssion</code>拦截器  和  重复提交的结果视图</p>
+]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>struts2</tag>
+        <tag>ognl</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>日志框架Logback的使用</title>
     <url>/2018/07/08/%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1ft2k24c4mej30m809ugp4.jpg"></p>
@@ -1256,55 +1290,6 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       </tags>
   </entry>
   <entry>
-    <title>强大的OGNL表达式</title>
-    <url>/2017/06/08/%E5%BC%BA%E5%A4%A7%E7%9A%84OGNL%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<h1 id="1-OGNL简介"><a href="#1-OGNL简介" class="headerlink" title="1.OGNL简介"></a>1.OGNL简介</h1><h2 id="1-1-什么是OGNL"><a href="#1-1-什么是OGNL" class="headerlink" title="1.1 什么是OGNL"></a>1.1 什么是OGNL</h2><blockquote>
-<p>OGNL是Object Graphic Navigation Language（对象图导航语言）的缩写，它是一个单独的开源项目。<br>Struts2框架使用OGNL作为默认的表达式语言。</p>
-</blockquote>
-<h2 id="1-2-OGNL-的功能"><a href="#1-2-OGNL-的功能" class="headerlink" title="1.2 OGNL 的功能"></a>1.2 OGNL 的功能</h2><p>前提：OGNL是struts2整合的一个开源项目，所以在struts2中，要想使用OGNL表达式，必须使用Struts2标签库<br>1.2.1 支持普通方法的调用<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6yj6vtgj30kt0550sz.jpg"><br>输出结果如下:<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc6z11sxdj306402kglf.jpg"><br>1.2.2 访问静态成员</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;%--访问静态方法的方式,@全类名@静态方法名</span><br><span class="line">	Struts2默认是禁止静态方法调用的 --%&gt;</span><br><span class="line">		&lt;s:property value&#x3D;&quot;@java.lang.Math@random()&quot;&#x2F;&gt;&lt;br&gt;</span><br><span class="line">		&lt;s:radio list&#x3D;&quot;&#123;&#39;男&#39;,&#39;女&#39;&#125;&quot; name&#x3D;&quot;gender&quot;&gt;&lt;&#x2F;s:radio&gt;</span><br><span class="line">		&lt;br&#x2F;&gt;</span><br><span class="line">		&lt;s:radio list&#x3D;&quot;#&#123;&#39;1&#39;:&#39;男&#39;,&#39;0&#39;:&#39;女&#39;&#125;&quot; name&#x3D;&quot;gender1&quot;&gt;&lt;&#x2F;s:radio&gt;</span><br><span class="line">	&lt;&#x2F;body&gt;</span><br></pre></td></tr></table></figure>
-<p>输出如下:<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc70xaljcj306g0333yc.jpg"></p>
-<p>1.2.3 操作集合对象<br>创建list   单选按钮<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc74ka7qcj30h505lq30.jpg"><br>创建map<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc7604u1rj30ir05r3yn.jpg"></p>
-<h2 id="2-contextMap"><a href="#2-contextMap" class="headerlink" title="2. contextMap"></a>2. contextMap</h2><p>动作类的生命周期:<br>动作类是多例的，每次动作访问，动作类都会实例化。所以是线程安全的。<br>与Struts1的区别是，struts1的动作类是单例的。<br><em>请求动作的数据存放</em><br>在每次动作执行前，核心控制器StrutsPrepareAndExecuteFilter都会创建一个ActionContext和ValueStack对象。且每次动作访问都会创建。<br>    这两个对象存储了整个动作访问期间用到的数据。<br>    并且把数据绑定到了线程局部变量（ThreadLocal）上了。所以是线程安全的。<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc7dqcgyuj30fn05vt8i.jpg"><br>contextMap中存放的主要内容<br>| Key    | Value    | 说明 |<br>| ——–   | —–:  | :—-:  |<br>| value stack (root)    | java.util.List    | 没有root这个key。它是一个list。 |<br>| application    | java.util.Map&lt;String,Object&gt;    | ServletContext中的所有属性。 |<br>| session    | java.util.Map&lt;String,Object&gt;    | HttpSession中的所有属性。 |<br>| request    | java.util.Map&lt;String,Object&gt;    | ServletRequest中的所有属性 。 |<br>| parameters    | java.util.Map    参数 |<br>| attr    | java.util.Map    | 把页面、请求、会话、应用范围内的所有属性放到一起。 |<br><strong>除了value stack之外，全是map，而contextMap也是一个map。其实就是Map中又封装的Map。</strong><br>查看contextMap中的数据：<br>    在页面上使用<code>&lt;s:debug/&gt;</code></p>
-<h3 id="contextMap中的数据操作"><a href="#contextMap中的数据操作" class="headerlink" title="contextMap中的数据操作"></a>contextMap中的数据操作</h3><p><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc7lxqyeyj30dm0e6weh.jpg"></p>
-<p><strong>利用ActionContext存数据</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class DemoAction extends ActionSupport&#123;</span><br><span class="line">	public String test01()&#123;</span><br><span class="line">		&#x2F;**</span><br><span class="line">		 * 需要熟悉ActionContext和valueStack的API。框架为我们存数据。</span><br><span class="line">		 *&#x2F;</span><br><span class="line">		&#x2F;&#x2F;获得contextMap的引用</span><br><span class="line">		ActionContext context &#x3D; ActionContext.getContext();</span><br><span class="line">		context.put(&quot;contextMap&quot;,&quot;Hello FirstContextMap&quot;);</span><br><span class="line">		</span><br><span class="line">		&#x2F;&#x2F;向httpsession中放数据.第一种方式</span><br><span class="line">		Map&lt;String, Object&gt; sessionAttributes &#x3D; context.getSession();</span><br><span class="line">		sessionAttributes.put(&quot;sessionMaps&quot;,&quot;Hello sessionMaps&quot;);</span><br><span class="line">		&#x2F;&#x2F;第二种方式 </span><br><span class="line">		HttpSession session &#x3D; ServletActionContext.getRequest().getSession();</span><br><span class="line">		session.setAttribute(&quot;sessionMap1&quot;, &quot;sessionMap1&quot;);</span><br><span class="line">		return SUCCESS;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>利用ValueStack存数据</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Demo2Action extends ActionSupport&#123;</span><br><span class="line">	private String name&#x3D;&quot;动作类中的name&quot;;</span><br><span class="line">	public String test01()&#123;</span><br><span class="line">		&#x2F;&#x2F;获取valuestack对象的引用</span><br><span class="line">		&#x2F;&#x2F;方式一</span><br><span class="line">		ActionContext context &#x3D; ActionContext.getContext();</span><br><span class="line">&#x2F;&#x2F;		Map&lt;String, Object&gt; requestAttributes &#x3D; (Map&lt;String, Object&gt;) context.get(&quot;request&quot;);</span><br><span class="line">&#x2F;&#x2F;		ValueStack vs1 &#x3D; (ValueStack) requestAttributes.get(&quot;struts.valueStack&quot;);</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs1);</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		&#x2F;&#x2F;方式二.使用request对象的attribute对象</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		HttpServletRequest request &#x3D; ServletActionContext.getRequest();</span><br><span class="line">&#x2F;&#x2F;		ValueStack vs2 &#x3D; (ValueStack) request.getAttribute(&quot;struts.valueStack&quot;);</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs2);</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		&#x2F;&#x2F;方式三.使用Actioncontext中的方法直接获得</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">		ValueStack vs3 &#x3D; context.getValueStack();</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs3);</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		</span><br><span class="line">&#x2F;&#x2F;		&#x2F;&#x2F;打印输出上面3个的内存空间的哈希吗.他们指向同一个内存地址</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs1.hashCode());</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs2.hashCode());</span><br><span class="line">&#x2F;&#x2F;		System.out.println(vs3.hashCode());</span><br><span class="line">		Student s1 &#x3D; new Student(&quot;哈喽&quot;,15);</span><br><span class="line">		vs3.push(s1);</span><br><span class="line">&#x2F;&#x2F;		vs3.push(name);</span><br><span class="line">		</span><br><span class="line">		vs3.setValue(&quot;#name&quot;,&quot;李四&quot;);</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		return SUCCESS;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	public String getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setName(String name) &#123;</span><br><span class="line">		this.name &#x3D; name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="取数据"><a href="#取数据" class="headerlink" title="取数据"></a>取数据</h3><p>使用s:property取数据<br><strong>取contextMap中的数据，需使用#</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">	&lt;s:debug&#x2F;&gt;</span><br><span class="line">	&lt;s:property value&#x3D;&quot;#contextMap&quot;&#x2F;&gt;</span><br><span class="line">	&lt;hr&gt;</span><br><span class="line">	&lt;s:property value&#x3D;&quot;#session.sessionMaps&quot;&#x2F;&gt;</span><br><span class="line">	&lt;hr&gt;</span><br><span class="line">	&lt;s:property value&#x3D;&quot;#session.sessionMap1&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>取contextMap里面ValueStack中对象的属性：直接写属性名<br>OGNL的使用总结：<br>    1.取根中对象的属性，不使用#。<br>    2.取contextMap中key的值，要使用#。</p>
-</blockquote>
-<p>Struts2中EL查找顺序改变总结：<br> EL表达式： page Scope————&gt;request Scope————&gt;sessionScope————&gt;application Scope<br> OGNL表达式：page Scope————&gt;request Scope————&gt;valueStack（根中）————&gt;contextMap————&gt;sessionScope————&gt;application Scope</p>
-<h3 id="防止表单重复提交（拦截器）"><a href="#防止表单重复提交（拦截器）" class="headerlink" title="防止表单重复提交（拦截器）"></a>防止表单重复提交（拦截器）</h3><p>使用&lt;s:token/&gt;生成令牌配合tokensession拦截器<br><img src="http://ww1.sinaimg.cn/large/005WV0MDly1fjc85zpqjlj30ik0530sv.jpg"><br>配置文件的内容:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;action name&#x3D;&quot;demo6&quot; class&#x3D;&quot;cn.hsl.web.action.Demo6Action&quot; method&#x3D;&quot;demo6&quot; &gt;</span><br><span class="line">	&lt;interceptor-ref name&#x3D;&quot;defaultStack&quot;&gt;&lt;&#x2F;interceptor-ref&gt;</span><br><span class="line">	&lt;interceptor-ref name&#x3D;&quot;tokenSession&quot;&gt;&lt;&#x2F;interceptor-ref&gt;</span><br><span class="line">	&lt;result type&#x3D;&quot;redirect&quot;&gt;&#x2F;success.jsp&lt;&#x2F;result&gt;</span><br><span class="line">	&lt;result name&#x3D;&quot;invalid.token&quot;&gt;&#x2F;error.jsp&lt;&#x2F;result&gt;</span><br><span class="line">&lt;&#x2F;action&gt;</span><br></pre></td></tr></table></figure>
-<p>配置了<code>tokenSesssion</code>拦截器  和  重复提交的结果视图</p>
-]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>struts2</tag>
-        <tag>ognl</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第二天的记录</title>
-    <url>/2017/07/03/%E7%AC%AC%E4%BA%8C%E5%A4%A9%E7%9A%84%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>用GitHub+hexo搭建自己的blog<br>经过了两天的初步学习和百度方法,基本的框架已经算是搭建完成.<br>从一开始什么都不会到现在的基本成型,虽然过程是累了点,但当你<br>看到后面的成果后,还是很高兴的.<br>接下来要做的就是不断去完善里面的内容<br>需要做的还有:</p>
-<blockquote>
-<p>添加一个网易云评论<br>把关于自己的一块给补充了<br>过几天也要把整个搭建过程给写下来以供我这样的小小白参考下<br>更多的是让自己更清楚和明白.</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>life</category>
-      </categories>
-      <tags>
-        <tag>first</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>算法之排序</title>
     <url>/2017/09/15/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%8E%92%E5%BA%8F/</url>
     <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><blockquote>
@@ -1351,6 +1336,21 @@ setMaxResults(int) 分页，每页显示个数 pageSize
       </categories>
       <tags>
         <tag>排序算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第二天的记录</title>
+    <url>/2017/07/03/%E7%AC%AC%E4%BA%8C%E5%A4%A9%E7%9A%84%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>用GitHub+hexo搭建自己的blog<br>经过了两天的初步学习和百度方法,基本的框架已经算是搭建完成.<br>从一开始什么都不会到现在的基本成型,虽然过程是累了点,但当你<br>看到后面的成果后,还是很高兴的.<br>接下来要做的就是不断去完善里面的内容<br>需要做的还有:</p>
+<blockquote>
+<p>添加一个网易云评论<br>把关于自己的一块给补充了<br>过几天也要把整个搭建过程给写下来以供我这样的小小白参考下<br>更多的是让自己更清楚和明白.</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>life</category>
+      </categories>
+      <tags>
+        <tag>first</tag>
       </tags>
   </entry>
   <entry>
