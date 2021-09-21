@@ -398,9 +398,9 @@
     <category term="technology" scheme="http://forxyz.top/categories/technology/"/>
     
     
-    <category term="spring" scheme="http://forxyz.top/tags/spring/"/>
-    
     <category term="mybatis" scheme="http://forxyz.top/tags/mybatis/"/>
+    
+    <category term="spring" scheme="http://forxyz.top/tags/spring/"/>
     
   </entry>
   

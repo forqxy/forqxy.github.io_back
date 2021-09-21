@@ -228,6 +228,20 @@
 
   
   <url>
+    <loc>http://forxyz.top/tags/Lucene/</loc>
+    <lastmod>2021-09-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://forxyz.top/tags/Maven/</loc>
+    <lastmod>2021-09-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://forxyz.top/tags/technology/</loc>
     <lastmod>2021-09-21</lastmod>
     <changefreq>daily</changefreq>
@@ -256,13 +270,6 @@
   </url>
   
   <url>
-    <loc>http://forxyz.top/tags/Lucene/</loc>
-    <lastmod>2021-09-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://forxyz.top/tags/MyBatis/</loc>
     <lastmod>2021-09-21</lastmod>
     <changefreq>daily</changefreq>
@@ -270,7 +277,28 @@
   </url>
   
   <url>
-    <loc>http://forxyz.top/tags/Maven/</loc>
+    <loc>http://forxyz.top/tags/Shiro/</loc>
+    <lastmod>2021-09-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://forxyz.top/tags/spring-mvc/</loc>
+    <lastmod>2021-09-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://forxyz.top/tags/mybatis/</loc>
+    <lastmod>2021-09-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://forxyz.top/tags/maven/</loc>
     <lastmod>2021-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -326,6 +354,13 @@
   </url>
   
   <url>
+    <loc>http://forxyz.top/tags/TransactionManager/</loc>
+    <lastmod>2021-09-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://forxyz.top/tags/first/</loc>
     <lastmod>2021-09-21</lastmod>
     <changefreq>daily</changefreq>
@@ -341,41 +376,6 @@
   
   <url>
     <loc>http://forxyz.top/tags/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2021-09-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://forxyz.top/tags/Shiro/</loc>
-    <lastmod>2021-09-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://forxyz.top/tags/spring-mvc/</loc>
-    <lastmod>2021-09-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://forxyz.top/tags/mybatis/</loc>
-    <lastmod>2021-09-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://forxyz.top/tags/maven/</loc>
-    <lastmod>2021-09-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://forxyz.top/tags/TransactionManager/</loc>
     <lastmod>2021-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -459,6 +459,13 @@
   </url>
   
   <url>
+    <loc>http://forxyz.top/tags/ognl/</loc>
+    <lastmod>2021-09-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://forxyz.top/tags/mysql/</loc>
     <lastmod>2021-09-21</lastmod>
     <changefreq>daily</changefreq>
@@ -467,13 +474,6 @@
   
   <url>
     <loc>http://forxyz.top/tags/linux%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2021-09-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://forxyz.top/tags/ognl/</loc>
     <lastmod>2021-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
